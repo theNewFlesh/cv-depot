@@ -192,9 +192,6 @@ RUN echo "\n${CYAN}SETUP DIRECTORIES${CLEAR}"; \
 
 # create dev env
 WORKDIR /home/ubuntu/pdm
-# uncomment if you need to install private packages
-# RUN --mount=type=secret,id=secret-env,mode=0444 \
-#     . /run/secrets/secret-env && \
 RUN echo "\n${CYAN}INSTALL DEV ENVIRONMENT${CLEAR}"; \
     . /home/ubuntu/scripts/x_tools.sh && \
     export CONFIG_DIR=/home/ubuntu/config && \

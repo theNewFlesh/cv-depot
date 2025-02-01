@@ -41,9 +41,7 @@ RUN echo "\n${CYAN}SETUP PYTHON3.10${CLEAR}"; \
 USER ubuntu
 ARG VERSION
 ARG URL="YOUR PRIVATE PYPI URL"
-RUN --mount=type=secret,id=secret-env,mode=0444 \
-    . /run/secrets/secret-env && \
-    echo "\n${CYAN}INSTALL CV-TOOLS${CLEAR}"; \
+RUN echo "\n${CYAN}INSTALL CV-TOOLS${CLEAR}"; \
     pip3.10 install \
         --user \
         --index-url "https://__token__:$PYPI_ACCESS_TOKEN@$URL" \

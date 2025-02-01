@@ -26,18 +26,6 @@ The service should take a few minutes to start up.
 
 Run `bin/cv-tools --help` for more help on the command line tool.
 
-### Secret Env Setup
-The secret-env file is a environment file which holds various secrets used by
-pyproject.toml and CI.
-
-If using GitLab private python package registry:
-
-1. Create a [GitLab Personal Access Token](https://gitlab.com/-/user_settings/personal_access_tokens)
-   1. Name it `[FIRST_NAME]_[LAST_NAME]_TOKEN`
-   2. Give it `read_api` permissions
-2. Create the file: `cv-tools/docker/config/secret-env`
-3. In that file paste: `export PYPI_ACCESS_TOKEN=[gitlab-pypi-token]`
-
 ### ZSH Setup
 1. `bin/cv-tools` must be run from this repository's top level directory.
 2. Therefore, if using zsh, it is recommended that you paste the following line

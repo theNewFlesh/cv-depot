@@ -339,7 +339,6 @@ def build_dev_command(mode='normal'):
         docker build
             --file dev.dockerfile
             --build-arg BUILDKIT_INLINE_CACHE=1
-            --secret id=secret-env,src=config/secret-env
             --label "repository={repo}"
             --label "docker-registry={registry}"
             --label "git-user={git_user}"
@@ -376,7 +375,6 @@ def build_prod_command():
             --no-cache
             --file prod.dockerfile
             --build-arg VERSION="$VERSION"
-            --secret id=secret-env,src=config/secret-env
             --label "repository={repo}"
             --label "docker-registry={registry}"
             --label "git-user={git_user}"
