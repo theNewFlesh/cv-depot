@@ -1,36 +1,36 @@
 <!-- <img id="logo" src="resources/logo.png" style="max-width: 717px"> -->
 
-[![](https://img.shields.io/badge/License-MIT-F77E70?style=for-the-badge)](https://github.com/the-new-flesh/cv-toolbox/blob/master/LICENSE)
-[![](https://img.shields.io/pypi/pyversions/cv-toolbox?style=for-the-badge&label=Python&color=A0D17B&logo=python&logoColor=A0D17B)](https://github.com/the-new-flesh/cv-toolbox/blob/master/docker/config/pyproject.toml)
-[![](https://img.shields.io/pypi/v/cv-toolbox?style=for-the-badge&label=PyPI&color=5F95DE&logo=pypi&logoColor=5F95DE)](https://pypi.org/project/cv-toolbox/)
-[![](https://img.shields.io/pypi/dm/cv-toolbox?style=for-the-badge&label=Downloads&color=5F95DE)](https://pepy.tech/project/cv-toolbox)
+[![](https://img.shields.io/badge/License-MIT-F77E70?style=for-the-badge)](https://github.com/the-new-flesh/cv-depot/blob/master/LICENSE)
+[![](https://img.shields.io/pypi/pyversions/cv-depot?style=for-the-badge&label=Python&color=A0D17B&logo=python&logoColor=A0D17B)](https://github.com/the-new-flesh/cv-depot/blob/master/docker/config/pyproject.toml)
+[![](https://img.shields.io/pypi/v/cv-depot?style=for-the-badge&label=PyPI&color=5F95DE&logo=pypi&logoColor=5F95DE)](https://pypi.org/project/cv-depot/)
+[![](https://img.shields.io/pypi/dm/cv-depot?style=for-the-badge&label=Downloads&color=5F95DE)](https://pepy.tech/project/cv-depot)
 
 # Introduction
 
 Computer Vision Tools
 
-See [documentation](https://the-new-flesh.github.io/cv-toolbox/) for details.
+See [documentation](https://the-new-flesh.github.io/cv-depot/) for details.
 
 # Installation for Developers
 
 ### Docker
 1. Install [docker-desktop](https://docs.docker.com/desktop/)
 2. Ensure docker-desktop has at least 4 GB of memory allocated to it.
-3. `git clone git@github.com:theNewFlesh/cv-toolbox.git`
-4. `cd cv-toolbox`
-5. `chmod +x bin/cv-toolbox`
-6. `bin/cv-toolbox docker-start`
+3. `git clone git@github.com:theNewFlesh/cv-depot.git`
+4. `cd cv-depot`
+5. `chmod +x bin/cv-depot`
+6. `bin/cv-depot docker-start`
    - If building on a M1 Mac run `export DOCKER_DEFAULT_PLATFORM=linux/amd64` first.
 
 The service should take a few minutes to start up.
 
-Run `bin/cv-toolbox --help` for more help on the command line tool.
+Run `bin/cv-depot --help` for more help on the command line tool.
 
 ### ZSH Setup
-1. `bin/cv-toolbox` must be run from this repository's top level directory.
+1. `bin/cv-depot` must be run from this repository's top level directory.
 2. Therefore, if using zsh, it is recommended that you paste the following line
     in your ~/.zshrc file:
-    - `alias cv-toolbox="cd [parent dir]/cv-toolbox; bin/cv-toolbox"`
+    - `alias cv-depot="cd [parent dir]/cv-depot; bin/cv-depot"`
     - Replace `[parent dir]` with the parent directory of this repository
 3. Consider adding the following line to your ~/.zshrc if you are using a M1 Mac:
     - `export DOCKER_DEFAULT_PLATFORM=linux/amd64`
@@ -38,19 +38,19 @@ Run `bin/cv-toolbox --help` for more help on the command line tool.
    commands, in the next shell session.
 
    For example:
-   - `cv-toolbox [tab]` will show you all the cli options, which you can press
+   - `cv-depot [tab]` will show you all the cli options, which you can press
      tab to cycle through
-   - `cv-toolbox docker-[tab]` will show you only the cli options that begin with
+   - `cv-depot docker-[tab]` will show you only the cli options that begin with
      "docker-"
 
 # Installation for Production
 
 ### Python
-`pip install cv-toolbox`
+`pip install cv-depot`
 
 ### Docker
 1. Install [docker-desktop](https://docs.docker.com/desktop/)
-2. `docker pull theNewFlesh/cv-toolbox:[version]`
+2. `docker pull theNewFlesh/cv-depot:[version]`
 
 
 ---
@@ -112,11 +112,11 @@ Here are some frequently used commands to get you started:
 ---
 
 # Development CLI
-bin/cv-toolbox is a command line interface (defined in cli.py) that
+bin/cv-depot is a command line interface (defined in cli.py) that
 works with any version of python 2.7 and above, as it has no dependencies.
 Commands generally do not expect any arguments or flags.
 
-Its usage pattern is: `bin/cv-toolbox COMMAND [-a --args]=ARGS [-h --help] [--dryrun]`
+Its usage pattern is: `bin/cv-depot COMMAND [-a --args]=ARGS [-h --help] [--dryrun]`
 
 ### Commands
 The following is a complete list of all available development commands:
@@ -195,23 +195,23 @@ The following is a complete list of all available development commands:
 
 # Production CLI
 
-cv-toolbox comes with a command line interface defined in command.py.
+cv-depot comes with a command line interface defined in command.py.
 
-Its usage pattern is: `cv-toolbox COMMAND [ARGS] [FLAGS] [-h --help]`
+Its usage pattern is: `cv-depot COMMAND [ARGS] [FLAGS] [-h --help]`
 
 ## Commands
 
 ---
 
 ### bash-completion
-Prints BASH completion code to be written to a _cv-toolbox completion file
+Prints BASH completion code to be written to a _cv-depot completion file
 
-Usage: `cv-toolbox bash-completion`
+Usage: `cv-depot bash-completion`
 
 ---
 
 ### zsh-completion
-Prints ZSH completion code to be written to a _cv-toolbox completion file
+Prints ZSH completion code to be written to a _cv-depot completion file
 
-Usage: `cv-toolbox zsh-completion`
+Usage: `cv-depot zsh-completion`
 

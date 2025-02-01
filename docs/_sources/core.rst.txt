@@ -3,7 +3,7 @@ core
 
 enum
 -----
-.. automodule:: cv_toolbox.core.enum
+.. automodule:: cv_depot.core.enum
     :members:
     :private-members:
     :undoc-members:

@@ -1,6 +1,6 @@
 [project]
 name = "cv-depot"
-version = "0.1.2"
+version = "0.1.3"
 description = "Computer Vision Tools"
 authors = [
     { name = "Alex Braun", email = "alexander.g.braun@gmail.com" },
