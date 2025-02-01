@@ -133,12 +133,12 @@ exr_code: 5'''[1:]
 
     def test_from_string_errors(self):
         expected = 'Value given is not a string. 54 !=.*str'
-        with self.assertRaisesRegexp(EnforceError, expected):
+        with self.assertRaisesRegex(EnforceError, expected):
             ImageCodec.from_string(54)
 
         expected = '"foo" has no legal ImageCodec type. '
         expected += 'Legal codec strings: .*'
-        with self.assertRaisesRegexp(EnforceError, expected):
+        with self.assertRaisesRegex(EnforceError, expected):
             ImageCodec.from_string('foo')
 
     def test_from_exr_code(self):
@@ -158,12 +158,12 @@ exr_code: 5'''[1:]
 
     def test_from_exr_code_errors(self):
         expected = 'Value given is not an integer. foo !=.*int'
-        with self.assertRaisesRegexp(EnforceError, expected):
+        with self.assertRaisesRegex(EnforceError, expected):
             ImageCodec.from_exr_code('foo')
 
         expected = 'EXR code 42 has no legal ImageCodec type. '
         expected += 'Legal EXR codes: .*'
-        with self.assertRaisesRegexp(EnforceError, expected):
+        with self.assertRaisesRegex(EnforceError, expected):
             ImageCodec.from_exr_code(42)
 # ------------------------------------------------------------------------------
 
@@ -183,12 +183,12 @@ class VideoCodecTests(unittest.TestCase):
 
     def test_from_string_errors(self):
         expected = 'Value given is not a string. 54 !=.*str'
-        with self.assertRaisesRegexp(EnforceError, expected):
+        with self.assertRaisesRegex(EnforceError, expected):
             VideoCodec.from_string(54)
 
         expected = '"foo" has no legal VideoCodec type. '
         expected += 'Legal codec strings: .*'
-        with self.assertRaisesRegexp(EnforceError, expected):
+        with self.assertRaisesRegex(EnforceError, expected):
             VideoCodec.from_string('foo')
 
 
