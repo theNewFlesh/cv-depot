@@ -1,0 +1,27 @@
+services:
+  cv-tools:
+    container_name: cv-tools
+    image: cv-tools:dev
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: dev.dockerfile
+      secrets:
+        - secret-env
+    ports:
+      - "4200:9000"
+      - "4280:8080"
+    userns_mode: "host"
+    user: ubuntu
+    env_file:
+      - config/dev-env
+      - config/secret-env
+    volumes:
+      - ../:/home/ubuntu/cv-tools
+      - ~/.ssh:/home/ubuntu/.ssh:ro
+      - ./config/jupyter:/home/ubuntu/.jupyter
+      - ./config/zshrc:/home/ubuntu/.zshrc
+    working_dir: "/home/ubuntu"
+secrets:
+  secret-env:
+    file: config/secret-env

@@ -1,0 +1,41 @@
+{
+  "template": "https://github.com/thenewflesh/cookiecutter-datalus",
+  "commit": "ef58ed4d2f3be06b2b08c5161538d78dc96fda50",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "repo": "cv-tools",
+      "repo_type": "library",
+      "include_black": "no",
+      "include_gcc": "yes",
+      "include_helm": "no",
+      "include_mkdocs": "no",
+      "include_nvidia": "no",
+      "include_openexr": "yes",
+      "include_prod_cli": "yes",
+      "include_prod_envs": "yes",
+      "include_rsync": "no",
+      "include_secret_env": "yes",
+      "include_tensorflow": "no",
+      "include_vscode_server": "no",
+      "port_prefix": "42",
+      "git_user": "theNewFlesh",
+      "git_host": "github",
+      "git_organization": "the-new-flesh",
+      "docker_registry": "dockerhub",
+      "organization_url": "github.com",
+      "description": "Computer Vision Tools",
+      "author": "Alex Braun",
+      "email": "alexander.g.braun@gmail.com",
+      "website": "http://www.alexgbraun.com",
+      "volume": "",
+      "keywords": "OpenEXR, EXR, openexr, exr, computer-vision, cv, image, compositing",
+      "year": "2025",
+      "python_min_version": "10",
+      "python_max_version": "10",
+      "initial_repo_version": "0.0.1",
+      "_template": "https://github.com/thenewflesh/cookiecutter-datalus"
+    }
+  },
+  "directory": null
+}
