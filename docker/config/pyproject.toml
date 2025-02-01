@@ -1,5 +1,5 @@
 [project]
-name = "cv-tools"
+name = "cv-toolbox"
 version = "0.1.1"
 description = "Computer Vision Tools"
 authors = [
@@ -33,11 +33,11 @@ dependencies = [
 ]
 
 [project.urls]
-repository = "https://github.com/the-new-flesh/cv-tools"
-documentation = "https://theNewFlesh.github.io/cv-tools"
+repository = "https://github.com/the-new-flesh/cv-toolbox"
+documentation = "https://theNewFlesh.github.io/cv-toolbox"
 
 [project.scripts]
-cv-tools = "cv_tools.command:main"
+cv-toolbox = "cv_toolbox.command:main"
 
 [tool.pdm.dev-dependencies]
 lab = [

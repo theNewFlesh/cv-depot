@@ -24,7 +24,7 @@ source $ZSH/oh-my-zsh.sh
 
 # EXPORTS-----------------------------------------------------------------------
 export HOME="/home/ubuntu"
-export REPO="cv-tools"
+export REPO="cv-toolbox"
 export REPO_DIR="$HOME/$REPO"
 
 # X-TOOLS-----------------------------------------------------------------------

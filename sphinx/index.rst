@@ -1,6 +1,6 @@
-.. cv-tools documentation master file
+.. cv-toolbox documentation master file
 
-Welcome to cv-tools's documentation!
+Welcome to cv-toolbox's documentation!
 ====================================
 .. toctree::
    :maxdepth: 1

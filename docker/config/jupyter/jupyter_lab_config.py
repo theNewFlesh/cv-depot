@@ -1,6 +1,6 @@
 c = get_config()
 c.ServerApp.iopub_data_rate_limit = 10000000
-c.ServerApp.root_dir = '/home/ubuntu/cv-tools/notebooks'
+c.ServerApp.root_dir = '/home/ubuntu/cv-toolbox/notebooks'
 c.ServerApp.disable_check_xsrf = True
 c.ServerApp.password_required = False
 c.ServerApp.port = 9000

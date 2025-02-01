@@ -37,14 +37,14 @@ RUN echo "\n${CYAN}SETUP PYTHON3.10${CLEAR}"; \
     python3.10 get-pip.py && \
     rm -rf /home/ubuntu/get-pip.py
 
-# install cv-tools
+# install cv-toolbox
 USER ubuntu
 ARG VERSION
 ARG URL="YOUR PRIVATE PYPI URL"
-RUN echo "\n${CYAN}INSTALL CV-TOOLS${CLEAR}"; \
+RUN echo "\n${CYAN}INSTALL cv-toolbox${CLEAR}"; \
     pip3.10 install \
         --user \
         --index-url "https://__token__:$PYPI_ACCESS_TOKEN@$URL" \
-        cv-tools==$VERSION
+        cv-toolbox==$VERSION
 
 ENV PATH="$PATH:/home/ubuntu/.local/bin"
