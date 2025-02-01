@@ -1,9 +1,9 @@
 core
 ====
 
-tools
+enum
 -----
-.. automodule:: cv_tools.core.tools
+.. automodule:: cv_tools.core.enum
     :members:
     :private-members:
     :undoc-members:

@@ -1,0 +1,673 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>core &mdash; cv-tools  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/style.css" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="cli" href="cli.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            cv-tools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="readme.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#installation-for-developers">Installation for Developers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#installation-for-production">Installation for Production</a></li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#quickstart-guide">Quickstart Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#development-cli">Development CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html#production-cli">Production CLI</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python API</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">core</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-cv_tools.core.enum">enum</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cv_tools.core.enum.BitDepth"><code class="docutils literal notranslate"><span class="pre">BitDepth</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.BitDepth.FLOAT16"><code class="docutils literal notranslate"><span class="pre">BitDepth.FLOAT16</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.BitDepth.FLOAT32"><code class="docutils literal notranslate"><span class="pre">BitDepth.FLOAT32</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.BitDepth.INT8"><code class="docutils literal notranslate"><span class="pre">BitDepth.INT8</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.BitDepth.UINT8"><code class="docutils literal notranslate"><span class="pre">BitDepth.UINT8</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.BitDepth.__init__"><code class="docutils literal notranslate"><span class="pre">BitDepth.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.BitDepth.from_dtype"><code class="docutils literal notranslate"><span class="pre">BitDepth.from_dtype()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.BitDepth.from_string"><code class="docutils literal notranslate"><span class="pre">BitDepth.from_string()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#cv_tools.core.enum.ImageCodec"><code class="docutils literal notranslate"><span class="pre">ImageCodec</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.ImageCodec.B44"><code class="docutils literal notranslate"><span class="pre">ImageCodec.B44</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.ImageCodec.B44A"><code class="docutils literal notranslate"><span class="pre">ImageCodec.B44A</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.ImageCodec.DWAA"><code class="docutils literal notranslate"><span class="pre">ImageCodec.DWAA</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.ImageCodec.DWAB"><code class="docutils literal notranslate"><span class="pre">ImageCodec.DWAB</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.ImageCodec.PIZ"><code class="docutils literal notranslate"><span class="pre">ImageCodec.PIZ</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.ImageCodec.PXR24"><code class="docutils literal notranslate"><span class="pre">ImageCodec.PXR24</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.ImageCodec.RLE"><code class="docutils literal notranslate"><span class="pre">ImageCodec.RLE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.ImageCodec.UNCOMPRESSED"><code class="docutils literal notranslate"><span class="pre">ImageCodec.UNCOMPRESSED</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.ImageCodec.ZIP"><code class="docutils literal notranslate"><span class="pre">ImageCodec.ZIP</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.ImageCodec.ZIPS"><code class="docutils literal notranslate"><span class="pre">ImageCodec.ZIPS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.ImageCodec.__init__"><code class="docutils literal notranslate"><span class="pre">ImageCodec.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.ImageCodec.from_exr_code"><code class="docutils literal notranslate"><span class="pre">ImageCodec.from_exr_code()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.ImageCodec.from_string"><code class="docutils literal notranslate"><span class="pre">ImageCodec.from_string()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#cv_tools.core.enum.ImageFormat"><code class="docutils literal notranslate"><span class="pre">ImageFormat</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.ImageFormat.EXR"><code class="docutils literal notranslate"><span class="pre">ImageFormat.EXR</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.ImageFormat.JPEG"><code class="docutils literal notranslate"><span class="pre">ImageFormat.JPEG</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.ImageFormat.PNG"><code class="docutils literal notranslate"><span class="pre">ImageFormat.PNG</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.ImageFormat.TIFF"><code class="docutils literal notranslate"><span class="pre">ImageFormat.TIFF</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.ImageFormat.__init__"><code class="docutils literal notranslate"><span class="pre">ImageFormat.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.ImageFormat.from_extension"><code class="docutils literal notranslate"><span class="pre">ImageFormat.from_extension()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#cv_tools.core.enum.VideoCodec"><code class="docutils literal notranslate"><span class="pre">VideoCodec</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.VideoCodec.H264"><code class="docutils literal notranslate"><span class="pre">VideoCodec.H264</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.VideoCodec.H265"><code class="docutils literal notranslate"><span class="pre">VideoCodec.H265</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.VideoCodec.__init__"><code class="docutils literal notranslate"><span class="pre">VideoCodec.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.VideoCodec.from_string"><code class="docutils literal notranslate"><span class="pre">VideoCodec.from_string()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#cv_tools.core.enum.VideoFormat"><code class="docutils literal notranslate"><span class="pre">VideoFormat</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.VideoFormat.M4V"><code class="docutils literal notranslate"><span class="pre">VideoFormat.M4V</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.VideoFormat.MOV"><code class="docutils literal notranslate"><span class="pre">VideoFormat.MOV</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.VideoFormat.MP4"><code class="docutils literal notranslate"><span class="pre">VideoFormat.MP4</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.VideoFormat.MPEG"><code class="docutils literal notranslate"><span class="pre">VideoFormat.MPEG</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.VideoFormat.__init__"><code class="docutils literal notranslate"><span class="pre">VideoFormat.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_tools.core.enum.VideoFormat.from_extension"><code class="docutils literal notranslate"><span class="pre">VideoFormat.from_extension()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development CLI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">cli</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">cv-tools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">&lt;no title&gt;</a></li>
+      <li class="breadcrumb-item active">core</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/core.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="core">
+<h1>core<a class="headerlink" href="#core" title="Link to this heading">¶</a></h1>
+<section id="module-cv_tools.core.enum">
+<span id="enum"></span><h2>enum<a class="headerlink" href="#module-cv_tools.core.enum" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="cv_tools.core.enum.BitDepth">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cv_tools.core.enum.</span></span><span class="sig-name descname"><span class="pre">BitDepth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_tools/core/enum.html#BitDepth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_tools.core.enum.BitDepth" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>Legal bit depths.</p>
+<p>Includes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>FLOAT16</p></li>
+<li><p>FLOAT32</p></li>
+<li><p>UINT8</p></li>
+<li><p>INT8</p></li>
+</ul>
+</div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_tools.core.enum.BitDepth.FLOAT16">
+<span class="sig-name descname"><span class="pre">FLOAT16</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(&lt;class</span> <span class="pre">'numpy.float16'&gt;,</span> <span class="pre">16,</span> <span class="pre">True,</span> <span class="pre">&lt;class</span> <span class="pre">'float'&gt;)</span></em><a class="headerlink" href="#cv_tools.core.enum.BitDepth.FLOAT16" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_tools.core.enum.BitDepth.FLOAT32">
+<span class="sig-name descname"><span class="pre">FLOAT32</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(&lt;class</span> <span class="pre">'numpy.float32'&gt;,</span> <span class="pre">32,</span> <span class="pre">True,</span> <span class="pre">&lt;class</span> <span class="pre">'float'&gt;)</span></em><a class="headerlink" href="#cv_tools.core.enum.BitDepth.FLOAT32" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_tools.core.enum.BitDepth.INT8">
+<span class="sig-name descname"><span class="pre">INT8</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(&lt;class</span> <span class="pre">'numpy.int8'&gt;,</span> <span class="pre">8,</span> <span class="pre">True,</span> <span class="pre">&lt;class</span> <span class="pre">'int'&gt;)</span></em><a class="headerlink" href="#cv_tools.core.enum.BitDepth.INT8" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_tools.core.enum.BitDepth.UINT8">
+<span class="sig-name descname"><span class="pre">UINT8</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(&lt;class</span> <span class="pre">'numpy.uint8'&gt;,</span> <span class="pre">8,</span> <span class="pre">False,</span> <span class="pre">&lt;class</span> <span class="pre">'int'&gt;)</span></em><a class="headerlink" href="#cv_tools.core.enum.BitDepth.UINT8" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cv_tools.core.enum.BitDepth.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dtype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_tools/core/enum.html#BitDepth.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_tools.core.enum.BitDepth.__init__" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dtype</strong> (<em>numpy.type</em>) – Numpy datatype.</p></li>
+<li><p><strong>bits</strong> (<em>int</em>) – Number of bits per channel.</p></li>
+<li><p><strong>signed</strong> (<em>bool</em>) – Whether channel scalars are signed.</p></li>
+<li><p><strong>type</strong> (<em>type</em>) – Python type of scalar. Options include: [int, float].</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>BitDepth instance.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#cv_tools.core.enum.BitDepth" title="cv_tools.core.enum.BitDepth">BitDepth</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cv_tools.core.enum.BitDepth.from_dtype">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dtype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dtype</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_tools/core/enum.html#BitDepth.from_dtype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_tools.core.enum.BitDepth.from_dtype" title="Link to this definition">¶</a></dt>
+<dd><p>Construct a BitDepth instance from a given numpy datatype.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dtype</strong> (<em>numpy.type</em>) – Numpy datatype. Options include:
+[float16, float32, uint8, int8].</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TypeError</strong> – If invlaid dtype is given.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>BitDepth instance of given type.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#cv_tools.core.enum.BitDepth" title="cv_tools.core.enum.BitDepth">BitDepth</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cv_tools.core.enum.BitDepth.from_string">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_tools/core/enum.html#BitDepth.from_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_tools.core.enum.BitDepth.from_string" title="Link to this definition">¶</a></dt>
+<dd><p>Construct a BitDepth instance from a given string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>string</strong> (<em>str</em>) – Dtype string. Options include:
+[float16, float32, uint8, int8].</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TypeError</strong> – If invalid string is given.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>BitDepth instance of given type.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#cv_tools.core.enum.BitDepth" title="cv_tools.core.enum.BitDepth">BitDepth</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cv_tools.core.enum.ImageCodec">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cv_tools.core.enum.</span></span><span class="sig-name descname"><span class="pre">ImageCodec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_tools/core/enum.html#ImageCodec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_tools.core.enum.ImageCodec" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>Legal image codecs.</p>
+<p>Includes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>PIZ</p></li>
+<li><p>B44</p></li>
+<li><p>B44A</p></li>
+<li><p>DWAA</p></li>
+<li><p>DWAB</p></li>
+<li><p>PXR24</p></li>
+<li><p>RLE</p></li>
+<li><p>UNCOMPRESSED</p></li>
+<li><p>ZIP</p></li>
+<li><p>ZIPS</p></li>
+</ul>
+</div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_tools.core.enum.ImageCodec.B44">
+<span class="sig-name descname"><span class="pre">B44</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('b44',</span> <span class="pre">6)</span></em><a class="headerlink" href="#cv_tools.core.enum.ImageCodec.B44" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_tools.core.enum.ImageCodec.B44A">
+<span class="sig-name descname"><span class="pre">B44A</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('b44a',</span> <span class="pre">7)</span></em><a class="headerlink" href="#cv_tools.core.enum.ImageCodec.B44A" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_tools.core.enum.ImageCodec.DWAA">
+<span class="sig-name descname"><span class="pre">DWAA</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('dwaa',</span> <span class="pre">8)</span></em><a class="headerlink" href="#cv_tools.core.enum.ImageCodec.DWAA" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_tools.core.enum.ImageCodec.DWAB">
+<span class="sig-name descname"><span class="pre">DWAB</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('dwab',</span> <span class="pre">9)</span></em><a class="headerlink" href="#cv_tools.core.enum.ImageCodec.DWAB" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_tools.core.enum.ImageCodec.PIZ">
+<span class="sig-name descname"><span class="pre">PIZ</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('piz',</span> <span class="pre">4)</span></em><a class="headerlink" href="#cv_tools.core.enum.ImageCodec.PIZ" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_tools.core.enum.ImageCodec.PXR24">
+<span class="sig-name descname"><span class="pre">PXR24</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('pxr24',</span> <span class="pre">5)</span></em><a class="headerlink" href="#cv_tools.core.enum.ImageCodec.PXR24" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_tools.core.enum.ImageCodec.RLE">
+<span class="sig-name descname"><span class="pre">RLE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('rle',</span> <span class="pre">1)</span></em><a class="headerlink" href="#cv_tools.core.enum.ImageCodec.RLE" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_tools.core.enum.ImageCodec.UNCOMPRESSED">
+<span class="sig-name descname"><span class="pre">UNCOMPRESSED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('uncompressed',</span> <span class="pre">0)</span></em><a class="headerlink" href="#cv_tools.core.enum.ImageCodec.UNCOMPRESSED" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_tools.core.enum.ImageCodec.ZIP">
+<span class="sig-name descname"><span class="pre">ZIP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('zip',</span> <span class="pre">3)</span></em><a class="headerlink" href="#cv_tools.core.enum.ImageCodec.ZIP" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_tools.core.enum.ImageCodec.ZIPS">
+<span class="sig-name descname"><span class="pre">ZIPS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('zips',</span> <span class="pre">2)</span></em><a class="headerlink" href="#cv_tools.core.enum.ImageCodec.ZIPS" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cv_tools.core.enum.ImageCodec.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exr_code</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_tools/core/enum.html#ImageCodec.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_tools.core.enum.ImageCodec.__init__" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>string</strong> (<em>str</em>) – String representation of codec.</p></li>
+<li><p><strong>exr_code</strong> (<em>int</em>) – EXR compression code.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cv_tools.core.enum.ImageCodec.from_exr_code">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_exr_code</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_tools/core/enum.html#ImageCodec.from_exr_code"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_tools.core.enum.ImageCodec.from_exr_code" title="Link to this definition">¶</a></dt>
+<dd><p>Constructs a ImageCodec instance from a given exr code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>code</strong> (<em>int</em>) – EXR compression code.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>EnforceError</strong> – If value given is not an integer.</p></li>
+<li><p><strong>EnforceError</strong> – If no ImageCodec type can be found for given code.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ImageCodec instance.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#cv_tools.core.enum.ImageCodec" title="cv_tools.core.enum.ImageCodec">ImageCodec</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cv_tools.core.enum.ImageCodec.from_string">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_tools/core/enum.html#ImageCodec.from_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_tools.core.enum.ImageCodec.from_string" title="Link to this definition">¶</a></dt>
+<dd><p>Constructs a ImageCodec instance from a given string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>string</strong> (<em>int</em>) – ImageCodec string.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>EnforceError</strong> – If value given is not a string.</p></li>
+<li><p><strong>EnforceError</strong> – If no ImageCodec type can be found for given string.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ImageCodec instance.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#cv_tools.core.enum.ImageCodec" title="cv_tools.core.enum.ImageCodec">ImageCodec</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cv_tools.core.enum.ImageFormat">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cv_tools.core.enum.</span></span><span class="sig-name descname"><span class="pre">ImageFormat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_tools/core/enum.html#ImageFormat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_tools.core.enum.ImageFormat" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>Legal image formats.</p>
+<p>Includes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>EXR</p></li>
+<li><p>PNG</p></li>
+<li><p>JPEG</p></li>
+<li><p>TIFF</p></li>
+</ul>
+</div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_tools.core.enum.ImageFormat.EXR">
+<span class="sig-name descname"><span class="pre">EXR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('exr',</span> <span class="pre">[&lt;BitDepth.FLOAT16&gt;</span>
+ <span class="pre">dtype:</span> <span class="pre">float16</span>
+&#160; <span class="pre">bits:</span> <span class="pre">16</span>
+<span class="pre">signed:</span> <span class="pre">True</span>
+&#160; <span class="pre">type:</span> <span class="pre">float,</span> <span class="pre">&lt;BitDepth.FLOAT32&gt;</span>
+ <span class="pre">dtype:</span> <span class="pre">float32</span>
+&#160; <span class="pre">bits:</span> <span class="pre">32</span>
+<span class="pre">signed:</span> <span class="pre">True</span>
+&#160; <span class="pre">type:</span> <span class="pre">float],</span> <span class="pre">['r',</span> <span class="pre">'g',</span> <span class="pre">'b',</span> <span class="pre">'a',</span> <span class="pre">'...'],</span> <span class="pre">1023,</span> <span class="pre">True)</span></em><a class="headerlink" href="#cv_tools.core.enum.ImageFormat.EXR" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_tools.core.enum.ImageFormat.JPEG">
+<span class="sig-name descname"><span class="pre">JPEG</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('jpeg',</span> <span class="pre">[&lt;BitDepth.UINT8&gt;</span>
+ <span class="pre">dtype:</span> <span class="pre">uint8</span>
+&#160; <span class="pre">bits:</span> <span class="pre">8</span>
+<span class="pre">signed:</span> <span class="pre">False</span>
+&#160; <span class="pre">type:</span> <span class="pre">int],</span> <span class="pre">['r',</span> <span class="pre">'g',</span> <span class="pre">'b'],</span> <span class="pre">3,</span> <span class="pre">False)</span></em><a class="headerlink" href="#cv_tools.core.enum.ImageFormat.JPEG" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_tools.core.enum.ImageFormat.PNG">
+<span class="sig-name descname"><span class="pre">PNG</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('png',</span> <span class="pre">[&lt;BitDepth.UINT8&gt;</span>
+ <span class="pre">dtype:</span> <span class="pre">uint8</span>
+&#160; <span class="pre">bits:</span> <span class="pre">8</span>
+<span class="pre">signed:</span> <span class="pre">False</span>
+&#160; <span class="pre">type:</span> <span class="pre">int],</span> <span class="pre">['r',</span> <span class="pre">'g',</span> <span class="pre">'b',</span> <span class="pre">'a'],</span> <span class="pre">4,</span> <span class="pre">False)</span></em><a class="headerlink" href="#cv_tools.core.enum.ImageFormat.PNG" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_tools.core.enum.ImageFormat.TIFF">
+<span class="sig-name descname"><span class="pre">TIFF</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('tiff',</span> <span class="pre">[&lt;BitDepth.INT8&gt;</span>
+ <span class="pre">dtype:</span> <span class="pre">int8</span>
+&#160; <span class="pre">bits:</span> <span class="pre">8</span>
+<span class="pre">signed:</span> <span class="pre">True</span>
+&#160; <span class="pre">type:</span> <span class="pre">int,</span> <span class="pre">&lt;BitDepth.UINT8&gt;</span>
+ <span class="pre">dtype:</span> <span class="pre">uint8</span>
+&#160; <span class="pre">bits:</span> <span class="pre">8</span>
+<span class="pre">signed:</span> <span class="pre">False</span>
+&#160; <span class="pre">type:</span> <span class="pre">int,</span> <span class="pre">&lt;BitDepth.FLOAT32&gt;</span>
+ <span class="pre">dtype:</span> <span class="pre">float32</span>
+&#160; <span class="pre">bits:</span> <span class="pre">32</span>
+<span class="pre">signed:</span> <span class="pre">True</span>
+&#160; <span class="pre">type:</span> <span class="pre">float],</span> <span class="pre">['r',</span> <span class="pre">'g',</span> <span class="pre">'b',</span> <span class="pre">'a',</span> <span class="pre">'...'],</span> <span class="pre">500,</span> <span class="pre">False)</span></em><a class="headerlink" href="#cv_tools.core.enum.ImageFormat.TIFF" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cv_tools.core.enum.ImageFormat.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extension</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bit_depths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_channels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_metadata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_tools/core/enum.html#ImageFormat.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_tools.core.enum.ImageFormat.__init__" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>extension</strong> (<em>str</em>) – Name of file extension.</p></li>
+<li><p><strong>bit_depths</strong> (<em>list</em><em>[</em><a class="reference internal" href="#cv_tools.core.enum.BitDepth" title="cv_tools.core.enum.BitDepth"><em>BitDepth</em></a><em>]</em>) – Supported bit depths.</p></li>
+<li><p><strong>channels</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – Supported channels.</p></li>
+<li><p><strong>max_channels</strong> (<em>int</em>) – Maximum number of channels supported.</p></li>
+<li><p><strong>custom_metadata</strong> (<em>bool</em>) – Custom metadata support.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>ImageFormat instance.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#cv_tools.core.enum.ImageFormat" title="cv_tools.core.enum.ImageFormat">ImageFormat</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cv_tools.core.enum.ImageFormat.from_extension">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_extension</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extension</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_tools/core/enum.html#ImageFormat.from_extension"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_tools.core.enum.ImageFormat.from_extension" title="Link to this definition">¶</a></dt>
+<dd><p>Construct an ImageFormat instance for a given file extension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>extension</strong> (<em>str</em>) – File extension.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TypeError</strong> – If extension is illegal.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ImageFormat instance of given extension.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#cv_tools.core.enum.ImageFormat" title="cv_tools.core.enum.ImageFormat">ImageFormat</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cv_tools.core.enum.VideoCodec">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cv_tools.core.enum.</span></span><span class="sig-name descname"><span class="pre">VideoCodec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_tools/core/enum.html#VideoCodec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_tools.core.enum.VideoCodec" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>Legal video codecs.</p>
+<p>Includes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>H264</p></li>
+<li><p>H265</p></li>
+</ul>
+</div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_tools.core.enum.VideoCodec.H264">
+<span class="sig-name descname"><span class="pre">H264</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('h264',</span> <span class="pre">'h264')</span></em><a class="headerlink" href="#cv_tools.core.enum.VideoCodec.H264" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_tools.core.enum.VideoCodec.H265">
+<span class="sig-name descname"><span class="pre">H265</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('h265',</span> <span class="pre">'hevc')</span></em><a class="headerlink" href="#cv_tools.core.enum.VideoCodec.H265" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cv_tools.core.enum.VideoCodec.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ffmpeg_code</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_tools/core/enum.html#VideoCodec.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_tools.core.enum.VideoCodec.__init__" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>string</strong> (<em>str</em>) – String representation of codec.</p></li>
+<li><p><strong>ffmpeg_code</strong> (<em>str</em>) – FFMPEG code.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cv_tools.core.enum.VideoCodec.from_string">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_tools/core/enum.html#VideoCodec.from_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_tools.core.enum.VideoCodec.from_string" title="Link to this definition">¶</a></dt>
+<dd><p>Constructs a VideoCodec instance from a given string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>string</strong> (<em>int</em>) – VideoCodec string.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>EnforceError</strong> – If value given is not a string.</p></li>
+<li><p><strong>EnforceError</strong> – If no VideoCodec type can be found for given string.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>VideoCodec instance.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#cv_tools.core.enum.VideoCodec" title="cv_tools.core.enum.VideoCodec">VideoCodec</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cv_tools.core.enum.VideoFormat">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cv_tools.core.enum.</span></span><span class="sig-name descname"><span class="pre">VideoFormat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_tools/core/enum.html#VideoFormat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_tools.core.enum.VideoFormat" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>Legal video formats.</p>
+<p>Includes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>MP4</p></li>
+<li><p>MPEG</p></li>
+<li><p>MOV</p></li>
+<li><p>M4V</p></li>
+</ul>
+</div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_tools.core.enum.VideoFormat.M4V">
+<span class="sig-name descname"><span class="pre">M4V</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('m4v',</span> <span class="pre">[&lt;BitDepth.UINT8&gt;</span>
+ <span class="pre">dtype:</span> <span class="pre">uint8</span>
+&#160; <span class="pre">bits:</span> <span class="pre">8</span>
+<span class="pre">signed:</span> <span class="pre">False</span>
+&#160; <span class="pre">type:</span> <span class="pre">int],</span> <span class="pre">['r',</span> <span class="pre">'g',</span> <span class="pre">'b'],</span> <span class="pre">3,</span> <span class="pre">False)</span></em><a class="headerlink" href="#cv_tools.core.enum.VideoFormat.M4V" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_tools.core.enum.VideoFormat.MOV">
+<span class="sig-name descname"><span class="pre">MOV</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('mov',</span> <span class="pre">[&lt;BitDepth.UINT8&gt;</span>
+ <span class="pre">dtype:</span> <span class="pre">uint8</span>
+&#160; <span class="pre">bits:</span> <span class="pre">8</span>
+<span class="pre">signed:</span> <span class="pre">False</span>
+&#160; <span class="pre">type:</span> <span class="pre">int],</span> <span class="pre">['r',</span> <span class="pre">'g',</span> <span class="pre">'b'],</span> <span class="pre">3,</span> <span class="pre">False)</span></em><a class="headerlink" href="#cv_tools.core.enum.VideoFormat.MOV" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_tools.core.enum.VideoFormat.MP4">
+<span class="sig-name descname"><span class="pre">MP4</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('mp4',</span> <span class="pre">[&lt;BitDepth.UINT8&gt;</span>
+ <span class="pre">dtype:</span> <span class="pre">uint8</span>
+&#160; <span class="pre">bits:</span> <span class="pre">8</span>
+<span class="pre">signed:</span> <span class="pre">False</span>
+&#160; <span class="pre">type:</span> <span class="pre">int],</span> <span class="pre">['r',</span> <span class="pre">'g',</span> <span class="pre">'b'],</span> <span class="pre">3,</span> <span class="pre">False)</span></em><a class="headerlink" href="#cv_tools.core.enum.VideoFormat.MP4" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_tools.core.enum.VideoFormat.MPEG">
+<span class="sig-name descname"><span class="pre">MPEG</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('mpeg',</span> <span class="pre">[&lt;BitDepth.UINT8&gt;</span>
+ <span class="pre">dtype:</span> <span class="pre">uint8</span>
+&#160; <span class="pre">bits:</span> <span class="pre">8</span>
+<span class="pre">signed:</span> <span class="pre">False</span>
+&#160; <span class="pre">type:</span> <span class="pre">int],</span> <span class="pre">['r',</span> <span class="pre">'g',</span> <span class="pre">'b'],</span> <span class="pre">3,</span> <span class="pre">False)</span></em><a class="headerlink" href="#cv_tools.core.enum.VideoFormat.MPEG" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cv_tools.core.enum.VideoFormat.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extension</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bit_depths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_channels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_metadata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_tools/core/enum.html#VideoFormat.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_tools.core.enum.VideoFormat.__init__" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>extension</strong> (<em>str</em>) – Name of file extension.</p></li>
+<li><p><strong>bit_depths</strong> (<em>list</em><em>[</em><a class="reference internal" href="#cv_tools.core.enum.BitDepth" title="cv_tools.core.enum.BitDepth"><em>BitDepth</em></a><em>]</em>) – Supported bit depths.</p></li>
+<li><p><strong>channels</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – Supported channels.</p></li>
+<li><p><strong>max_channels</strong> (<em>int</em>) – Maximum number of channels supported.</p></li>
+<li><p><strong>custom_metadata</strong> (<em>bool</em>) – Custom metadata support.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>VideoFormat instance.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#cv_tools.core.enum.VideoFormat" title="cv_tools.core.enum.VideoFormat">VideoFormat</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cv_tools.core.enum.VideoFormat.from_extension">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_extension</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extension</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_tools/core/enum.html#VideoFormat.from_extension"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_tools.core.enum.VideoFormat.from_extension" title="Link to this definition">¶</a></dt>
+<dd><p>Construct an VideoFormat instance for a given file extension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>extension</strong> (<em>str</em>) – File extension.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TypeError</strong> – If extension is invalid.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>VideoFormat instance of given extension.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#cv_tools.core.enum.VideoFormat" title="cv_tools.core.enum.VideoFormat">VideoFormat</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="&lt;no title&gt;" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cli.html" class="btn btn-neutral float-right" title="cli" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Alex Braun &lt;alexander.g.braun@gmail.com&gt;.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
