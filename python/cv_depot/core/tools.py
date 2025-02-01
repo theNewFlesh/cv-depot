@@ -61,4 +61,3 @@ def apply_minmax(item, floor=-10**16, ceiling=10**16):
     output = np.squeeze(output).tolist()
     output = Series(output)
     return output
-
