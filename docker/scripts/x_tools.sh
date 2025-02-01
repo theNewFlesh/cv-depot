@@ -17,6 +17,7 @@ export MIN_PYTHON_VERSION="3.10"
 export MAX_PYTHON_VERSION="3.10"
 export TEST_VERBOSITY=0
 export TEST_PROCS="auto"
+export TEST_MAX_PROCS=16
 export JUPYTER_PLATFORM_DIRS=0
 export JUPYTER_CONFIG_PATH=/home/ubuntu/.jupyter
 export VSCODE_SERVER="$HOME/.vscode-server/bin/*/bin/code-server"
@@ -117,7 +118,6 @@ _x_gen_pyproject () {
             --edit "project.requires-python=\">=$MIN_PYTHON_VERSION\"" \
             --delete "tool.pdm.dev-dependencies" \
             --delete "tool.mypy" \
-            --delete "tool.pdm" \
             --delete "tool.pytest";
     fi;
 }
@@ -140,6 +140,12 @@ _x_gen_pdm_files () {
     rolling-pin toml $CONFIG_DIR/pdm.toml \
         --edit "venv.prompt=\"$1-{python_version}\"" \
         --target $PDM_DIR/pdm.toml;
+}
+
+_x_gen_uv_env_vars () {
+    # Set UV environment variables
+    # args: mode, python_version
+    export UV_PROJECT_ENVIRONMENT=`find $PDM_DIR/envs -maxdepth 1 -type d | grep $1-$2`;
 }
 
 # ENV-FUNCTIONS-----------------------------------------------------------------
@@ -188,6 +194,7 @@ x_env_activate () {
     cd $PDM_DIR;
     _x_gen_pdm_files $1 $2;
     . `pdm venv activate $1-$2 | awk '{print $2}'`;
+    _x_gen_uv_env_vars $1 $2;
     cd $CWD;
 }
 
@@ -321,17 +328,21 @@ x_build_test () {
 x_docs () {
     # Generate documentation
     x_env_activate_dev;
+    local exit_code=$?;
     cd $REPO_DIR;
     echo "${CYAN2}GENERATING DOCS${CLEAR}\n";
     rm -rf $DOCS_DIR;
     mkdir -p $DOCS_DIR;
     cp $REPO_DIR/README.md $REPO_DIR/sphinx/readme.md;
     sphinx-build sphinx $DOCS_DIR;
-    rm $REPO_DIR/sphinx/readme.md;
+    exit_code=`_x_resolve_exit_code $exit_code $?`;
+    rm -f $REPO_DIR/sphinx/readme.md;
     cp -f sphinx/style.css $DOCS_DIR/_static/style.css;
     touch $DOCS_DIR/.nojekyll;
     # mkdir -p $DOCS_DIR/resources;
     # cp resources/* $DOCS_DIR/resources/;
+    exit_code=`_x_resolve_exit_code $exit_code $?`;
+    return $exit_code;
 }
 
 x_docs_architecture () {
@@ -383,6 +394,7 @@ _x_library_sync () {
     echo "${CYAN2}DEPENDENCY SYNC $1-$2${CLEAR}\n";
     cd $PDM_DIR;
     pdm sync --no-self --dev --clean -v;
+    echo "${GREEN2}PDM SYNC COMPLETE${CLEAR}";
     deactivate;
     x_env_activate_dev;
 }
@@ -399,6 +411,7 @@ x_library_add () {
         pdm add --no-self -dG $2 $1 -v;
     fi;
     _x_library_pdm_to_repo_dev;
+    echo "${GREEN2}PDM ADD COMPLETE${CLEAR}";
 }
 
 x_library_graph_dev () {
@@ -456,6 +469,7 @@ x_library_lock_dev () {
     cd $PDM_DIR;
     pdm lock -v;
     _x_library_pdm_to_repo_dev;
+    echo "${GREEN2}PDM LOCK COMPLETE${CLEAR}";
 }
 
 x_library_lock_prod () {
@@ -465,6 +479,7 @@ x_library_lock_prod () {
     cd $PDM_DIR;
     pdm lock -v;
     _x_library_pdm_to_repo_prod;
+    echo "${GREEN2}PDM LOCK COMPLETE${CLEAR}";
     deactivate;
     x_env_activate_dev;
 }
@@ -481,6 +496,7 @@ x_library_remove () {
         pdm remove --no-self -dG $2 $1 -v;
     fi;
     _x_library_pdm_to_repo_dev;
+    echo "${GREEN2}PDM REMOVE COMPLETE${CLEAR}";
 }
 
 x_library_search () {
@@ -515,13 +531,14 @@ x_library_update () {
         pdm update --no-self -dG $2 $1 -v;
     fi;
     _x_library_pdm_to_repo_dev;
+    echo "${GREEN2}PDM UPDATE COMPLETE${CLEAR}";
 }
 
 x_library_update_pdm () {
     # Update PDM in all environments
     echo "${CYAN2}UPDATE PDM${CLEAR}\n";
-    cd $PDM_DIR;
-    pdm self update;
+    pip3.10 install --user --upgrade pdm;
+    echo "${GREEN2}UPDATE COMPLETE${CLEAR}";
 }
 
 # QUICKSTART-FUNCTIONS----------------------------------------------------------
@@ -571,6 +588,7 @@ x_test_coverage () {
     pytest \
         --config-file $CONFIG_DIR/pyproject.toml \
         --numprocesses $TEST_PROCS \
+        --maxprocesses $TEST_MAX_PROCS \
         --verbosity $TEST_VERBOSITY \
         --cov=$REPO_DIR/python \
         --cov-config=$CONFIG_DIR/pyproject.toml \
@@ -589,6 +607,7 @@ x_test_dev () {
     pytest \
         --config-file $CONFIG_DIR/pyproject.toml \
         --numprocesses $TEST_PROCS \
+        --maxprocesses $TEST_MAX_PROCS \
         --verbosity $TEST_VERBOSITY \
         --durations 20 \
         $REPO_SUBPACKAGE;
@@ -603,6 +622,7 @@ x_test_fast () {
     pytest \
         --config-file $CONFIG_DIR/pyproject.toml \
         --numprocesses $TEST_PROCS \
+        --maxprocesses $TEST_MAX_PROCS \
         --verbosity $TEST_VERBOSITY \
         $REPO_SUBPACKAGE;
 }
@@ -643,6 +663,7 @@ x_test_run () {
     pytest \
         --config-file pyproject.toml \
         --numprocesses $TEST_PROCS \
+        --maxprocesses $TEST_MAX_PROCS \
         --verbosity $TEST_VERBOSITY \
         $REPO_SUBPACKAGE;
     exit_code=`_x_resolve_exit_code $exit_code $?`;

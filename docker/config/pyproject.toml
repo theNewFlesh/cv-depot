@@ -94,6 +94,9 @@ warn_no_return = false
 pretty = true
 warn_unused_ignores = true
 
+[tool.uv]
+cache-dir = "/home/ubuntu/pdm/cache"
+
 [build-system]
 requires = [
     "pdm-pep517>=1.0.0",

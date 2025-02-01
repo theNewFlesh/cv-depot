@@ -172,9 +172,10 @@ RUN echo "\n${CYAN}INSTALL DEV DEPENDENCIES${CLEAR}"; \
         https://raw.githubusercontent.com/pdm-project/pdm/main/install-pdm.py \
         | python3.10 - && \
     pip3.10 install --upgrade --user \
-        pdm \
+        'pdm>=2.19.1' \
         'pdm-bump<0.7.0' \
-        'rolling-pin>=0.10.1' && \
+        'rolling-pin>=0.10.1' \
+        'uv' && \
     mkdir -p /home/ubuntu/.oh-my-zsh/custom/completions && \
     pdm self update --pip-args='--user' && \
     pdm completion zsh > /home/ubuntu/.oh-my-zsh/custom/completions/_pdm
