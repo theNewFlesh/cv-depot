@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cv_tools.core.enum &mdash; cv-tools  documentation</title>
+  <title>cv_toolbox.core.enum &mdash; cv-toolbox  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/style.css" />
@@ -30,7 +30,7 @@
           
           
           <a href="../../../index.html" class="icon icon-home">
-            cv-tools
+            cv-toolbox
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -64,7 +64,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../index.html">cv-tools</a>
+          <a href="../../../index.html">cv-toolbox</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -73,7 +73,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">cv_tools.core.enum</li>
+      <li class="breadcrumb-item active">cv_toolbox.core.enum</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -82,7 +82,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Source code for cv_tools.core.enum</h1><div class="highlight"><pre>
+  <h1>Source code for cv_toolbox.core.enum</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>  <span class="c1"># noqa F401</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
@@ -100,7 +100,7 @@
 
 
 <div class="viewcode-block" id="BitDepth">
-<a class="viewcode-back" href="../../../core.html#cv_tools.core.enum.BitDepth">[docs]</a>
+<a class="viewcode-back" href="../../../core.html#cv_toolbox.core.enum.BitDepth">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BitDepth</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Legal bit depths.</span>
@@ -118,7 +118,7 @@
     <span class="n">INT8</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
 
 <div class="viewcode-block" id="BitDepth.__init__">
-<a class="viewcode-back" href="../../../core.html#cv_tools.core.enum.BitDepth.__init__">[docs]</a>
+<a class="viewcode-back" href="../../../core.html#cv_toolbox.core.enum.BitDepth.__init__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">bits</span><span class="p">,</span> <span class="n">signed</span><span class="p">,</span> <span class="n">type_</span><span class="p">):</span>
         <span class="c1"># type: (Any, int, bool, type) -&gt; None</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
@@ -147,7 +147,7 @@
 <span class="s1">  type: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">type_</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">&#39;&#39;&#39;</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
 
 <div class="viewcode-block" id="BitDepth.from_string">
-<a class="viewcode-back" href="../../../core.html#cv_tools.core.enum.BitDepth.from_string">[docs]</a>
+<a class="viewcode-back" href="../../../core.html#cv_toolbox.core.enum.BitDepth.from_string">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_string</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
         <span class="c1"># type: (str) -&gt; BitDepth</span>
@@ -180,7 +180,7 @@
 
 
 <div class="viewcode-block" id="BitDepth.from_dtype">
-<a class="viewcode-back" href="../../../core.html#cv_tools.core.enum.BitDepth.from_dtype">[docs]</a>
+<a class="viewcode-back" href="../../../core.html#cv_toolbox.core.enum.BitDepth.from_dtype">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_dtype</span><span class="p">(</span><span class="n">dtype</span><span class="p">):</span>
         <span class="c1"># type: (Any) -&gt; BitDepth</span>
@@ -217,7 +217,7 @@
 
 <span class="c1"># IMAGE-------------------------------------------------------------------------</span>
 <div class="viewcode-block" id="ImageFormat">
-<a class="viewcode-back" href="../../../core.html#cv_tools.core.enum.ImageFormat">[docs]</a>
+<a class="viewcode-back" href="../../../core.html#cv_toolbox.core.enum.ImageFormat">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ImageFormat</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Legal image formats.</span>
@@ -241,7 +241,7 @@
     <span class="p">)</span>
 
 <div class="viewcode-block" id="ImageFormat.__init__">
-<a class="viewcode-back" href="../../../core.html#cv_tools.core.enum.ImageFormat.__init__">[docs]</a>
+<a class="viewcode-back" href="../../../core.html#cv_toolbox.core.enum.ImageFormat.__init__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extension</span><span class="p">,</span> <span class="n">bit_depths</span><span class="p">,</span> <span class="n">channels</span><span class="p">,</span> <span class="n">max_channels</span><span class="p">,</span>
                  <span class="n">custom_metadata</span><span class="p">):</span>
         <span class="c1"># type: (str, list[BitDepth], list[str], int, bool) -&gt; None</span>
@@ -274,7 +274,7 @@
 <span class="s1">custom_metadata: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">custom_metadata</span><span class="si">}</span><span class="s1">&#39;&#39;&#39;</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
 
 <div class="viewcode-block" id="ImageFormat.from_extension">
-<a class="viewcode-back" href="../../../core.html#cv_tools.core.enum.ImageFormat.from_extension">[docs]</a>
+<a class="viewcode-back" href="../../../core.html#cv_toolbox.core.enum.ImageFormat.from_extension">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_extension</span><span class="p">(</span><span class="n">extension</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
@@ -313,7 +313,7 @@
 
 
 <div class="viewcode-block" id="ImageCodec">
-<a class="viewcode-back" href="../../../core.html#cv_tools.core.enum.ImageCodec">[docs]</a>
+<a class="viewcode-back" href="../../../core.html#cv_toolbox.core.enum.ImageCodec">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ImageCodec</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Legal image codecs.</span>
@@ -343,7 +343,7 @@
     <span class="n">ZIPS</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;zips&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>                  <span class="c1"># Imath.Compression.ZIPS_COMPRESSION</span>
 
 <div class="viewcode-block" id="ImageCodec.__init__">
-<a class="viewcode-back" href="../../../core.html#cv_tools.core.enum.ImageCodec.__init__">[docs]</a>
+<a class="viewcode-back" href="../../../core.html#cv_toolbox.core.enum.ImageCodec.__init__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="n">exr_code</span><span class="p">):</span>
         <span class="c1"># type: (str, int) -&gt; None</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
@@ -363,7 +363,7 @@
 <span class="s1">exr_code: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">exr_code</span><span class="si">}</span><span class="s1">&#39;&#39;&#39;</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
 
 <div class="viewcode-block" id="ImageCodec.from_string">
-<a class="viewcode-back" href="../../../core.html#cv_tools.core.enum.ImageCodec.from_string">[docs]</a>
+<a class="viewcode-back" href="../../../core.html#cv_toolbox.core.enum.ImageCodec.from_string">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_string</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
         <span class="c1"># type: (str) -&gt; ImageCodec</span>
@@ -394,7 +394,7 @@
 
 
 <div class="viewcode-block" id="ImageCodec.from_exr_code">
-<a class="viewcode-back" href="../../../core.html#cv_tools.core.enum.ImageCodec.from_exr_code">[docs]</a>
+<a class="viewcode-back" href="../../../core.html#cv_toolbox.core.enum.ImageCodec.from_exr_code">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_exr_code</span><span class="p">(</span><span class="n">code</span><span class="p">):</span>
         <span class="c1"># type: (int) -&gt; ImageCodec</span>
@@ -427,7 +427,7 @@
 
 <span class="c1"># VIDEO-------------------------------------------------------------------------</span>
 <div class="viewcode-block" id="VideoFormat">
-<a class="viewcode-back" href="../../../core.html#cv_tools.core.enum.VideoFormat">[docs]</a>
+<a class="viewcode-back" href="../../../core.html#cv_toolbox.core.enum.VideoFormat">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">VideoFormat</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Legal video formats.</span>
@@ -445,7 +445,7 @@
     <span class="n">M4V</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;m4v&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">BitDepth</span><span class="o">.</span><span class="n">UINT8</span><span class="p">],</span> <span class="nb">list</span><span class="p">(</span><span class="s1">&#39;rgb&#39;</span><span class="p">),</span> <span class="mi">3</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
 <div class="viewcode-block" id="VideoFormat.__init__">
-<a class="viewcode-back" href="../../../core.html#cv_tools.core.enum.VideoFormat.__init__">[docs]</a>
+<a class="viewcode-back" href="../../../core.html#cv_toolbox.core.enum.VideoFormat.__init__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extension</span><span class="p">,</span> <span class="n">bit_depths</span><span class="p">,</span> <span class="n">channels</span><span class="p">,</span> <span class="n">max_channels</span><span class="p">,</span>
                  <span class="n">custom_metadata</span><span class="p">):</span>
         <span class="c1"># type: (str, list[BitDepth], list[str], int, bool) -&gt; None</span>
@@ -478,7 +478,7 @@
 <span class="s1">custom_metadata: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">custom_metadata</span><span class="si">}</span><span class="s1">&#39;&#39;&#39;</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
 
 <div class="viewcode-block" id="VideoFormat.from_extension">
-<a class="viewcode-back" href="../../../core.html#cv_tools.core.enum.VideoFormat.from_extension">[docs]</a>
+<a class="viewcode-back" href="../../../core.html#cv_toolbox.core.enum.VideoFormat.from_extension">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_extension</span><span class="p">(</span><span class="n">extension</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
@@ -518,7 +518,7 @@
 
 
 <div class="viewcode-block" id="VideoCodec">
-<a class="viewcode-back" href="../../../core.html#cv_tools.core.enum.VideoCodec">[docs]</a>
+<a class="viewcode-back" href="../../../core.html#cv_toolbox.core.enum.VideoCodec">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">VideoCodec</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Legal video codecs.</span>
@@ -532,7 +532,7 @@
     <span class="n">H265</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;h265&#39;</span><span class="p">,</span> <span class="s1">&#39;hevc&#39;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="VideoCodec.__init__">
-<a class="viewcode-back" href="../../../core.html#cv_tools.core.enum.VideoCodec.__init__">[docs]</a>
+<a class="viewcode-back" href="../../../core.html#cv_toolbox.core.enum.VideoCodec.__init__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="n">ffmpeg_code</span><span class="p">):</span>
         <span class="c1"># type: (str, str) -&gt; None</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
@@ -552,7 +552,7 @@
 <span class="s1">  ffmpeg_code: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ffmpeg_code</span><span class="si">}</span><span class="s1">&#39;&#39;&#39;</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
 
 <div class="viewcode-block" id="VideoCodec.from_string">
-<a class="viewcode-back" href="../../../core.html#cv_tools.core.enum.VideoCodec.from_string">[docs]</a>
+<a class="viewcode-back" href="../../../core.html#cv_toolbox.core.enum.VideoCodec.from_string">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_string</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
         <span class="c1"># type: (str) -&gt; VideoCodec</span>

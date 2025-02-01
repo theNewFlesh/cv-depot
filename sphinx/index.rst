@@ -1,7 +1,7 @@
 .. cv-toolbox documentation master file
 
 Welcome to cv-toolbox's documentation!
-====================================
+======================================
 .. toctree::
    :maxdepth: 1
    :caption: Getting Started
