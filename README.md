@@ -30,6 +30,8 @@ Run `bin/cv-tools --help` for more help on the command line tool.
 The secret-env file is a environment file which holds various secrets used by
 pyproject.toml and CI.
 
+If using GitLab private python package registry:
+
 1. Create a [GitLab Personal Access Token](https://gitlab.com/-/user_settings/personal_access_tokens)
    1. Name it `[FIRST_NAME]_[LAST_NAME]_TOKEN`
    2. Give it `read_api` permissions
