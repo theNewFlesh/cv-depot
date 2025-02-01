@@ -28,9 +28,7 @@ classifiers = [
 requires-python = ">=3.10"
 dependencies = [
     "click>=8.1.3",
-    "numpy",
-    "OpenEXR",
-    "pandas",
+    "lunchbox>=0.3.3",
 ]
 
 [project.urls]
@@ -39,8 +37,6 @@ documentation = "https://theNewFlesh.github.io/cv-tools"
 
 [project.scripts]
 cv-tools = "cv_tools.command:main"
-
-[project.optional-dependencies]
 
 [tool.pdm.dev-dependencies]
 lab = [
