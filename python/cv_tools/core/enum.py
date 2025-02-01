@@ -1,0 +1,448 @@
+from typing import Any  # noqa F401
+
+from enum import Enum
+import re
+
+from lunchbox.enforce import Enforce
+import numpy as np
+# ------------------------------------------------------------------------------
+
+
+'''
+The enum module contains Enum classes for manging aspects of imagery such as bit
+depths and video codecs.
+'''
+
+
+class BitDepth(Enum):
+    '''
+    Legal bit depths.
+
+    Includes:
+
+        * FLOAT16
+        * FLOAT32
+        * UINT8
+        * INT8
+    '''
+    FLOAT16 = (np.float16, 16, True, float)
+    FLOAT32 = (np.float32, 32, True, float)
+    UINT8 = (np.uint8, 8, False, int)
+    INT8 = (np.int8, 8, True, int)
+
+    def __init__(self, dtype, bits, signed, type_):
+        # type: (Any, int, bool, type) -> None
+        '''
+        Args:
+            dtype (numpy.type): Numpy datatype.
+            bits (int): Number of bits per channel.
+            signed (bool): Whether channel scalars are signed.
+            type_ (type): Python type of scalar. Options include: [int, float].
+
+        Returns:
+            BitDepth: BitDepth instance.
+        '''
+        self.dtype = dtype  # type: ignore
+        self.bits = bits
+        self.signed = signed
+        self.type_ = type_
+
+    def __repr__(self):
+        # type: () -> str
+        return f'''
+<BitDepth.{self.name.upper()}>
+ dtype: {self.dtype.__name__}
+  bits: {self.bits}
+signed: {self.signed}
+  type: {self.type_.__name__}'''[1:]
+
+    @staticmethod
+    def from_string(string):
+        # type: (str) -> BitDepth
+        '''
+        Construct a BitDepth instance from a given string.
+
+        Args:
+            string (str): Dtype string. Options include:
+                [float16, float32, uint8, int8].
+
+        Raises:
+            TypeError: If invalid string is given.
+
+        Returns:
+            BitDepth: BitDepth instance of given type.
+        '''
+        str_ = string.lower()
+
+        if str_ == 'float16':
+            return BitDepth.FLOAT16
+        elif str_ == 'float32':
+            return BitDepth.FLOAT32
+        elif str_ == 'uint8':
+            return BitDepth.UINT8
+        elif str_ == 'int8':
+            return BitDepth.INT8
+
+        msg = f'{string} is not a supported bit depth.'
+        raise TypeError(msg)
+
+    @staticmethod
+    def from_dtype(dtype):
+        # type: (Any) -> BitDepth
+        '''
+        Construct a BitDepth instance from a given numpy datatype.
+
+        Args:
+            dtype (numpy.type): Numpy datatype. Options include:
+                [float16, float32, uint8, int8].
+
+        Raises:
+            TypeError: If invlaid dtype is given.
+
+        Returns:
+            BitDepth: BitDepth instance of given type.
+        '''
+        if dtype == np.float16:
+            return BitDepth.FLOAT16
+        elif dtype == np.float32:
+            return BitDepth.FLOAT32
+        elif dtype == np.uint8:
+            return BitDepth.UINT8
+        elif dtype == np.int8:
+            return BitDepth.INT8
+
+        # needed because of numpy malarkey with __name__
+        if hasattr(dtype, '__name__'):
+            dtype = dtype.__name__
+        msg = f'{dtype} is not a supported bit depth.'
+        raise TypeError(msg)
+
+
+# IMAGE-------------------------------------------------------------------------
+class ImageFormat(Enum):
+    '''
+    Legal image formats.
+
+    Includes:
+
+        * EXR
+        * PNG
+        * JPEG
+        * TIFF
+    '''
+    EXR = (
+        'exr', [BitDepth.FLOAT16, BitDepth.FLOAT32], list('rgba') + ['...'],
+        1023, True
+    )
+    PNG = ('png', [BitDepth.UINT8], list('rgba'), 4, False)
+    JPEG = ('jpeg', [BitDepth.UINT8], list('rgb'), 3, False)
+    TIFF = (
+        'tiff', [BitDepth.INT8, BitDepth.UINT8, BitDepth.FLOAT32],
+        list('rgba') + ['...'], 500, False
+    )
+
+    def __init__(self, extension, bit_depths, channels, max_channels,
+                 custom_metadata):
+        # type: (str, list[BitDepth], list[str], int, bool) -> None
+        '''
+        Args:
+            extension (str): Name of file extension.
+            bit_depths (list[BitDepth]): Supported bit depths.
+            channels (list[str]): Supported channels.
+            max_channels (int): Maximum number of channels supported.
+            custom_metadata (bool): Custom metadata support.
+
+        Returns:
+            ImageFormat: ImageFormat instance.
+        '''
+        self.extension = extension
+        self.bit_depths = bit_depths
+        self.channels = channels
+        self.max_channels = max_channels
+        self.custom_metadata = custom_metadata
+
+    def __repr__(self):
+        # type: () -> str
+        return f'''
+<ImageFormat.{self.name.upper()}>
+      extension: {self.extension}
+     bit_depths: {[x.name for x in self.bit_depths]}
+       channels: {self.channels}
+   max_channels: {self.max_channels}
+custom_metadata: {self.custom_metadata}'''[1:]
+
+    @staticmethod
+    def from_extension(extension):
+        '''
+        Construct an ImageFormat instance for a given file extension.
+
+        Args:
+            extension (str): File extension.
+
+        Raises:
+            TypeError: If extension is illegal.
+
+        Returns:
+            ImageFormat: ImageFormat instance of given extension.
+        '''
+        exr_re = r'^\.?exr$'
+        png_re = r'^\.?png$'
+        jpeg_re = r'^\.?jpe?g$'
+        tiff_re = r'^\.?tiff?$'
+
+        if re.search(exr_re, extension, re.I):
+            return ImageFormat.EXR
+
+        elif re.search(png_re, extension, re.I):
+            return ImageFormat.PNG
+
+        elif re.search(jpeg_re, extension, re.I):
+            return ImageFormat.JPEG
+
+        elif re.search(tiff_re, extension, re.I):
+            return ImageFormat.TIFF
+
+        msg = f'ImageFormat not found for given extension: {extension}'
+        raise TypeError(msg)
+
+
+class ImageCodec(Enum):
+    '''
+    Legal image codecs.
+
+    Includes:
+
+        * PIZ
+        * B44
+        * B44A
+        * DWAA
+        * DWAB
+        * PXR24
+        * RLE
+        * UNCOMPRESSED
+        * ZIP
+        * ZIPS
+    '''
+    PIZ = ('piz', 4)                    # Imath.Compression.PIZ_COMPRESSION
+    B44 = ('b44', 6)                    # Imath.Compression.B44_COMPRESSION
+    B44A = ('b44a', 7)                  # Imath.Compression.B44A_COMPRESSION
+    DWAA = ('dwaa', 8)                  # Imath.Compression.DWAA_COMPRESSION
+    DWAB = ('dwab', 9)                  # Imath.Compression.DWAB_COMPRESSION
+    PXR24 = ('pxr24', 5)                # Imath.Compression.PXR24_COMPRESSION
+    RLE = ('rle', 1)                    # Imath.Compression.RLE_COMPRESSION
+    UNCOMPRESSED = ('uncompressed', 0)  # Imath.Compression.NO_COMPRESSION
+    ZIP = ('zip', 3)                    # Imath.Compression.ZIP_COMPRESSION
+    ZIPS = ('zips', 2)                  # Imath.Compression.ZIPS_COMPRESSION
+
+    def __init__(self, string, exr_code):
+        # type: (str, int) -> None
+        '''
+        Args:
+            string (str): String representation of codec.
+            exr_code (int): EXR compression code.
+        '''
+        self.string = string  # type: ignore
+        self.exr_code = exr_code
+
+    def __repr__(self):
+        # type: () -> str
+        return f'''
+<ImageCodec.{self.name.upper()}>
+  string: {self.string}
+exr_code: {self.exr_code}'''[1:]
+
+    @staticmethod
+    def from_string(string):
+        # type: (str) -> ImageCodec
+        '''
+        Constructs a ImageCodec instance from a given string.
+
+        Args:
+            string (int): ImageCodec string.
+
+        Raises:
+            EnforceError: If value given is not a string.
+            EnforceError: If no ImageCodec type can be found for given string.
+
+        Returns:
+            ImageCodec: ImageCodec instance.
+        '''
+        msg = 'Value given is not a string. {a} != {b}.'
+        Enforce(string, 'instance of', str, message=msg)
+
+        lut = {x.string: x for x in ImageCodec.__members__.values()}
+
+        string = string.lower()
+        msg = '"{a}" has no legal ImageCodec type. '
+        msg += f'Legal codec strings: {sorted(lut.keys())}.'
+        Enforce(string, 'in', lut.keys(), message=msg)
+
+        return lut[string]
+
+    @staticmethod
+    def from_exr_code(code):
+        # type: (int) -> ImageCodec
+        '''
+        Constructs a ImageCodec instance from a given exr code.
+
+        Args:
+            code (int): EXR compression code.
+
+        Raises:
+            EnforceError: If value given is not an integer.
+            EnforceError: If no ImageCodec type can be found for given code.
+
+        Returns:
+            ImageCodec: ImageCodec instance.
+        '''
+        msg = 'Value given is not an integer. {a} != {b}.'
+        Enforce(code, 'instance of', int, message=msg)
+
+        lut = {x.exr_code: x for x in ImageCodec.__members__.values()}
+
+        msg = 'EXR code {a} has no legal ImageCodec type. '
+        msg += f'Legal EXR codes: {sorted(lut.keys())}.'
+        Enforce(code, 'in', lut.keys(), message=msg)
+
+        return lut[code]
+
+
+# VIDEO-------------------------------------------------------------------------
+class VideoFormat(Enum):
+    '''
+    Legal video formats.
+
+    Includes:
+
+        * MP4
+        * MPEG
+        * MOV
+        * M4V
+    '''
+    MP4 = ('mp4', [BitDepth.UINT8], list('rgb'), 3, False)
+    MPEG = ('mpeg', [BitDepth.UINT8], list('rgb'), 3, False)
+    MOV = ('mov', [BitDepth.UINT8], list('rgb'), 3, False)
+    M4V = ('m4v', [BitDepth.UINT8], list('rgb'), 3, False)
+
+    def __init__(self, extension, bit_depths, channels, max_channels,
+                 custom_metadata):
+        # type: (str, list[BitDepth], list[str], int, bool) -> None
+        '''
+        Args:
+            extension (str): Name of file extension.
+            bit_depths (list[BitDepth]): Supported bit depths.
+            channels (list[str]): Supported channels.
+            max_channels (int): Maximum number of channels supported.
+            custom_metadata (bool): Custom metadata support.
+
+        Returns:
+            VideoFormat: VideoFormat instance.
+        '''
+        self.extension = extension
+        self.bit_depths = bit_depths
+        self.channels = channels
+        self.max_channels = max_channels
+        self.custom_metadata = custom_metadata
+
+    def __repr__(self):
+        # type: () -> str
+        return f'''
+<VideoFormat.{self.name.upper()}>
+      extension: {self.extension}
+     bit_depths: {[x.name for x in self.bit_depths]}
+       channels: {self.channels}
+   max_channels: {self.max_channels}
+custom_metadata: {self.custom_metadata}'''[1:]
+
+    @staticmethod
+    def from_extension(extension):
+        '''
+        Construct an VideoFormat instance for a given file extension.
+
+        Args:
+            extension (str): File extension.
+
+        Raises:
+            TypeError: If extension is invalid.
+
+        Returns:
+            VideoFormat: VideoFormat instance of given extension.
+        '''
+        mp4_re = r'^\.?mp4$'
+        mpeg_re = r'^\.?mpe?g$'
+        mov_re = r'^\.?mov$'
+        m4v_re = r'^\.?m4v$'
+
+        if re.search(mp4_re, extension, re.I):
+            return VideoFormat.MP4
+
+        if re.search(mpeg_re, extension, re.I):
+            return VideoFormat.MPEG
+
+        if re.search(mov_re, extension, re.I):
+            return VideoFormat.MOV
+
+        if re.search(m4v_re, extension, re.I):
+            return VideoFormat.M4V
+
+        msg = f'VideoFormat not found for given extension: {extension}'
+        raise TypeError(msg)
+# ------------------------------------------------------------------------------
+
+
+class VideoCodec(Enum):
+    '''
+    Legal video codecs.
+
+    Includes:
+
+        * H264
+        * H265
+    '''
+    H264 = ('h264', 'h264')
+    H265 = ('h265', 'hevc')
+
+    def __init__(self, string, ffmpeg_code):
+        # type: (str, str) -> None
+        '''
+        Args:
+            string (str): String representation of codec.
+            ffmpeg_code (str): FFMPEG code.
+        '''
+        self.string = string  # type: ignore
+        self.ffmpeg_code = ffmpeg_code
+
+    def __repr__(self):
+        # type: () -> str
+        return f'''
+<VideoCodec.{self.name.upper()}>
+  string: {self.string}
+  ffmpeg_code: {self.ffmpeg_code}'''[1:]
+
+    @staticmethod
+    def from_string(string):
+        # type: (str) -> VideoCodec
+        '''
+        Constructs a VideoCodec instance from a given string.
+
+        Args:
+            string (int): VideoCodec string.
+
+        Raises:
+            EnforceError: If value given is not a string.
+            EnforceError: If no VideoCodec type can be found for given string.
+
+        Returns:
+            VideoCodec: VideoCodec instance.
+        '''
+        msg = 'Value given is not a string. {a} != {b}.'
+        Enforce(string, 'instance of', str, message=msg)
+
+        lut = {x.string: x for x in VideoCodec.__members__.values()}
+
+        string = string.lower()
+        msg = '"{a}" has no legal VideoCodec type. '
+        msg += f'Legal codec strings: {sorted(lut.keys())}.'
+        Enforce(string, 'in', lut.keys(), message=msg)
+
+        return lut[string]

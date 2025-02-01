@@ -1,1 +1,1 @@
-import cv_tools.core.tools  # noqa F401
+import cv_tools.core.enum  # noqa F401
