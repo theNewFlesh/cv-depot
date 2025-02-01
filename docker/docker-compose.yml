@@ -1,7 +1,7 @@
 services:
-  cv-toolbox:
-    container_name: cv-toolbox
-    image: cv-toolbox:dev
+  cv-depot:
+    container_name: cv-depot
+    image: cv-depot:dev
     platform: linux/amd64
     build:
       context: .
@@ -14,7 +14,7 @@ services:
     env_file:
       - config/dev-env
     volumes:
-      - ../:/home/ubuntu/cv-toolbox
+      - ../:/home/ubuntu/cv-depot
       - ~/.ssh:/home/ubuntu/.ssh:ro
       - ./config/jupyter:/home/ubuntu/.jupyter
       - ./config/zshrc:/home/ubuntu/.zshrc

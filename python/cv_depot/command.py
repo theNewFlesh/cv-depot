@@ -4,7 +4,7 @@ import click
 # ------------------------------------------------------------------------------
 
 '''
-Command line interface to cv-toolbox library
+Command line interface to cv-depot library
 '''
 
 
@@ -16,9 +16,9 @@ def main():
 @main.command()
 def bash_completion():
     '''
-    BASH completion code to be written to a _cv-toolbox completion file.
+    BASH completion code to be written to a _cv-depot completion file.
     '''
-    cmd = '_cv_toolbox_COMPLETE=bash_source cv-toolbox'
+    cmd = '_cv_depot_COMPLETE=bash_source cv-depot'
     result = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
     result.wait()
     click.echo(result.stdout.read())
@@ -27,9 +27,9 @@ def bash_completion():
 @main.command()
 def zsh_completion():
     '''
-    ZSH completion code to be written to a _cv-toolbox completion file.
+    ZSH completion code to be written to a _cv-depot completion file.
     '''
-    cmd = '_cv_toolbox_COMPLETE=zsh_source cv-toolbox'
+    cmd = '_cv_depot_COMPLETE=zsh_source cv-depot'
     result = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
     result.wait()
     click.echo(result.stdout.read())

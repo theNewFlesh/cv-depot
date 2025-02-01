@@ -1,7 +1,7 @@
-.. cv-toolbox documentation master file
+.. cv-depot documentation master file
 
-Welcome to cv-toolbox's documentation!
-======================================
+Welcome to cv-depot's documentation!
+====================================
 .. toctree::
    :maxdepth: 1
    :caption: Getting Started

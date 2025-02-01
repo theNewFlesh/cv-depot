@@ -1,17 +1,17 @@
 source_rules:
-  - path: /home/ubuntu/cv-toolbox
+  - path: /home/ubuntu/cv-depot
     include: "LICENSE|README\\.md"
     exclude: "/\\.|docker"
-  - path: /home/ubuntu/cv-toolbox/python/cv_toolbox
+  - path: /home/ubuntu/cv-depot/python/cv_depot
     include: "\\.py$"
-  - path: /home/ubuntu/cv-toolbox/docker/config
+  - path: /home/ubuntu/cv-depot/docker/config
     include: "flake8|prod.lock"
     exclude: "cache|__pypackages__"
-  - path: /home/ubuntu/cv-toolbox/resources
+  - path: /home/ubuntu/cv-depot/resources
     include: ".*"
     exclude: "__pycache__"
 rename_rules:
-  - regex: "/home/ubuntu/cv-toolbox"
+  - regex: "/home/ubuntu/cv-depot"
     replace: "/home/ubuntu/build/repo"
   - regex: ".*/resources"
     replace: "/home/ubuntu/build/resources"

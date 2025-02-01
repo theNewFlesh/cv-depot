@@ -210,8 +210,8 @@ RUN echo "\n${CYAN}INSTALL PROD ENVIRONMENTS${CLEAR}"; \
 
 # install prod cli
 RUN echo "\n${CYAN}INSTALL PROD CLI${CLEAR}"; \
-    cp /home/ubuntu/scripts/prod-cli /home/ubuntu/.local/bin/cv-toolbox && \
-    chmod 755 /home/ubuntu/.local/bin/cv-toolbox
+    cp /home/ubuntu/scripts/prod-cli /home/ubuntu/.local/bin/cv-depot && \
+    chmod 755 /home/ubuntu/.local/bin/cv-depot
 
 # build jupyter lab
 RUN echo "\n${CYAN}BUILD JUPYTER LAB${CLEAR}"; \
@@ -236,7 +236,7 @@ WORKDIR /home/ubuntu
 RUN echo "\n${CYAN}REMOVE DIRECTORIES${CLEAR}"; \
     rm -rf /home/ubuntu/config /home/ubuntu/scripts
 
-ENV REPO='cv-toolbox'
+ENV REPO='cv-depot'
 ENV PYTHONPATH ":/home/ubuntu/$REPO/python:/home/ubuntu/.local/lib"
 ENV PYTHONPYCACHEPREFIX "/home/ubuntu/.python_cache"
 ENV HOME /home/ubuntu

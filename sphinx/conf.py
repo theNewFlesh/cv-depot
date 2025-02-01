@@ -18,7 +18,7 @@ import toml
 sys.path.insert(0, os.path.abspath('../python'))
 # -- Project information -----------------------------------------------------
 
-project = 'cv-toolbox'
+project = 'cv-depot'
 copyright = '2025, Alex Braun <alexander.g.braun@gmail.com>'
 author = 'Alex Braun <alexander.g.braun@gmail.com>'
 version = toml.load('../docker/config/pyproject.toml')['project']['version']

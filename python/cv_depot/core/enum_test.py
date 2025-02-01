@@ -3,7 +3,7 @@ import unittest
 from lunchbox.enforce import EnforceError
 import numpy as np
 
-from cv_toolbox.core.enum import (
+from cv_depot.core.enum import (
     BitDepth, ImageFormat, ImageCodec, VideoFormat, VideoCodec
 )
 # ------------------------------------------------------------------------------
