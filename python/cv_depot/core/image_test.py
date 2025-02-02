@@ -6,8 +6,8 @@ from lunchbox.enforce import EnforceError
 from openexr_tools.enum import ImageCodec
 import numpy as np
 import openexr_tools.tools as exrtools
+import PIL.Image as pil
 import pytest
-import skimage.io as skio
 
 from cv_depot.core.enum import BitDepth, ImageFormat
 from cv_depot.core.image import Image
@@ -71,13 +71,13 @@ class ImageTests(unittest.TestCase):
 
     def test_read_exr(self):
         with TemporaryDirectory() as root:
-            fullpath = Path(root, 'test.exr')
+            filepath = Path(root, 'test.exr')
             image = np.zeros((10, 5, 7), dtype=np.float32)
             expected = np.ones((10, 5), dtype=np.float32)
             image[:, :, 3] = expected
-            exrtools.write_exr(fullpath, image, {'foo': 'bar'})
+            exrtools.write_exr(filepath, image, {'foo': 'bar'})
 
-            result = Image.read(fullpath)
+            result = Image.read(filepath)
             self.assertEqual(result.format, ImageFormat.EXR)
             self.assertEqual(result.bit_depth, BitDepth.FLOAT32)
             self.assertEqual(result.metadata['foo'], 'bar')
@@ -89,20 +89,19 @@ class ImageTests(unittest.TestCase):
 
     def test_read_png(self):
         with TemporaryDirectory() as root:
-            fullpath = Path(root, 'test.png').absolute().as_posix()
+            filepath = Path(root, 'test.png')
             image = np.zeros((10, 5, 4), dtype=np.uint8)
             expected = np.ones((10, 5), dtype=np.uint8) * 128
             image[:, :, 2] = expected
-            skio.imsave(fullpath, image, check_contrast=False)
+            pil.fromarray(image).save(filepath)
 
-            result = Image.read(fullpath)
+            result = Image.read(filepath)
             self.assertEqual(result.format, ImageFormat.PNG)
             self.assertEqual(result.bit_depth, BitDepth.UINT8)
             self.assertEqual(result.num_channels, 4)
             self.assertEqual(result.width, 5)
             self.assertEqual(result.height, 10)
-            self.assertEqual(result.data[:, :, 2].tobytes(),
-                             expected.tobytes())
+            self.assertEqual(result.data[:, :, 2].tobytes(), expected.tobytes())
 
     def test_read_error(self):
         expected = '/a/bad/path/image.file does not exist.'
@@ -127,15 +126,15 @@ class ImageTests(unittest.TestCase):
 
     def test_write_exr(self):
         with TemporaryDirectory() as root:
-            fullpath = Path(root, 'test.exr')
+            filepath = Path(root, 'test.exr')
             expected = np.zeros((10, 5, 7), dtype=np.float32)
             expected[:, :, 3] = np.ones((10, 5), dtype=np.float32)
             meta = dict(taco='pizza', channels=list('rgbaxyz'))
             image = Image.from_array(expected)
             image.metadata = meta
-            image.write(fullpath)
+            image.write(filepath)
 
-            result = Image.read(fullpath)
+            result = Image.read(filepath)
             self.assertEqual(
                 result.data.ravel().tobytes(),
                 expected.ravel().tobytes(),
@@ -144,8 +143,8 @@ class ImageTests(unittest.TestCase):
             self.assertEqual(result.channels, meta['channels'])
 
             expected = ImageCodec.DWAB
-            image.write(fullpath, codec=expected)
-            result = Image.read(fullpath).metadata['compression'].name
+            image.write(filepath, codec=expected)
+            result = Image.read(filepath).metadata['compression'].name
             self.assertEqual(result, expected.name)
 
     def test_write_png(self):
@@ -153,10 +152,10 @@ class ImageTests(unittest.TestCase):
             expected = np.zeros((10, 5, 3), dtype=np.uint8)
             expected[:, :, 0] = np.ones((10, 5), dtype=np.uint8) * 128
 
-            fullpath = Path(root, 'test.png')
-            Image.from_array(expected).write(fullpath)
+            filepath = Path(root, 'test.png')
+            Image.from_array(expected).write(filepath)
 
-            result = Image.read(fullpath)
+            result = Image.read(filepath)
             self.assertEqual(
                 result.data.ravel().tobytes(),
                 expected.ravel().tobytes(),
@@ -167,10 +166,10 @@ class ImageTests(unittest.TestCase):
             expected = np.zeros((10, 5, 3), dtype=np.uint8)
             expected[:, :, 0] = np.ones((10, 5), dtype=np.uint8) * 128
 
-            fullpath = Path(root, 'test.tiff')
-            Image.from_array(expected).write(fullpath)
+            filepath = Path(root, 'test.tiff')
+            Image.from_array(expected).write(filepath)
 
-            result = Image.read(fullpath)
+            result = Image.read(filepath)
             self.assertEqual(
                 result.data.ravel().tobytes(),
                 expected.ravel().tobytes(),
@@ -181,10 +180,10 @@ class ImageTests(unittest.TestCase):
             expected = np.zeros((10, 5, 3), dtype=np.uint8)
             expected[:, :, 0] = np.ones((10, 5), dtype=np.uint8) * 128
 
-            fullpath = Path(root, 'test.tiff')
-            Image.from_array(expected).write(fullpath)
+            filepath = Path(root, 'test.tiff')
+            Image.from_array(expected).write(filepath)
 
-            result = Image.read(fullpath)
+            result = Image.read(filepath)
             expected = '''<Image>
        WIDTH: 5
       HEIGHT: 10
@@ -199,10 +198,10 @@ NUM_CHANNELS: 3
             expected = np.zeros((10, 5, 3), dtype=np.uint8)
             expected[:, :, 0] = np.ones((10, 5), dtype=np.uint8) * 128
 
-            fullpath = Path(root, 'test.tiff')
-            Image.from_array(expected).write(fullpath)
+            filepath = Path(root, 'test.tiff')
+            Image.from_array(expected).write(filepath)
 
-            result = Image.read(fullpath)[:, :, list('rg')]._repr_html_()
+            result = Image.read(filepath)[:, :, list('rg')]._repr_html_()
             items = [
                 'Image',
                 'WIDTH', '5',
@@ -381,15 +380,15 @@ NUM_CHANNELS: 3
 
     def test_info(self):
         with TemporaryDirectory() as root:
-            fullpath = Path(root, 'test.exr')
+            filepath = Path(root, 'test.exr')
             expected = np.zeros((10, 5, 7), dtype=np.float32)
             expected[:, :, 3] = np.ones((10, 5), dtype=np.float32)
             meta = dict(foo='bar', channels=list('rgbaxyz'))
             image = Image.from_array(expected)
             image.metadata = meta
-            image.write(fullpath)
+            image.write(filepath)
 
-            result = Image.read(fullpath)
+            result = Image.read(filepath)
             expected = dict(
                 width=5,
                 height=10,
@@ -430,14 +429,14 @@ NUM_CHANNELS: 3
 
     def test_extension(self):
         with TemporaryDirectory() as root:
-            fullpath = Path(root, 'test.exr')
+            filepath = Path(root, 'test.exr')
             expected = np.zeros((10, 5, 7), dtype=np.float32)
             image = Image.from_array(expected)
 
             self.assertEqual(image.extension, None)
 
-            image.write(fullpath)
-            result = Image.read(fullpath)
+            image.write(filepath)
+            result = Image.read(filepath)
             self.assertEqual(result.extension, ImageFormat.EXR.extension)
 
     def test_shape(self):
@@ -482,14 +481,14 @@ NUM_CHANNELS: 3
 
     def test_max_channels(self):
         with TemporaryDirectory() as root:
-            fullpath = Path(root, 'test.exr')
+            filepath = Path(root, 'test.exr')
             expected = np.zeros((10, 5, 7), dtype=np.float32)
             image = Image.from_array(expected)
 
             self.assertEqual(image.max_channels, None)
 
-            image.write(fullpath)
-            result = Image.read(fullpath)
+            image.write(filepath)
+            result = Image.read(filepath)
             self.assertEqual(result.max_channels, ImageFormat.EXR.max_channels)
 
     def test_num_channels(self):

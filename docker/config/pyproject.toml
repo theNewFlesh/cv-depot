@@ -32,7 +32,6 @@ dependencies = [
     "numpy>=2.2.2",
     "openexr-tools>=0.4.0",
     "pandas>=2.2.3",
-    "scikit-image>=0.25.1",
     "scikit-learn>=1.6.1",
     "pillow>=11.1.0",
 ]

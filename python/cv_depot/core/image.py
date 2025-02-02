@@ -10,8 +10,7 @@ from lunchbox.enforce import Enforce
 from openexr_tools.enum import ImageCodec
 import numpy as np
 import openexr_tools.tools as exrtools
-# TODO: consider using more lightweight image reader library
-import skimage.io as skio
+import PIL.Image as pil
 
 from cv_depot.core.enum import BitDepth, ImageFormat
 import cv_depot.core.tools as cvt
@@ -107,7 +106,7 @@ class Image():
             if format_ is ImageFormat.EXR:
                 data, metadata = exrtools.read_exr(filepath)
             else:
-                data = skio.imread(filepath)
+                data = np.asarray(pil.open(filepath))
 
         else:
             msg = f'Object of type {filepath.__class__.__name__} '
@@ -338,18 +337,8 @@ NUM_CHANNELS: {self.num_channels}
             metadata['channels'] = self.channels
             exrtools.write_exr(filepath, self._data, metadata, codec)
 
-        elif ext is ImageFormat.JPEG:
-            # PIL hates JPEGS for some reason (thus skimage and pyplot).
-            # cv2 hates JPEG too.
-            raise IOError('JPEG writes not supported at this time.')  # pragma: no cover
-            # quality = int(quality * 100)
-            # pil.Image.fromarray(self._data).save(filepath, quality=quality)
-
-        elif ext is ImageFormat.PNG:
-            skio.imsave(filepath, self._data, check_contrast=False)
-
-        elif ext is ImageFormat.TIFF:
-            skio.imsave(filepath, self._data, check_contrast=False)
+        else:
+            pil.fromarray(self._data).save(filepath, format=ext.name)
 
     def to_bit_depth(self, bit_depth):
         # type: (BitDepth) -> Image
