@@ -9,6 +9,14 @@ enum
     :undoc-members:
     :show-inheritance:
 
+image
+-----
+.. automodule:: cv_depot.core.image
+    :members:
+    :private-members:
+    :undoc-members:
+    :show-inheritance:
+
 tools
 -----
 .. automodule:: cv_depot.core.tools
