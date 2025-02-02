@@ -1,0 +1,584 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cv_depot.core.color &mdash; cv-depot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/style.css" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            cv-depot
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#installation-for-developers">Installation for Developers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#installation-for-production">Installation for Production</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#quickstart-guide">Quickstart Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#development-cli">Development CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#production-cli">Production CLI</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../core.html">core</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development CLI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">cli</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">cv-depot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">cv_depot.core.color</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for cv_depot.core.color</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>  <span class="c1"># noqa F401</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NDArray</span>  <span class="c1"># noqa F401</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">copy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">lunchbox.enforce</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enforce</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">cv_depot.core.image</span><span class="w"> </span><span class="kn">import</span> <span class="n">BitDepth</span>
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Color is a fundamentally a vector of length c, where c is number of channels.</span>
+<span class="sd">Colors can only be of bit depths supported by the BitDepth class.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+
+<div class="viewcode-block" id="BasicColor">
+<a class="viewcode-back" href="../../../core.html#cv_depot.core.color.BasicColor">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BasicColor</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    A convenience enum for basic, common color vectors.</span>
+<span class="sd">    Legal colors include:</span>
+
+<span class="sd">        * BLACK</span>
+<span class="sd">        * WHITE</span>
+<span class="sd">        * GREY</span>
+<span class="sd">        * RED</span>
+<span class="sd">        * GREEN</span>
+<span class="sd">        * BLUE</span>
+<span class="sd">        * YELLOW</span>
+<span class="sd">        * MAGENTA</span>
+<span class="sd">        * CYAN</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">BLACK</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;#000000&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+    <span class="n">WHITE</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;#FFFFFF&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+    <span class="n">GREY</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;#808080&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">])</span>
+    <span class="n">RED</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;#FF0000&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+    <span class="n">GREEN</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;#00FF00&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+    <span class="n">BLUE</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;#0000FF&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+    <span class="n">YELLOW</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;#FFFF00&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+    <span class="n">MAGENTA</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;#FF00FF&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+    <span class="n">CYAN</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;#00FFFF&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+
+    <span class="c1"># henanigans</span>
+    <span class="n">BG</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;#242424&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.141</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.141</span><span class="p">,</span> <span class="mf">0.141</span><span class="p">,</span> <span class="mf">0.141</span><span class="p">])</span>
+    <span class="n">BLUE1</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;#5F95DE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.373</span><span class="p">,</span> <span class="mf">0.584</span><span class="p">,</span> <span class="mf">0.871</span><span class="p">])</span>
+    <span class="n">BLUE2</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;#93B6E6&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.576</span><span class="p">,</span> <span class="mf">0.714</span><span class="p">,</span> <span class="mf">0.902</span><span class="p">])</span>
+    <span class="n">CYAN1</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;#7EC4CF&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.494</span><span class="p">,</span> <span class="mf">0.769</span><span class="p">,</span> <span class="mf">0.812</span><span class="p">])</span>
+    <span class="n">CYAN2</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;#B6ECF3&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.714</span><span class="p">,</span> <span class="mf">0.925</span><span class="p">,</span> <span class="mf">0.953</span><span class="p">])</span>
+    <span class="n">DARK1</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;#040404&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.016</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.016</span><span class="p">,</span> <span class="mf">0.016</span><span class="p">,</span> <span class="mf">0.016</span><span class="p">])</span>
+    <span class="n">DARK2</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;#141414&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.078</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.078</span><span class="p">,</span> <span class="mf">0.078</span><span class="p">,</span> <span class="mf">0.078</span><span class="p">])</span>
+    <span class="n">DIALOG1</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;#444459&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.267</span><span class="p">,</span> <span class="mf">0.267</span><span class="p">,</span> <span class="mf">0.349</span><span class="p">])</span>
+    <span class="n">DIALOG2</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;#5D5D7A&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.365</span><span class="p">,</span> <span class="mf">0.365</span><span class="p">,</span> <span class="mf">0.478</span><span class="p">])</span>
+    <span class="n">GREEN1</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;#8BD155&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.545</span><span class="p">,</span> <span class="mf">0.82</span><span class="p">,</span> <span class="mf">0.333</span><span class="p">])</span>
+    <span class="n">GREEN2</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;#A0D17B&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.627</span><span class="p">,</span> <span class="mf">0.82</span><span class="p">,</span> <span class="mf">0.482</span><span class="p">])</span>
+    <span class="n">GREY1</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;#343434&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.204</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.204</span><span class="p">,</span> <span class="mf">0.204</span><span class="p">,</span> <span class="mf">0.204</span><span class="p">])</span>
+    <span class="n">GREY2</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;#444444&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.267</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.267</span><span class="p">,</span> <span class="mf">0.267</span><span class="p">,</span> <span class="mf">0.267</span><span class="p">])</span>
+    <span class="n">LIGHT1</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;#A4A4A4&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.643</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.643</span><span class="p">,</span> <span class="mf">0.643</span><span class="p">,</span> <span class="mf">0.643</span><span class="p">])</span>
+    <span class="n">LIGHT2</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;#F4F4F4&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.957</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.957</span><span class="p">,</span> <span class="mf">0.957</span><span class="p">,</span> <span class="mf">0.957</span><span class="p">])</span>
+    <span class="n">ORANGE1</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;#EB9E58&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.922</span><span class="p">,</span> <span class="mf">0.62</span><span class="p">,</span> <span class="mf">0.345</span><span class="p">])</span>
+    <span class="n">ORANGE2</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;#EBB483&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.922</span><span class="p">,</span> <span class="mf">0.706</span><span class="p">,</span> <span class="mf">0.514</span><span class="p">])</span>
+    <span class="n">PURPLE1</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;#C98FDE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.788</span><span class="p">,</span> <span class="mf">0.561</span><span class="p">,</span> <span class="mf">0.871</span><span class="p">])</span>
+    <span class="n">PURPLE2</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;#AC92DE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.675</span><span class="p">,</span> <span class="mf">0.573</span><span class="p">,</span> <span class="mf">0.871</span><span class="p">])</span>
+    <span class="n">RED1</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;#F77E70&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.969</span><span class="p">,</span> <span class="mf">0.494</span><span class="p">,</span> <span class="mf">0.439</span><span class="p">])</span>
+    <span class="n">RED2</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;#DE958E&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.871</span><span class="p">,</span> <span class="mf">0.584</span><span class="p">,</span> <span class="mf">0.557</span><span class="p">])</span>
+    <span class="n">YELLOW1</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;#E8EA7E&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.91</span><span class="p">,</span> <span class="mf">0.918</span><span class="p">,</span> <span class="mf">0.494</span><span class="p">])</span>
+    <span class="n">YELLOW2</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;#E9EABE&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.914</span><span class="p">,</span> <span class="mf">0.918</span><span class="p">,</span> <span class="mf">0.745</span><span class="p">])</span>
+
+<div class="viewcode-block" id="BasicColor.__init__">
+<a class="viewcode-back" href="../../../core.html#cv_depot.core.color.BasicColor.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hexidecimal</span><span class="p">,</span> <span class="n">one_channel</span><span class="p">,</span> <span class="n">three_channel</span><span class="p">):</span>
+        <span class="c1"># type: (str, list[float], list[float]) -&gt; None</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            hexidecimal (str): Hexidecimal representation of color.</span>
+<span class="sd">            one_channel (list[float]): List with single float.</span>
+<span class="sd">            three_channel (list[float]): List with three floats.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            BasicColor: BasicColor instance.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hexidecimal</span> <span class="o">=</span> <span class="n">hexidecimal</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_one_channel</span> <span class="o">=</span> <span class="n">one_channel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_three_channel</span> <span class="o">=</span> <span class="n">three_channel</span></div>
+
+
+<div class="viewcode-block" id="BasicColor._get_color">
+<a class="viewcode-back" href="../../../core.html#cv_depot.core.color.BasicColor._get_color">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_color</span><span class="p">(</span>
+        <span class="n">value</span><span class="p">,</span>  <span class="c1"># type: Union[str, BasicColor, list[int], list[float]]</span>
+        <span class="n">attr</span>    <span class="c1"># type: str</span>
+    <span class="p">):</span>          <span class="c1"># type: (...) -&gt; BasicColor</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Finds BasicColor instance given a value and an attribute name.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            value (str or BasicColor): BasicColor value to be looked up.</span>
+<span class="sd">            attr (str): Attribute name to be used in lookup.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If no BasicColor corresponds to given value.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            BasicColor: BasicColor instance.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">lut</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">attr</span><span class="p">)):</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">BasicColor</span>
+        <span class="p">}</span>  <span class="c1"># type: dict[str, BasicColor]</span>
+
+        <span class="k">if</span> <span class="n">attr</span> <span class="o">==</span> <span class="s1">&#39;string&#39;</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">attr</span> <span class="o">==</span> <span class="s1">&#39;hexidecimal&#39;</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+
+        <span class="n">key</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lut</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1"> is not a legal color.&#39;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">lut</span><span class="p">[</span><span class="n">key</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="BasicColor.from_string">
+<a class="viewcode-back" href="../../../core.html#cv_depot.core.color.BasicColor.from_string">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_string</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="c1"># type: (str) -&gt; BasicColor</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Contructs a BasicColor instance from a given string.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            value (str): Name of color.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            BasicColor: BasicColor instance.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">BasicColor</span><span class="o">.</span><span class="n">_get_color</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s1">&#39;string&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BasicColor.from_list">
+<a class="viewcode-back" href="../../../core.html#cv_depot.core.color.BasicColor.from_list">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_list</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="c1"># type: (list) -&gt; BasicColor</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Contructs a BasicColor instance from a given list of floats or ints.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            value (list): BasicColor as list of numbers.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            BasicColor: BasicColor instance.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">BasicColor</span><span class="o">.</span><span class="n">_get_color</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s1">&#39;one_channel&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">BasicColor</span><span class="o">.</span><span class="n">_get_color</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s1">&#39;three_channel&#39;</span><span class="p">)</span>
+
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Invalid color value </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1">. Must be 1 or 3 channels.&#39;</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BasicColor.from_list_8_bit">
+<a class="viewcode-back" href="../../../core.html#cv_depot.core.color.BasicColor.from_list_8_bit">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_list_8_bit</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="c1"># type: (list[int]) -&gt; BasicColor</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Contructs a BasicColor instance from a given list of ints between 0 and</span>
+<span class="sd">        255.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            value (list): BasicColor as list of numbers.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            BasicColor: BasicColor instance.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">value_</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="o">/</span> <span class="mi">255</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">BasicColor</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="n">value_</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BasicColor.from_hexidecimal">
+<a class="viewcode-back" href="../../../core.html#cv_depot.core.color.BasicColor.from_hexidecimal">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_hexidecimal</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="c1"># type: (str) -&gt; BasicColor</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Contructs a BasicColor instance from a given hexidecimal string.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            value (str): Hexidecimal value of color.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            BasicColor: BasicColor instance.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">BasicColor</span><span class="o">.</span><span class="n">_get_color</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s1">&#39;hexidecimal&#39;</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">&lt;BasicColor.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s1">&gt;</span>
+<span class="s1">             string: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">string</span><span class="si">}</span>
+<span class="s1">        hexidecimal: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">hexidecimal</span><span class="si">}</span>
+<span class="s1">        one_channel: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">one_channel</span><span class="si">}</span>
+<span class="s1">      three_channel: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">three_channel</span><span class="si">}</span>
+<span class="s1">  one_channel_8_bit: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">one_channel_8_bit</span><span class="si">}</span>
+<span class="s1">three_channel_8_bit: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">three_channel_8_bit</span><span class="si">}</span><span class="s1">&#39;&#39;&#39;</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">hexidecimal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        str: Hexidecimal representation of color.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hexidecimal</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">one_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; list[float]</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        list[float]: One channel, floating point representation of color.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_one_channel</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">three_channel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; list[float]</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        list[float]: Three channel, floating point representation of color.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_three_channel</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">one_channel_8_bit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; list[int]</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        list[int]: One channel, 8 bit representation of color.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">one_channel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">one_channel</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">255</span><span class="p">))]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">three_channel_8_bit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; list[int]</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        list[int]: Three channel, 8 bit representation of color.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="mi">255</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">three_channel</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        string: String representation of color.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span></div>
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="Color">
+<a class="viewcode-back" href="../../../core.html#cv_depot.core.color.Color">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Color</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Makes working with color vectors easy.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">bit_depth</span> <span class="o">=</span> <span class="n">BitDepth</span><span class="o">.</span><span class="n">FLOAT32</span>
+
+<div class="viewcode-block" id="Color.__init__">
+<a class="viewcode-back" href="../../../core.html#cv_depot.core.color.Color.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="c1"># type: (NDArray) -&gt; None</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Constructs a Color instance.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (numpy.NDArray): A 1 dimensional numpy array of shape (n,).</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError: If data is not a numpy array.</span>
+<span class="sd">            AttributeError: If data&#39;s number of dimensions is not 1.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Color: Color instance.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Data must be a numpy array.&#39;</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Arrays must be one dimensional, so that its shape is (n,). &#39;</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;Given array has </span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s1"> dimensions and a shape of &#39;</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s1">.&#39;</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="c1"># checks for legal bit depth</span>
+        <span class="n">bit_depth</span> <span class="o">=</span> <span class="n">BitDepth</span><span class="o">.</span><span class="n">from_dtype</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bit_depth</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+        <span class="c1"># 8 bit conversion</span>
+        <span class="k">if</span> <span class="n">bit_depth</span> <span class="ow">is</span> <span class="n">BitDepth</span><span class="o">.</span><span class="n">INT8</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span> <span class="o">+</span> <span class="mi">127</span><span class="p">)</span> <span class="o">/</span> <span class="mi">255</span>
+        <span class="k">elif</span> <span class="n">bit_depth</span> <span class="ow">is</span> <span class="n">BitDepth</span><span class="o">.</span><span class="n">UINT8</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span> <span class="o">/</span> <span class="mi">255</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">data</span></div>
+
+
+<div class="viewcode-block" id="Color.from_array">
+<a class="viewcode-back" href="../../../core.html#cv_depot.core.color.Color.from_array">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_array</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">num_channels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="c1"># type: (NDArray, Optional[int], float) -&gt; Color</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Contructs a Color instance from a given numpy array.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (numpy.NDArray): Numpy array.</span>
+<span class="sd">            num_channels (int, optional): Number of desired channels in the</span>
+<span class="sd">                Color instance. Number of channels equals len(data) if set to</span>
+<span class="sd">                None. Default: None.</span>
+<span class="sd">            fill_value (float, optional): Value used to fill additional</span>
+<span class="sd">                channels. Default: 0.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Color: Color instance of given data.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">num_channels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">Enforce</span><span class="p">(</span><span class="n">num_channels</span><span class="p">,</span> <span class="s1">&#39;instance of&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+            <span class="n">Enforce</span><span class="p">(</span><span class="n">num_channels</span><span class="p">,</span> <span class="s1">&#39;&gt;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+            <span class="n">diff</span> <span class="o">=</span> <span class="n">num_channels</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">diff</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">buff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">diff</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="o">*</span> <span class="n">fill_value</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">buff</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:</span><span class="n">num_channels</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">Color</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
+
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_list</span><span class="p">(</span>
+        <span class="n">data</span><span class="p">,</span> <span class="n">num_channels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">bit_depth</span><span class="o">=</span><span class="n">BitDepth</span><span class="o">.</span><span class="n">FLOAT32</span>
+    <span class="p">):</span>
+        <span class="c1"># type: (NDArray, Optional[int], float, BitDepth) -&gt; Color</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Contructs a Color instance from a given list of ints or floats.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (list): List of ints or floats.</span>
+<span class="sd">            num_channels (int, optional): Number of desired channels in the</span>
+<span class="sd">                Color instance. Number of channels equals len(data) if set to</span>
+<span class="sd">                None. Default: None.</span>
+<span class="sd">            fill_value (float, optional): Value used to fill additional</span>
+<span class="sd">                channels. Default: 0.</span>
+<span class="sd">            bit_depth (BitDepth, optional): Bit depth of given list.</span>
+<span class="sd">                Default: BitDepth.FLOAT32.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Color: Color instance of given data.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">bit_depth</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Color</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span>
+            <span class="n">data</span><span class="p">,</span> <span class="n">num_channels</span><span class="o">=</span><span class="n">num_channels</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="n">fill_value</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="Color.from_basic_color">
+<a class="viewcode-back" href="../../../core.html#cv_depot.core.color.Color.from_basic_color">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_basic_color</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">num_channels</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+        <span class="c1"># type: (BasicColor, int, float) -&gt; Color</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Contructs a Color instance from a BasicColor enum.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (BasicColor): BasicColor enum.</span>
+<span class="sd">            num_channels (int, optional): Number of desired channels in the</span>
+<span class="sd">                Color instance. Default: 3.</span>
+<span class="sd">            fill_value (float, optional): Value used to fill additional</span>
+<span class="sd">                channels. Default: 0.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            EnforceError: If num_channels is less than 1.</span>
+<span class="sd">            EnforceError: If no shape is one channel and no one channel</span>
+<span class="sd">                equivalent of the given color could be found.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Color: Color instance of given data.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;num_channels must be greater than or equal to 1. </span><span class="si">{a}</span><span class="s1"> &lt; </span><span class="si">{b}</span><span class="s1">.&#39;</span>
+        <span class="n">Enforce</span><span class="p">(</span><span class="n">num_channels</span><span class="p">,</span> <span class="s1">&#39;&gt;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="n">output</span> <span class="o">=</span> <span class="n">data</span>  <span class="c1"># type: Any</span>
+        <span class="k">if</span> <span class="n">num_channels</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;No one channel equivalent found for given color: </span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s1">.&#39;</span>
+            <span class="n">Enforce</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">one_channel</span><span class="p">,</span> <span class="s1">&#39;!=&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">one_channel</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">three_channel</span>
+
+        <span class="k">return</span> <span class="n">Color</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span>
+            <span class="n">output</span><span class="p">,</span>
+            <span class="n">num_channels</span><span class="o">=</span><span class="n">num_channels</span><span class="p">,</span>
+            <span class="n">fill_value</span><span class="o">=</span><span class="n">fill_value</span><span class="p">,</span>
+            <span class="n">bit_depth</span><span class="o">=</span><span class="n">BitDepth</span><span class="o">.</span><span class="n">FLOAT32</span>
+        <span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Represention of Color instance includes:</span>
+
+<span class="sd">            * values - actual numpy array</span>
+<span class="sd">            * bit_depth - always FLOAT32</span>
+<span class="sd">            * num_channels - number of color channels</span>
+<span class="sd">            * name - displays only if the color values corresponds to a</span>
+<span class="sd">              BasicColor</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">&#39;&lt;Color&gt;&#39;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;      values: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;   bit_depth: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">bit_depth</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;num_channels: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">num_channels</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="p">]</span>  <span class="c1"># type: Any</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">BasicColor</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_array</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span><span class="o">.</span><span class="n">string</span>
+            <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;        name: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="n">output</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">output</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">num_channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; int</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Number of channels in color vector.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bit_depth</span><span class="o">=</span><span class="n">BitDepth</span><span class="o">.</span><span class="n">FLOAT32</span><span class="p">):</span>
+        <span class="c1"># type: (BitDepth) -&gt; NDArray</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Returns color as a numpy array at a given bit depth.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            bit_depth (BitDepth, optional): Bit depth of output.</span>
+<span class="sd">                Default: BitDepth.FLOAT32.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            numpy.NDArray: Color vector as numpy array.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
+        <span class="k">if</span> <span class="n">bit_depth</span> <span class="ow">is</span> <span class="n">BitDepth</span><span class="o">.</span><span class="n">INT8</span><span class="p">:</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">output</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span> <span class="o">-</span> <span class="mi">128</span>
+        <span class="k">elif</span> <span class="n">bit_depth</span> <span class="ow">is</span> <span class="n">BitDepth</span><span class="o">.</span><span class="n">UINT8</span><span class="p">:</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">output</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">output</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">bit_depth</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Alex Braun &lt;alexander.g.braun@gmail.com&gt;.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
