@@ -10,37 +10,37 @@ from cv_depot.core.image import BitDepth
 
 class BasicColorTests(unittest.TestCase):
     def test_get_color(self):
-        result = BasicColor._BasicColor__get_color('blue', 'string')
+        result = BasicColor._get_color('blue', 'string')
         self.assertIs(result, BasicColor.BLUE)
 
-        result = BasicColor._BasicColor__get_color('#00FFFF', 'hexidecimal')
+        result = BasicColor._get_color('#00FFFF', 'hexidecimal')
         self.assertIs(result, BasicColor.CYAN)
 
-        result = BasicColor._BasicColor__get_color([0.5], 'one_channel')
+        result = BasicColor._get_color([0.5], 'one_channel')
         self.assertIs(result, BasicColor.GREY)
 
-        result = BasicColor._BasicColor__get_color([255], 'one_channel_8_bit')
+        result = BasicColor._get_color([255], 'one_channel_8_bit')
         self.assertIs(result, BasicColor.WHITE)
 
         result = BasicColor \
-            ._BasicColor__get_color([0.0, 1.0, 1.0], 'three_channel')
+            ._get_color([0.0, 1.0, 1.0], 'three_channel')
         self.assertIs(result, BasicColor.CYAN)
 
         result = BasicColor \
-            ._BasicColor__get_color([0, 0, 0], 'three_channel_8_bit')
+            ._get_color([0, 0, 0], 'three_channel_8_bit')
         self.assertIs(result, BasicColor.BLACK)
 
         expected = r'is not a legal color\.'
-        with self.assertRaisesRegexp(ValueError, expected):
-            BasicColor._BasicColor__get_color([0, 50, 0], 'three_channel')
+        with self.assertRaisesRegex(ValueError, expected):
+            BasicColor._get_color([0, 50, 0], 'three_channel')
 
         expected = r'is not a legal color\.'
-        with self.assertRaisesRegexp(ValueError, expected):
-            BasicColor._BasicColor__get_color('perriwinkle', 'string')
+        with self.assertRaisesRegex(ValueError, expected):
+            BasicColor._get_color('perriwinkle', 'string')
 
         expected = r'is not a legal color\.'
-        with self.assertRaisesRegexp(ValueError, expected):
-            BasicColor._BasicColor__get_color('crimson', 'three_channel_8_bit')
+        with self.assertRaisesRegex(ValueError, expected):
+            BasicColor._get_color('crimson', 'three_channel_8_bit')
 
     def test_repr(self):
         b = BasicColor.BLACK
@@ -91,7 +91,7 @@ three_channel_8_bit: [0, 0, 0]'''[1:]
 
         expected = r'Invalid color value \[1.0, 0.0, 1.0, 0.0\]\. '
         expected += r'Must be 1 or 3 channels\.'
-        with self.assertRaisesRegexp(ValueError, expected):
+        with self.assertRaisesRegex(ValueError, expected):
             BasicColor.from_list([1, 0, 1, 0])
 # ------------------------------------------------------------------------------
 
@@ -99,15 +99,15 @@ three_channel_8_bit: [0, 0, 0]'''[1:]
 class ColorTests(unittest.TestCase):
     def test_init(self):
         expected = 'Data must be a numpy array.'
-        with self.assertRaisesRegexp(TypeError, expected):
+        with self.assertRaisesRegex(TypeError, expected):
             Color([1, 2, 3])
 
         expected = r'Given array has 2 dimensions and a shape of \(2, 3\)\.'
-        with self.assertRaisesRegexp(AttributeError, expected):
+        with self.assertRaisesRegex(AttributeError, expected):
             Color(np.ones((2, 3)))
 
         expected = r'Given array has 2 dimensions and a shape of \(0, 3\)\.'
-        with self.assertRaisesRegexp(AttributeError, expected):
+        with self.assertRaisesRegex(AttributeError, expected):
             Color(np.ones((0, 3)))
 
         with self.assertRaises(TypeError):
@@ -224,11 +224,11 @@ num_channels: 3'''
 
     def test_from_basic_color_errors(self):
         expected = 'num_channels must be greater than or equal to 1. 0 < 1.'
-        with self.assertRaisesRegexp(EnforceError, expected):
+        with self.assertRaisesRegex(EnforceError, expected):
             Color.from_basic_color(BasicColor.CYAN, num_channels=0)
 
         expected = 'No one channel equivalent found for given color: BasicColor.CYAN.'
-        with self.assertRaisesRegexp(EnforceError, expected):
+        with self.assertRaisesRegex(EnforceError, expected):
             Color.from_basic_color(BasicColor.CYAN, num_channels=1)
 
     def test_num_channels(self):

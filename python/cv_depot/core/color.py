@@ -85,7 +85,7 @@ class BasicColor(Enum):
         self._three_channel = three_channel
 
     @staticmethod
-    def __get_color(
+    def _get_color(
         value,  # type: Union[str, BasicColor, list[int], list[float]]
         attr    # type: str
     ):          # type: (...) -> BasicColor
@@ -129,7 +129,7 @@ class BasicColor(Enum):
         Returns:
             BasicColor: BasicColor instance.
         '''
-        return BasicColor.__get_color(value, 'string')
+        return BasicColor._get_color(value, 'string')
 
     @staticmethod
     def from_list(value):
@@ -145,9 +145,9 @@ class BasicColor(Enum):
         '''
         value = list(map(float, value))
         if len(value) == 1:
-            return BasicColor.__get_color(value, 'one_channel')
+            return BasicColor._get_color(value, 'one_channel')
         elif len(value) == 3:
-            return BasicColor.__get_color(value, 'three_channel')
+            return BasicColor._get_color(value, 'three_channel')
 
         msg = f'Invalid color value {value}. Must be 1 or 3 channels.'
         raise ValueError(msg)
@@ -180,7 +180,7 @@ class BasicColor(Enum):
         Returns:
             BasicColor: BasicColor instance.
         '''
-        return BasicColor.__get_color(value, 'hexidecimal')
+        return BasicColor._get_color(value, 'hexidecimal')
 
     def __repr__(self):
         # type: () -> str
