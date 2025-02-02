@@ -1,6 +1,5 @@
 import unittest
 
-from pandas import Series
 import numpy as np
 
 import cv_depot.core.tools as cvt
