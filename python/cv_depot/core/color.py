@@ -400,7 +400,8 @@ class Color:
         ]  # type: Any
 
         try:
-            name = BasicColor.from_list(self.to_array().tolist()).string
+            items = self.to_array().tolist()
+            name = BasicColor.from_list(items).string  # type: ignore
             output.append(f'        name: {name}')
         except Exception:
             pass
