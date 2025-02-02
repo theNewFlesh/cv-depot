@@ -9,7 +9,7 @@
 
 # Introduction
 
-Computer Vision Tools
+Tools for Computer Vision Pipelines
 
 See [documentation](https://thenewflesh.github.io/cv-depot/) for details.
 
