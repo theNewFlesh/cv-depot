@@ -21,7 +21,7 @@
       "port_prefix": "42",
       "git_user": "theNewFlesh",
       "git_host": "github",
-      "git_organization": "the-new-flesh",
+      "git_organization": "thenewflesh",
       "docker_registry": "dockerhub",
       "organization_url": "github.com",
       "description": "Computer Vision Tools",

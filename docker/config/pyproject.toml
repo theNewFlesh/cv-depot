@@ -35,7 +35,7 @@ dependencies = [
 ]
 
 [project.urls]
-repository = "https://github.com/the-new-flesh/cv-depot"
+repository = "https://github.com/thenewflesh/cv-depot"
 documentation = "https://theNewFlesh.github.io/cv-depot"
 
 [project.scripts]

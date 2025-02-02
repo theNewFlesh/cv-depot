@@ -1,7 +1,7 @@
 <!-- <img id="logo" src="resources/logo.png" style="max-width: 717px"> -->
 
-[![](https://img.shields.io/badge/License-MIT-F77E70?style=for-the-badge)](https://github.com/the-new-flesh/cv-depot/blob/master/LICENSE)
-[![](https://img.shields.io/pypi/pyversions/cv-depot?style=for-the-badge&label=Python&color=A0D17B&logo=python&logoColor=A0D17B)](https://github.com/the-new-flesh/cv-depot/blob/master/docker/config/pyproject.toml)
+[![](https://img.shields.io/badge/License-MIT-F77E70?style=for-the-badge)](https://github.com/thenewflesh/cv-depot/blob/master/LICENSE)
+[![](https://img.shields.io/pypi/pyversions/cv-depot?style=for-the-badge&label=Python&color=A0D17B&logo=python&logoColor=A0D17B)](https://github.com/thenewflesh/cv-depot/blob/master/docker/config/pyproject.toml)
 [![](https://img.shields.io/pypi/v/cv-depot?style=for-the-badge&label=PyPI&color=5F95DE&logo=pypi&logoColor=5F95DE)](https://pypi.org/project/cv-depot/)
 [![](https://img.shields.io/pypi/dm/cv-depot?style=for-the-badge&label=Downloads&color=5F95DE)](https://pepy.tech/project/cv-depot)
 
@@ -9,7 +9,7 @@
 
 Computer Vision Tools
 
-See [documentation](https://the-new-flesh.github.io/cv-depot/) for details.
+See [documentation](https://thenewflesh.github.io/cv-depot/) for details.
 
 # Installation for Developers
 
