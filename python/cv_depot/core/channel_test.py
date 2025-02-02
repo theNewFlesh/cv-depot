@@ -23,13 +23,13 @@ class ChannelTests(unittest.TestCase):
         # value matches regex
         expected = 'ChannelMap values must match: b, w, black, white, '
         expected += r'or \[frame\].\[channel\]. Illegal value:'
-        with self.assertRaisesRegexp(EnforceError, expected):
+        with self.assertRaisesRegex(EnforceError, expected):
             cmap['r'] = 'invalid'
 
-        with self.assertRaisesRegexp(EnforceError, expected):
+        with self.assertRaisesRegex(EnforceError, expected):
             cmap['r'] = '-2.r'
 
-        with self.assertRaisesRegexp(EnforceError, expected):
+        with self.assertRaisesRegex(EnforceError, expected):
             cmap['r'] = 'r'
 
     def test_init(self):

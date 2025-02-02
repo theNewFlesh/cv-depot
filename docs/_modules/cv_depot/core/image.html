@@ -1,0 +1,659 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cv_depot.core.image &mdash; cv-depot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/style.css" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            cv-depot
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#installation-for-developers">Installation for Developers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#installation-for-production">Installation for Production</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#quickstart-guide">Quickstart Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#development-cli">Development CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#production-cli">Production CLI</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../core.html">core</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development CLI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">cli</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">cv-depot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">cv_depot.core.image</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for cv_depot.core.image</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>  <span class="c1"># noqa F401</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NDArray</span>  <span class="c1"># noqa F401</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deepcopy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">lunchbox.enforce</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enforce</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">openexr_tools.enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageCodec</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">openexr_tools.tools</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">exrtools</span>
+<span class="c1"># TODO: consider using more lightweight image reader library</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">skimage.io</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">skio</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">cv_depot.core.enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">BitDepth</span><span class="p">,</span> <span class="n">ImageFormat</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">cv_depot.core.tools</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cvt</span>
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="_has_super_darks">
+<a class="viewcode-back" href="../../../core.html#cv_depot.core.image._has_super_darks">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">_has_super_darks</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+    <span class="c1"># type: (Image) -&gt; bool</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Determines if given image has values below 0.0</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        image (Image): Image instance.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        EnforceError: If image is not an Image instance.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: Presence of super darks.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;instance of&#39;</span><span class="p">,</span> <span class="n">Image</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">image</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">0.0</span></div>
+
+
+
+<div class="viewcode-block" id="_has_super_brights">
+<a class="viewcode-back" href="../../../core.html#cv_depot.core.image._has_super_brights">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">_has_super_brights</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+    <span class="c1"># type: (Image) -&gt; bool</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Determines if given image has values above 1.0</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        image (Image): Image instance.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        EnforceError: If image is not an Image instance.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: Presence of super brights.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;instance of&#39;</span><span class="p">,</span> <span class="n">Image</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">image</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mf">1.0</span></div>
+
+
+
+<div class="viewcode-block" id="Image">
+<a class="viewcode-back" href="../../../core.html#cv_depot.core.image.Image">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Image</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Class for reading, writing, converting and displaying properties of images.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+<div class="viewcode-block" id="Image.from_array">
+<a class="viewcode-back" href="../../../core.html#cv_depot.core.image.Image.from_array">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_array</span><span class="p">(</span><span class="n">array</span><span class="p">):</span>
+        <span class="c1"># type: (NDArray) -&gt; Image</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Construct an Image instance from a given numpy array.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            array (numpy.NDArray): Numpy array.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Image: Image instance of given numpy array.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># enforce bit depth compliance</span>
+        <span class="n">BitDepth</span><span class="o">.</span><span class="n">from_dtype</span><span class="p">(</span><span class="n">array</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Image</span><span class="p">(</span><span class="n">array</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="p">{},</span> <span class="kc">None</span><span class="p">,</span> <span class="n">allow</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Image.read">
+<a class="viewcode-back" href="../../../core.html#cv_depot.core.image.Image.read">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">read</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
+        <span class="c1"># type: (Union[str, Path]) -&gt; Image</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Constructs an Image instance given a full path to an image file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            filepath (str or Path): Image filepath.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            FileNotFoundError: If file could not be found on disk.</span>
+<span class="sd">            TypeError: If filepath is not a str or Path.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Image: Image instance of given file.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># type: dict[str, Any]</span>
+        <span class="n">format_</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
+            <span class="n">filepath</span> <span class="o">=</span> <span class="n">filepath</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">filepath</span><span class="si">}</span><span class="s1"> does not exist.&#39;</span>
+                <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+            <span class="n">_</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+            <span class="n">format_</span> <span class="o">=</span> <span class="n">ImageFormat</span><span class="o">.</span><span class="n">from_extension</span><span class="p">(</span><span class="n">ext</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">format_</span> <span class="ow">is</span> <span class="n">ImageFormat</span><span class="o">.</span><span class="n">EXR</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">,</span> <span class="n">metadata</span> <span class="o">=</span> <span class="n">exrtools</span><span class="o">.</span><span class="n">read_exr</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">skio</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Object of type </span><span class="si">{</span><span class="n">filepath</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1"> &#39;</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s1">&#39;is not a str or Path.&#39;</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Image</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">format_</span><span class="p">,</span> <span class="n">allow</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Image.__init__">
+<a class="viewcode-back" href="../../../core.html#cv_depot.core.image.Image.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="p">{},</span> <span class="n">format_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="c1"># type: (NDArray, dict[str, Any], Optional[ImageFormat], bool) -&gt; None</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        This constructor should not be called directly except internally and in</span>
+<span class="sd">        testing.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (numpy.NDArray): Image.</span>
+<span class="sd">            metadata (dict, optional): Image metadata. Default: {}.</span>
+<span class="sd">            format_ (ImageFormat, optional): Format of image. Default: None.</span>
+<span class="sd">            allow (bool, optional): Whether to allow construction using init.</span>
+<span class="sd">                Default: False.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            AttributeError: If image data dimensions are not 2 or 3.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Image: Image instance.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">allow</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Please call one of Image&#39;s static constructors to create an &quot;</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s1">&#39;instance. Options include: read, from_array.&#39;</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="c1"># ensure data has 3 dimensions</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">dims</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dims</span> <span class="o">&gt;</span> <span class="mi">3</span> <span class="ow">or</span> <span class="n">dims</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Illegal number of dimensions for image data. </span><span class="si">{</span><span class="n">dims</span><span class="si">}</span><span class="s1"> not in &#39;</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s1">&#39;[2, 3].&#39;</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">dims</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">*</span><span class="n">shape</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">metadata</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="n">format_</span></div>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+        <span class="n">fmat</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">fmat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">name</span>
+
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;&#39;&#39;&lt;Image&gt;</span>
+<span class="s1">       WIDTH: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="si">}</span>
+<span class="s1">      HEIGHT: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="si">}</span>
+<span class="s1">NUM_CHANNELS: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">num_channels</span><span class="si">}</span>
+<span class="s1">    CHANNELS: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="si">}</span>
+<span class="s1">   BIT_DEPTH: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">bit_depth</span><span class="o">.</span><span class="n">name</span><span class="si">}</span>
+<span class="s1">      FORMAT: </span><span class="si">{</span><span class="n">fmat</span><span class="si">}</span><span class="s1">&#39;&#39;&#39;</span>
+
+<div class="viewcode-block" id="Image._repr_html_">
+<a class="viewcode-back" href="../../../core.html#cv_depot.core.image.Image._repr_html_">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_repr_html_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Creates a HTML representation of image data. Either an image or image</span>
+<span class="sd">        info.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: HTML.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_channels</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]:</span>
+            <span class="n">html</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span>
+            <span class="n">html</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&amp;lt;&#39;</span><span class="p">,</span> <span class="n">html</span><span class="p">)</span>
+            <span class="n">html</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&amp;gt;&#39;</span><span class="p">,</span> <span class="n">html</span><span class="p">)</span>
+            <span class="n">html</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;br&gt;&#39;</span><span class="p">,</span> <span class="n">html</span><span class="p">)</span>
+            <span class="n">html</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;&amp;nbsp;&#39;</span><span class="p">,</span> <span class="n">html</span><span class="p">)</span>
+            <span class="n">html</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&lt;p style=&quot;font-family: monospace&quot;&gt;</span><span class="si">{</span><span class="n">html</span><span class="si">}</span><span class="s1">&lt;/p&gt;&#39;</span>
+            <span class="k">return</span> <span class="n">html</span>
+
+        <span class="c1"># TODO: figure out a image display without using pims</span>
+        <span class="k">return</span> <span class="s1">&#39;Image could not be displayed.&#39;</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="p">):</span>
+        <span class="c1"># type: (Union[int, tuple, list, slice, str]) -&gt; Image</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Gets slice of image data. Indices are given in the order:</span>
+<span class="sd">        width, height, channel.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            indices (int, tuple, list, slice, str): Slice of image data.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            IndexError: If number of indices provided is greater than 3.</span>
+<span class="sd">            IndexError: If channel given is inlegal.</span>
+<span class="sd">            IndexError: If three lists are given as indices.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Image: Image slice.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+
+        <span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">size</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Number of dimensions provided: </span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s1">, is greater than 3.&#39;</span>
+            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="c1"># convert indices to triplet of slices</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1"># type: Any</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1"># type: Any</span>
+        <span class="n">channels</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1"># type: Any</span>
+        <span class="k">if</span> <span class="n">size</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">columns</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">channels</span> <span class="o">=</span> <span class="n">indices</span>
+        <span class="k">elif</span> <span class="n">size</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">columns</span><span class="p">,</span> <span class="n">rows</span> <span class="o">=</span> <span class="n">indices</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">columns</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># convert channels to list of indices</span>
+        <span class="k">if</span> <span class="n">channels</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;str&#39;</span><span class="p">,</span> <span class="s1">&#39;tuple&#39;</span><span class="p">,</span> <span class="s1">&#39;list&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">channels</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">channels</span> <span class="o">=</span> <span class="p">[</span><span class="n">channels</span><span class="p">]</span>
+            <span class="n">chans</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="n">channels</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">channel</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">:</span>
+                        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">channel</span><span class="si">}</span><span class="s1"> is not a legal channel name.&#39;</span>
+                        <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                    <span class="n">channel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
+                <span class="n">chans</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">chans</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">chans</span> <span class="o">=</span> <span class="n">chans</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">channels</span> <span class="o">=</span> <span class="n">chans</span>
+
+        <span class="c1"># coerce to list for simpler logic</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">rows</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+
+        <span class="n">types</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">columns</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="n">rows</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="n">channels</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="n">types</span> <span class="o">==</span> <span class="p">[</span><span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="s1">&#39;list&#39;</span><span class="p">,</span> <span class="s1">&#39;list&#39;</span><span class="p">]:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Three lists are not acceptable as indices.&#39;</span>
+            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">rows</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">channels</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">Image</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Image.set_channels">
+<a class="viewcode-back" href="../../../core.html#cv_depot.core.image.Image.set_channels">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_channels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channels</span><span class="p">):</span>
+        <span class="c1"># type: (list[Union[str, int]]) -&gt; Image</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Set&#39;s channels names.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            channels (list[str or int]): List of channel names:</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If number of channels given doesn&#39;t not equal data</span>
+<span class="sd">                shape.</span>
+<span class="sd">            ValueError: If duplicate channel names found.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Image: self.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">channels</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_channels</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Number of channels given does not equal last dimension size.&#39;</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39; </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">channels</span><span class="p">)</span><span class="si">}</span><span class="s1"> != </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">num_channels</span><span class="si">}</span><span class="s1">.&#39;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="n">uniq</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">channels</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">uniq</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">channels</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">uniq</span><span class="p">:</span>
+                <span class="n">channels</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Duplicate channel names found: </span><span class="si">{</span><span class="n">channels</span><span class="si">}</span><span class="s1">.&#39;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;channels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">channels</span>
+        <span class="k">return</span> <span class="n">Image</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
+            <span class="n">format_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="p">,</span>
+            <span class="n">allow</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">codec</span><span class="o">=</span><span class="n">ImageCodec</span><span class="o">.</span><span class="n">PIZ</span><span class="p">):</span>
+        <span class="c1"># type: (Union[str, Path], ImageCodec) -&gt; None</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Write image to file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            filepath (str or Path): Full path to image file.</span>
+<span class="sd">            codec (ImageCodec, optional): EXR compression scheme to be used.</span>
+<span class="sd">                Default: ImageCodec.PIZ.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError: If format does not support instance bit depth.</span>
+<span class="sd">            AttributeError: If format does not support the number of channels in</span>
+<span class="sd">                instance.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
+            <span class="n">filepath</span> <span class="o">=</span> <span class="n">filepath</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span>
+
+        <span class="n">_</span><span class="p">,</span> <span class="n">ext_</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+        <span class="n">ext</span> <span class="o">=</span> <span class="n">ImageFormat</span><span class="o">.</span><span class="n">from_extension</span><span class="p">(</span><span class="n">ext_</span><span class="p">)</span>
+
+        <span class="c1"># ensure format is compatible with image data</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bit_depth</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ext</span><span class="o">.</span><span class="n">bit_depths</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ext</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> cannot be written with </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">bit_depth</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s1">&#39; data.&#39;</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_channels</span> <span class="o">&gt;</span> <span class="n">ext</span><span class="o">.</span><span class="n">max_channels</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ext</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> cannot be written with </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">num_channels</span><span class="si">}</span><span class="s1"> &#39;</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;channels. Max channels supported: </span><span class="si">{</span><span class="n">ext</span><span class="o">.</span><span class="n">max_channels</span><span class="si">}</span><span class="s1">.&#39;</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="c1"># write data</span>
+        <span class="k">if</span> <span class="n">ext</span> <span class="ow">is</span> <span class="n">ImageFormat</span><span class="o">.</span><span class="n">EXR</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span>
+            <span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;channels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span>
+            <span class="n">exrtools</span><span class="o">.</span><span class="n">write_exr</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">codec</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">ext</span> <span class="ow">is</span> <span class="n">ImageFormat</span><span class="o">.</span><span class="n">JPEG</span><span class="p">:</span>
+            <span class="c1"># PIL hates JPEGS for some reason (thus skimage and pyplot).</span>
+            <span class="c1"># cv2 hates JPEG too.</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s1">&#39;JPEG writes not supported at this time.&#39;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
+            <span class="c1"># quality = int(quality * 100)</span>
+            <span class="c1"># pil.Image.fromarray(self._data).save(filepath, quality=quality)</span>
+
+        <span class="k">elif</span> <span class="n">ext</span> <span class="ow">is</span> <span class="n">ImageFormat</span><span class="o">.</span><span class="n">PNG</span><span class="p">:</span>
+            <span class="n">skio</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">,</span> <span class="n">check_contrast</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">ext</span> <span class="ow">is</span> <span class="n">ImageFormat</span><span class="o">.</span><span class="n">TIFF</span><span class="p">:</span>
+            <span class="n">skio</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">,</span> <span class="n">check_contrast</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Image.to_bit_depth">
+<a class="viewcode-back" href="../../../core.html#cv_depot.core.image.Image.to_bit_depth">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_bit_depth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bit_depth</span><span class="p">):</span>
+        <span class="c1"># type: (BitDepth) -&gt; Image</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Convert image to given bit depth.</span>
+<span class="sd">        Warning: Numpy&#39;s conversions for INT8 are bizarre.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            bit_depth (BitDepth): Target bit depth.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If converting from float to 8-bit and values exceed 1.</span>
+<span class="sd">            ValueError: If converting from float to 8-bit and values less than 0.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Image: New Image instance at given bit depth.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
+        <span class="n">src</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bit_depth</span>
+        <span class="n">tgt</span> <span class="o">=</span> <span class="n">bit_depth</span>
+
+        <span class="k">if</span> <span class="n">src</span> <span class="ow">is</span> <span class="n">tgt</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span>
+
+        <span class="k">elif</span> <span class="n">src</span> <span class="ow">is</span> <span class="n">BitDepth</span><span class="o">.</span><span class="n">UINT8</span> <span class="ow">and</span> <span class="n">tgt</span><span class="o">.</span><span class="n">type_</span> <span class="ow">is</span> <span class="nb">float</span><span class="p">:</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">tgt</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="o">/</span> <span class="mi">255</span>
+
+        <span class="k">elif</span> <span class="n">src</span><span class="o">.</span><span class="n">type_</span> <span class="ow">is</span> <span class="nb">float</span> <span class="ow">and</span> <span class="n">tgt</span><span class="o">.</span><span class="n">bits</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">_has_super_darks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Image has values below 0. Min value: </span><span class="si">{</span><span class="n">image</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">_has_super_brights</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Image has values above 1. Max value: </span><span class="si">{</span><span class="n">image</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+            <span class="n">image</span> <span class="o">=</span> <span class="p">(</span><span class="n">image</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">tgt</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">tgt</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span> <span class="n">format_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="p">,</span> <span class="n">allow</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; NDArray</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Numpy.NDArray: Image data.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_channels</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; dict[str, Any]</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        dict: A dictionary of all information about the Image instance.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span>
+            <span class="n">height</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span>
+            <span class="n">channels</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">,</span>
+            <span class="n">num_channels</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_channels</span><span class="p">,</span>
+            <span class="n">bit_depth</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bit_depth</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bit_depth</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+            <span class="n">bits</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bit_depth</span><span class="o">.</span><span class="n">bits</span><span class="p">,</span>
+            <span class="n">signed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bit_depth</span><span class="o">.</span><span class="n">signed</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bit_depth</span><span class="o">.</span><span class="n">type_</span><span class="p">,</span>
+            <span class="n">format_extension</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">format_bit_depths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">format_channels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">format_max_channels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">format_custom_metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">fmat</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">format_extension</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">extension</span><span class="p">,</span>
+                <span class="n">format_bit_depths</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">bit_depths</span><span class="p">,</span>
+                <span class="n">format_channels</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">channels</span><span class="p">,</span>
+                <span class="n">format_max_channels</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">max_channels</span><span class="p">,</span>
+                <span class="n">format_custom_metadata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">custom_metadata</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">output</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">fmat</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">output</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Tuple[int, int, int]</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        tuple[int]: (width, height, channels) of image.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_channels</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">width</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; int</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        int: Width of image.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">height</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; int</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        int: Height of image.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">width_and_height</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Tuple[int, int]</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        tupe[int]: (width, height) of image.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; list[Union[str, int]]</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        list[str or int]: List of channel names.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="s1">&#39;channels&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;channels&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">cvt</span><span class="o">.</span><span class="n">get_channels_from_array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">num_channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; int</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        int: Number of channels in image.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">max_channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Optional[int]</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        int: Maximum number of channels supported by image format.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">max_channels</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">bit_depth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; BitDepth</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        BitDepth: Bit depth of image.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">BitDepth</span><span class="o">.</span><span class="n">from_dtype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">extension</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Optional[str]</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        str: Image format extension.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">extension</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Alex Braun &lt;alexander.g.braun@gmail.com&gt;.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

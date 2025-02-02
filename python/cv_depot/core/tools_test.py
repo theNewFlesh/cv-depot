@@ -38,14 +38,14 @@ class ToolsTests(unittest.TestCase):
         data = Series([np.nan, 1, 2, 3])
         result = cvt.apply_minmax(data, floor=-1).tolist()
         expected = [0.0, 0.5, 0.75, 1.0]
-        self.assertEquals(result, expected)
+        self.assertEqual(result, expected)
 
         data = Series([-np.inf, 1, 2, 3])
         result = cvt.apply_minmax(data, floor=-1).tolist()
         expected = [0.0, 0.5, 0.75, 1.0]
-        self.assertEquals(result, expected)
+        self.assertEqual(result, expected)
 
         data = Series([0, 1, 2, np.inf])
         result = cvt.apply_minmax(data, ceiling=4).tolist()
         expected = [0.0, 0.25, 0.5, 1.0]
-        self.assertEquals(result, expected)
+        self.assertEqual(result, expected)
