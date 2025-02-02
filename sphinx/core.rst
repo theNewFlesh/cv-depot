@@ -1,6 +1,14 @@
 core
 ====
 
+channel
+-------
+.. automodule:: cv_depot.core.channel
+    :members:
+    :private-members:
+    :undoc-members:
+    :show-inheritance:
+
 enum
 -----
 .. automodule:: cv_depot.core.enum
