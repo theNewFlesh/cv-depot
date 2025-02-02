@@ -9,6 +9,14 @@ channel
     :undoc-members:
     :show-inheritance:
 
+color
+-----
+.. automodule:: cv_depot.core.color
+    :members:
+    :private-members:
+    :undoc-members:
+    :show-inheritance:
+
 enum
 -----
 .. automodule:: cv_depot.core.enum
