@@ -185,7 +185,6 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-cv_depot.core.tools">tools</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#cv_depot.core.tools.apply_minmax"><code class="docutils literal notranslate"><span class="pre">apply_minmax()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#cv_depot.core.tools.get_channels_from_array"><code class="docutils literal notranslate"><span class="pre">get_channels_from_array()</span></code></a></li>
 </ul>
 </li>
@@ -1468,27 +1467,6 @@ Default: ImageCodec.PIZ.</p></li>
 </section>
 <section id="module-cv_depot.core.tools">
 <span id="tools"></span><h2>tools<a class="headerlink" href="#module-cv_depot.core.tools" title="Link to this heading">¶</a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="cv_depot.core.tools.apply_minmax">
-<span class="sig-prename descclassname"><span class="pre">cv_depot.core.tools.</span></span><span class="sig-name descname"><span class="pre">apply_minmax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-10000000000000000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ceiling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000000000000000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_depot/core/tools.html#apply_minmax"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_depot.core.tools.apply_minmax" title="Link to this definition">¶</a></dt>
-<dd><p>Normalizes data in given Series according to it minimum and maximum values.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>item</strong> (<em>Series</em>) – A pandas Series object full of numbers.</p></li>
-<li><p><strong>floor</strong> (<em>float</em><em>, </em><em>optional</em>) – The value NaN and -inf should be converted to.</p></li>
-<li><p><strong>ceiling</strong> (<em>float</em><em>, </em><em>optional</em>) – The value inf should be converted to.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Normalized Series.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Series</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py function">
 <dt class="sig sig-object py" id="cv_depot.core.tools.get_channels_from_array">
 <span class="sig-prename descclassname"><span class="pre">cv_depot.core.tools.</span></span><span class="sig-name descname"><span class="pre">get_channels_from_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_depot/core/tools.html#get_channels_from_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_depot.core.tools.get_channels_from_array" title="Link to this definition">¶</a></dt>

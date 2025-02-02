@@ -95,8 +95,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">openexr_tools.enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageCodec</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">openexr_tools.tools</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">exrtools</span>
-<span class="c1"># TODO: consider using more lightweight image reader library</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">skimage.io</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">skio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">PIL.Image</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pil</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">cv_depot.core.enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">BitDepth</span><span class="p">,</span> <span class="n">ImageFormat</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">cv_depot.core.tools</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cvt</span>
@@ -205,7 +204,7 @@
             <span class="k">if</span> <span class="n">format_</span> <span class="ow">is</span> <span class="n">ImageFormat</span><span class="o">.</span><span class="n">EXR</span><span class="p">:</span>
                 <span class="n">data</span><span class="p">,</span> <span class="n">metadata</span> <span class="o">=</span> <span class="n">exrtools</span><span class="o">.</span><span class="n">read_exr</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">data</span> <span class="o">=</span> <span class="n">skio</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">pil</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">))</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Object of type </span><span class="si">{</span><span class="n">filepath</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1"> &#39;</span>
@@ -446,18 +445,8 @@
             <span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;channels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">channels</span>
             <span class="n">exrtools</span><span class="o">.</span><span class="n">write_exr</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">codec</span><span class="p">)</span>
 
-        <span class="k">elif</span> <span class="n">ext</span> <span class="ow">is</span> <span class="n">ImageFormat</span><span class="o">.</span><span class="n">JPEG</span><span class="p">:</span>
-            <span class="c1"># PIL hates JPEGS for some reason (thus skimage and pyplot).</span>
-            <span class="c1"># cv2 hates JPEG too.</span>
-            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s1">&#39;JPEG writes not supported at this time.&#39;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
-            <span class="c1"># quality = int(quality * 100)</span>
-            <span class="c1"># pil.Image.fromarray(self._data).save(filepath, quality=quality)</span>
-
-        <span class="k">elif</span> <span class="n">ext</span> <span class="ow">is</span> <span class="n">ImageFormat</span><span class="o">.</span><span class="n">PNG</span><span class="p">:</span>
-            <span class="n">skio</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">,</span> <span class="n">check_contrast</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-        <span class="k">elif</span> <span class="n">ext</span> <span class="ow">is</span> <span class="n">ImageFormat</span><span class="o">.</span><span class="n">TIFF</span><span class="p">:</span>
-            <span class="n">skio</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">,</span> <span class="n">check_contrast</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pil</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="n">ext</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Image.to_bit_depth">
 <a class="viewcode-back" href="../../../core.html#cv_depot.core.image.Image.to_bit_depth">[docs]</a>

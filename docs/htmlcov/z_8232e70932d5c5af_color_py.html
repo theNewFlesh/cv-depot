@@ -54,8 +54,8 @@
             </div>
         </aside>
         <h2>
-            <span class="text">163 statements &nbsp;</span>
-            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">163<span class="text"> run</span></button>
+            <span class="text">164 statements &nbsp;</span>
+            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">164<span class="text"> run</span></button>
             <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">0<span class="text"> missing</span></button>
             <button type="button" class="exc show_exc button_toggle_exc" value="exc" data-shortcut="x" title="Toggle lines excluded">0<span class="text"> excluded</span></button>
         </h2>
@@ -65,7 +65,7 @@
             <a id="nextFileLink" class="nav" href="z_8232e70932d5c5af_enum_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.6.10">coverage.py v7.6.10</a>,
-            created at 2025-02-02 01:08 +0000
+            created at 2025-02-02 02:37 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -482,40 +482,41 @@
     <p class="pln"><span class="n"><a id="t400" href="#t400">400</a></span><span class="t">        <span class="op">]</span>  <span class="com"># type: Any</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t401" href="#t401">401</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t402" href="#t402">402</a></span><span class="t">        <span class="key">try</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t403" href="#t403">403</a></span><span class="t">            <span class="nam">name</span> <span class="op">=</span> <span class="nam">BasicColor</span><span class="op">.</span><span class="nam">from_list</span><span class="op">(</span><span class="nam">self</span><span class="op">.</span><span class="nam">to_array</span><span class="op">(</span><span class="op">)</span><span class="op">.</span><span class="nam">tolist</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">.</span><span class="nam">string</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t404" href="#t404">404</a></span><span class="t">            <span class="nam">output</span><span class="op">.</span><span class="nam">append</span><span class="op">(</span><span class="str">f'        name: {name}'</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t405" href="#t405">405</a></span><span class="t">        <span class="key">except</span> <span class="nam">Exception</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t406" href="#t406">406</a></span><span class="t">            <span class="key">pass</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t407" href="#t407">407</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t408" href="#t408">408</a></span><span class="t">        <span class="nam">output</span> <span class="op">=</span> <span class="str">'\n'</span><span class="op">.</span><span class="nam">join</span><span class="op">(</span><span class="nam">output</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t409" href="#t409">409</a></span><span class="t">        <span class="key">return</span> <span class="nam">output</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t410" href="#t410">410</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t411" href="#t411">411</a></span><span class="t">    <span class="op">@</span><span class="nam">property</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t412" href="#t412">412</a></span><span class="t">    <span class="key">def</span> <span class="nam">num_channels</span><span class="op">(</span><span class="nam">self</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t413" href="#t413">413</a></span><span class="t">        <span class="com"># type: () -> int</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t414" href="#t414">414</a></span><span class="t">        <span class="str">'''</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t415" href="#t415">415</a></span><span class="t"><span class="str">        Number of channels in color vector.</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t416" href="#t416">416</a></span><span class="t"><span class="str">        '''</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t417" href="#t417">417</a></span><span class="t">        <span class="key">return</span> <span class="nam">len</span><span class="op">(</span><span class="nam">self</span><span class="op">.</span><span class="nam">_data</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t418" href="#t418">418</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t419" href="#t419">419</a></span><span class="t">    <span class="key">def</span> <span class="nam">to_array</span><span class="op">(</span><span class="nam">self</span><span class="op">,</span> <span class="nam">bit_depth</span><span class="op">=</span><span class="nam">BitDepth</span><span class="op">.</span><span class="nam">FLOAT32</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t420" href="#t420">420</a></span><span class="t">        <span class="com"># type: (BitDepth) -> NDArray</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t421" href="#t421">421</a></span><span class="t">        <span class="str">'''</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t422" href="#t422">422</a></span><span class="t"><span class="str">        Returns color as a numpy array at a given bit depth.</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t423" href="#t423">423</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t424" href="#t424">424</a></span><span class="t"><span class="str">        Args:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t425" href="#t425">425</a></span><span class="t"><span class="str">            bit_depth (BitDepth, optional): Bit depth of output.</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t426" href="#t426">426</a></span><span class="t"><span class="str">                Default: BitDepth.FLOAT32.</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t427" href="#t427">427</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t428" href="#t428">428</a></span><span class="t"><span class="str">        Returns:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t429" href="#t429">429</a></span><span class="t"><span class="str">            numpy.NDArray: Color vector as numpy array.</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t430" href="#t430">430</a></span><span class="t"><span class="str">        '''</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t431" href="#t431">431</a></span><span class="t">        <span class="nam">output</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">_data</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t432" href="#t432">432</a></span><span class="t">        <span class="key">if</span> <span class="nam">bit_depth</span> <span class="key">is</span> <span class="nam">BitDepth</span><span class="op">.</span><span class="nam">INT8</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t433" href="#t433">433</a></span><span class="t">            <span class="nam">output</span> <span class="op">=</span> <span class="nam">np</span><span class="op">.</span><span class="nam">ceil</span><span class="op">(</span><span class="nam">output</span> <span class="op">*</span> <span class="num">255</span><span class="op">)</span> <span class="op">-</span> <span class="num">128</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t434" href="#t434">434</a></span><span class="t">        <span class="key">elif</span> <span class="nam">bit_depth</span> <span class="key">is</span> <span class="nam">BitDepth</span><span class="op">.</span><span class="nam">UINT8</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t435" href="#t435">435</a></span><span class="t">            <span class="nam">output</span> <span class="op">=</span> <span class="nam">np</span><span class="op">.</span><span class="nam">ceil</span><span class="op">(</span><span class="nam">output</span> <span class="op">*</span> <span class="num">255</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t436" href="#t436">436</a></span><span class="t">        <span class="key">return</span> <span class="nam">output</span><span class="op">.</span><span class="nam">astype</span><span class="op">(</span><span class="nam">bit_depth</span><span class="op">.</span><span class="nam">dtype</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t403" href="#t403">403</a></span><span class="t">            <span class="nam">items</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">to_array</span><span class="op">(</span><span class="op">)</span><span class="op">.</span><span class="nam">tolist</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t404" href="#t404">404</a></span><span class="t">            <span class="nam">name</span> <span class="op">=</span> <span class="nam">BasicColor</span><span class="op">.</span><span class="nam">from_list</span><span class="op">(</span><span class="nam">items</span><span class="op">)</span><span class="op">.</span><span class="nam">string</span>  <span class="com"># type: ignore</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t405" href="#t405">405</a></span><span class="t">            <span class="nam">output</span><span class="op">.</span><span class="nam">append</span><span class="op">(</span><span class="str">f'        name: {name}'</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t406" href="#t406">406</a></span><span class="t">        <span class="key">except</span> <span class="nam">Exception</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t407" href="#t407">407</a></span><span class="t">            <span class="key">pass</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t408" href="#t408">408</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t409" href="#t409">409</a></span><span class="t">        <span class="nam">output</span> <span class="op">=</span> <span class="str">'\n'</span><span class="op">.</span><span class="nam">join</span><span class="op">(</span><span class="nam">output</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t410" href="#t410">410</a></span><span class="t">        <span class="key">return</span> <span class="nam">output</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t411" href="#t411">411</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t412" href="#t412">412</a></span><span class="t">    <span class="op">@</span><span class="nam">property</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t413" href="#t413">413</a></span><span class="t">    <span class="key">def</span> <span class="nam">num_channels</span><span class="op">(</span><span class="nam">self</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t414" href="#t414">414</a></span><span class="t">        <span class="com"># type: () -> int</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t415" href="#t415">415</a></span><span class="t">        <span class="str">'''</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t416" href="#t416">416</a></span><span class="t"><span class="str">        Number of channels in color vector.</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t417" href="#t417">417</a></span><span class="t"><span class="str">        '''</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t418" href="#t418">418</a></span><span class="t">        <span class="key">return</span> <span class="nam">len</span><span class="op">(</span><span class="nam">self</span><span class="op">.</span><span class="nam">_data</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t419" href="#t419">419</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t420" href="#t420">420</a></span><span class="t">    <span class="key">def</span> <span class="nam">to_array</span><span class="op">(</span><span class="nam">self</span><span class="op">,</span> <span class="nam">bit_depth</span><span class="op">=</span><span class="nam">BitDepth</span><span class="op">.</span><span class="nam">FLOAT32</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t421" href="#t421">421</a></span><span class="t">        <span class="com"># type: (BitDepth) -> NDArray</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t422" href="#t422">422</a></span><span class="t">        <span class="str">'''</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t423" href="#t423">423</a></span><span class="t"><span class="str">        Returns color as a numpy array at a given bit depth.</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t424" href="#t424">424</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t425" href="#t425">425</a></span><span class="t"><span class="str">        Args:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t426" href="#t426">426</a></span><span class="t"><span class="str">            bit_depth (BitDepth, optional): Bit depth of output.</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t427" href="#t427">427</a></span><span class="t"><span class="str">                Default: BitDepth.FLOAT32.</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t428" href="#t428">428</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t429" href="#t429">429</a></span><span class="t"><span class="str">        Returns:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t430" href="#t430">430</a></span><span class="t"><span class="str">            numpy.NDArray: Color vector as numpy array.</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t431" href="#t431">431</a></span><span class="t"><span class="str">        '''</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t432" href="#t432">432</a></span><span class="t">        <span class="nam">output</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">_data</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t433" href="#t433">433</a></span><span class="t">        <span class="key">if</span> <span class="nam">bit_depth</span> <span class="key">is</span> <span class="nam">BitDepth</span><span class="op">.</span><span class="nam">INT8</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t434" href="#t434">434</a></span><span class="t">            <span class="nam">output</span> <span class="op">=</span> <span class="nam">np</span><span class="op">.</span><span class="nam">ceil</span><span class="op">(</span><span class="nam">output</span> <span class="op">*</span> <span class="num">255</span><span class="op">)</span> <span class="op">-</span> <span class="num">128</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t435" href="#t435">435</a></span><span class="t">        <span class="key">elif</span> <span class="nam">bit_depth</span> <span class="key">is</span> <span class="nam">BitDepth</span><span class="op">.</span><span class="nam">UINT8</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t436" href="#t436">436</a></span><span class="t">            <span class="nam">output</span> <span class="op">=</span> <span class="nam">np</span><span class="op">.</span><span class="nam">ceil</span><span class="op">(</span><span class="nam">output</span> <span class="op">*</span> <span class="num">255</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t437" href="#t437">437</a></span><span class="t">        <span class="key">return</span> <span class="nam">output</span><span class="op">.</span><span class="nam">astype</span><span class="op">(</span><span class="nam">bit_depth</span><span class="op">.</span><span class="nam">dtype</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
 </main>
 <footer>
     <div class="content">
@@ -525,7 +526,7 @@
             <a class="nav" href="z_8232e70932d5c5af_enum_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.6.10">coverage.py v7.6.10</a>,
-            created at 2025-02-02 01:08 +0000
+            created at 2025-02-02 02:37 +0000
         </p>
     </div>
 </footer>

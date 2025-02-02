@@ -85,10 +85,6 @@
   <h1>Source code for cv_depot.core.tools</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>  <span class="c1"># noqa F401</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NDArray</span>  <span class="c1"># noqa F401</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="kn">import</span> <span class="n">Series</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">MinMaxScaler</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="c1"># ------------------------------------------------------------------------------</span>
 
 
@@ -120,37 +116,6 @@
                 <span class="n">c</span> <span class="o">=</span> <span class="n">lut</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
             <span class="n">channels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">channels</span></div>
-
-
-
-<div class="viewcode-block" id="apply_minmax">
-<a class="viewcode-back" href="../../../core.html#cv_depot.core.tools.apply_minmax">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">apply_minmax</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">floor</span><span class="o">=-</span><span class="mi">10</span><span class="o">**</span><span class="mi">16</span><span class="p">,</span> <span class="n">ceiling</span><span class="o">=</span><span class="mi">10</span><span class="o">**</span><span class="mi">16</span><span class="p">):</span>
-    <span class="c1"># type: (Series, float, float) -&gt; Series</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Normalizes data in given Series according to it minimum and maximum values.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        item (Series): A pandas Series object full of numbers.</span>
-<span class="sd">        floor (float, optional): The value NaN and -inf should be converted to.</span>
-<span class="sd">        ceiling (float, optional): The value inf should be converted to.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        Series: Normalized Series.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">if</span> <span class="n">floor</span> <span class="o">&gt;</span> <span class="n">ceiling</span><span class="p">:</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Floor must not be greater than ceiling. </span><span class="si">{</span><span class="n">floor</span><span class="si">}</span><span class="s1"> &gt; </span><span class="si">{</span><span class="n">ceiling</span><span class="si">}</span><span class="s1">.&#39;</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-
-    <span class="n">output</span> <span class="o">=</span> <span class="n">item</span>\
-        <span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">floor</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">else</span> <span class="n">x</span><span class="p">)</span>\
-        <span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">floor</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="ow">and</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">x</span><span class="p">)</span>\
-        <span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">ceiling</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="ow">and</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">x</span><span class="p">)</span>
-    <span class="n">output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">output</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
-    <span class="n">output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">output</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-    <span class="n">output</span> <span class="o">=</span> <span class="n">Series</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">output</span></div>
 
 </pre></div>
 
