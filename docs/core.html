@@ -162,7 +162,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#module-cv_depot.core.image">image</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#cv_depot.core.image.Image"><code class="docutils literal notranslate"><span class="pre">Image</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.image.Image.__init__"><code class="docutils literal notranslate"><span class="pre">Image.__init__()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.image.Image._repr_html_"><code class="docutils literal notranslate"><span class="pre">Image._repr_html_()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.image.Image._repr_png_"><code class="docutils literal notranslate"><span class="pre">Image._repr_png_()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.image.Image.bit_depth"><code class="docutils literal notranslate"><span class="pre">Image.bit_depth</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.image.Image.channels"><code class="docutils literal notranslate"><span class="pre">Image.channels</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.image.Image.data"><code class="docutils literal notranslate"><span class="pre">Image.data</span></code></a></li>
@@ -176,6 +176,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.image.Image.set_channels"><code class="docutils literal notranslate"><span class="pre">Image.set_channels()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.image.Image.shape"><code class="docutils literal notranslate"><span class="pre">Image.shape</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.image.Image.to_bit_depth"><code class="docutils literal notranslate"><span class="pre">Image.to_bit_depth()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.image.Image.to_pil"><code class="docutils literal notranslate"><span class="pre">Image.to_pil()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.image.Image.width"><code class="docutils literal notranslate"><span class="pre">Image.width</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.image.Image.width_and_height"><code class="docutils literal notranslate"><span class="pre">Image.width_and_height</span></code></a></li>
 </ul>
@@ -1170,8 +1171,8 @@ Default: False.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="cv_depot.core.image.Image._repr_html_">
-<span class="sig-name descname"><span class="pre">_repr_html_</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_depot/core/image.html#Image._repr_html_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_depot.core.image.Image._repr_html_" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="cv_depot.core.image.Image._repr_png_">
+<span class="sig-name descname"><span class="pre">_repr_png_</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_depot/core/image.html#Image._repr_png_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_depot.core.image.Image._repr_png_" title="Link to this definition">¶</a></dt>
 <dd><p>Creates a HTML representation of image data. Either an image or image
 info.</p>
 <dl class="field-list simple">
@@ -1367,6 +1368,20 @@ Warning: Numpy’s conversions for INT8 are bizarre.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="#cv_depot.core.image.Image" title="cv_depot.core.image.Image">Image</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cv_depot.core.image.Image.to_pil">
+<span class="sig-name descname"><span class="pre">to_pil</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_depot/core/image.html#Image.to_pil"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_depot.core.image.Image.to_pil" title="Link to this definition">¶</a></dt>
+<dd><p>Returns pil.Image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Image as pil.Image.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pil</p>
 </dd>
 </dl>
 </dd></dl>

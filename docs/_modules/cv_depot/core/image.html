@@ -88,6 +88,7 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deepcopy</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 
@@ -271,10 +272,10 @@
 <span class="s1">   BIT_DEPTH: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">bit_depth</span><span class="o">.</span><span class="n">name</span><span class="si">}</span>
 <span class="s1">      FORMAT: </span><span class="si">{</span><span class="n">fmat</span><span class="si">}</span><span class="s1">&#39;&#39;&#39;</span>
 
-<div class="viewcode-block" id="Image._repr_html_">
-<a class="viewcode-back" href="../../../core.html#cv_depot.core.image.Image._repr_html_">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_repr_html_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># type: () -&gt; str</span>
+<div class="viewcode-block" id="Image._repr_png_">
+<a class="viewcode-back" href="../../../core.html#cv_depot.core.image.Image._repr_png_">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_repr_png_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; Union[None, str, bytes]</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Creates a HTML representation of image data. Either an image or image</span>
 <span class="sd">        info.</span>
@@ -282,7 +283,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            str: HTML.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_channels</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_channels</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]:</span>
             <span class="n">html</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span>
             <span class="n">html</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&lt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&amp;lt;&#39;</span><span class="p">,</span> <span class="n">html</span><span class="p">)</span>
             <span class="n">html</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&amp;gt;&#39;</span><span class="p">,</span> <span class="n">html</span><span class="p">)</span>
@@ -291,8 +292,7 @@
             <span class="n">html</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&lt;p style=&quot;font-family: monospace&quot;&gt;</span><span class="si">{</span><span class="n">html</span><span class="si">}</span><span class="s1">&lt;/p&gt;&#39;</span>
             <span class="k">return</span> <span class="n">html</span>
 
-        <span class="c1"># TODO: figure out a image display without using pims</span>
-        <span class="k">return</span> <span class="s1">&#39;Image could not be displayed.&#39;</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_pil</span><span class="p">()</span><span class="o">.</span><span class="n">_repr_png_</span><span class="p">()</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="p">):</span>
@@ -306,7 +306,7 @@
 
 <span class="sd">        Raises:</span>
 <span class="sd">            IndexError: If number of indices provided is greater than 3.</span>
-<span class="sd">            IndexError: If channel given is inlegal.</span>
+<span class="sd">            IndexError: If channel given is illegal.</span>
 <span class="sd">            IndexError: If three lists are given as indices.</span>
 
 <span class="sd">        Returns:</span>
@@ -614,7 +614,28 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">extension</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">extension</span>
+
+<div class="viewcode-block" id="Image.to_pil">
+<a class="viewcode-back" href="../../../core.html#cv_depot.core.image.Image.to_pil">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_pil</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; pil.Image</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Returns pil.Image.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pil: Image as pil.Image.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_channels</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;L&#39;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_channels</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;RGB&#39;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_channels</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;RGBA&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;PIL only accepts image with 1, 3 or 4 channels.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pil</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span></div>
+</div>
 
 </pre></div>
 
