@@ -3,7 +3,6 @@ from numpy.typing import NDArray  # noqa F401
 
 from copy import deepcopy
 from pathlib import Path
-import base64
 import os
 import re
 
