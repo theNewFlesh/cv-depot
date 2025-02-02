@@ -1,9 +1,5 @@
 from typing import Union  # noqa F401
 from numpy.typing import NDArray  # noqa F401
-
-from pandas import Series
-from sklearn.preprocessing import MinMaxScaler
-import numpy as np
 # ------------------------------------------------------------------------------
 
 
@@ -33,31 +29,3 @@ def get_channels_from_array(array):
                 c = lut[i]
             channels.append(c)
         return channels
-
-
-def apply_minmax(item, floor=-10**16, ceiling=10**16):
-    # type: (Series, float, float) -> Series
-    '''
-    Normalizes data in given Series according to it minimum and maximum values.
-
-    Args:
-        item (Series): A pandas Series object full of numbers.
-        floor (float, optional): The value NaN and -inf should be converted to.
-        ceiling (float, optional): The value inf should be converted to.
-
-    Returns:
-        Series: Normalized Series.
-    '''
-    if floor > ceiling:
-        msg = f'Floor must not be greater than ceiling. {floor} > {ceiling}.'
-        raise ValueError(msg)
-
-    output = item\
-        .apply(lambda x: floor if np.isnan(x) else x)\
-        .apply(lambda x: floor if np.isinf(x) and x < 0 else x)\
-        .apply(lambda x: ceiling if np.isinf(x) and x > 0 else x)
-    output = np.array(output.tolist()).reshape(-1, 1)
-    output = MinMaxScaler().fit_transform(output)
-    output = np.squeeze(output).tolist()
-    output = Series(output)
-    return output
