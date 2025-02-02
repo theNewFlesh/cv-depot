@@ -81,7 +81,7 @@ RUN echo "\n${CYAN}INSTALL NODEJS${CLEAR}"; \
     mkdir -p /etc/apt/keyrings && \
     curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key \
         | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg && \
-    export NODE_VERSION=18 && \
+    export NODE_VERSION=20 && \
     echo "deb \
         [signed-by=/etc/apt/keyrings/nodesource.gpg] \
         https://deb.nodesource.com/node_$NODE_VERSION.x \

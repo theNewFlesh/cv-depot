@@ -50,7 +50,7 @@ Run `bin/cv-depot --help` for more help on the command line tool.
 
 ### Docker
 1. Install [docker-desktop](https://docs.docker.com/desktop/)
-2. `docker pull theNewFlesh/cv-depot:[version]`
+2. `docker pull theNewFlesh/cv-depot:[mode]-[version]`
 
 
 ---

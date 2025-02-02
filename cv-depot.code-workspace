@@ -69,6 +69,24 @@
         },
         "tasks": [
             {
+                "label": "[build] edit prod.dockerfile",
+                "detail": "Edit prod.dockefile for local build development",
+                "icon": {"id": "tools", "color": "terminal.ansiBlue"},
+                "command": [
+                    "source $X_TOOLS_PATH &&",
+                    "x_build_edit_prod_dockerfile"
+                ]
+            },
+            {
+                "label": "[build] export-package",
+                "detail": "Generate pip package of repo and copy it to resources/dist/package.tar.gz",
+                "icon": {"id": "tools", "color": "terminal.ansiBlue"},
+                "command": [
+                    "source $X_TOOLS_PATH &&",
+                    "x_build_export_package"
+                ]
+            },
+            {
                 "label": "[build] package",
                 "detail": "Generate pip package of repo in $HOME/build/repo",
                 "icon": {"id": "tools", "color": "terminal.ansiBlue"},
