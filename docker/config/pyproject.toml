@@ -34,6 +34,7 @@ dependencies = [
     "pandas>=2.2.3",
     "scikit-image>=0.25.1",
     "scikit-learn>=1.6.1",
+    "pillow>=11.1.0",
 ]
 
 [project.urls]
