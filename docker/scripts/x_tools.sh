@@ -287,6 +287,25 @@ x_build_package () {
     _x_build_show_package;
 }
 
+x_build_local_package () {
+    # Generate local pip package in docker/dist
+    x_build_package;
+    cd $BUILD_DIR/dist;
+    local package=`ls | grep tar.gz`;
+    mkdir -p $REPO_DIR/docker/dist;
+    cp $package $REPO_DIR/docker/dist/pkg.tar.gz;
+}
+
+x_build_edit_prod_dockerfile () {
+    # Edit prod.dockefile for local build development
+    sed --in-place -E \
+        's/ARG VERSION/COPY \--chown=ubuntu:ubuntu dist\/pkg.tar.gz \/home\/ubuntu\/pkg.tar.gz/' \
+        $REPO_DIR/docker/prod.dockerfile;
+    sed --in-place -E \
+        's/--user.*==\$VERSION/--user \/home\/ubuntu\/pkg.tar.gz/' \
+        $REPO_DIR/docker/prod.dockerfile;
+}
+
 x_build_prod () {
     # Build production version of repo for publishing
     echo "${CYAN2}BUILDING PROD REPO${CLEAR}\n";
@@ -322,25 +341,6 @@ x_build_test () {
     echo "${CYAN2}BUILDING TEST REPO${CLEAR}\n";
     _x_build test;
     _x_build_show_dir;
-}
-
-x_build_export_package () {
-    # Generate pip package of repo and copy it to resources/dist/pkg.tar.gz
-    x_build_package;
-    cd $BUILD_DIR/dist;
-    local package=`ls | grep tar.gz`;
-    mkdir -p $REPO_DIR/docker/dist;
-    cp $package $REPO_DIR/docker/dist/pkg.tar.gz;
-}
-
-x_build_edit_prod_dockerfile () {
-    # Edit prod.dockefile for local build development
-    sed --in-place -E \
-        's/ARG VERSION/COPY \--chown=ubuntu:ubuntu dist\/pkg.tar.gz \/home\/ubuntu\/pkg.tar.gz/' \
-        $REPO_DIR/docker/prod.dockerfile;
-    sed --in-place -E \
-        's/--user.*==\$VERSION/--user \/home\/ubuntu\/pkg.tar.gz/' \
-        $REPO_DIR/docker/prod.dockerfile;
 }
 
 # DOCS-FUNCTIONS----------------------------------------------------------------

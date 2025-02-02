@@ -78,12 +78,12 @@
                 ]
             },
             {
-                "label": "[build] export-package",
-                "detail": "Generate pip package of repo and copy it to resources/dist/package.tar.gz",
+                "label": "[build] local-package",
+                "detail": "Generate local pip package in docker/dist",
                 "icon": {"id": "tools", "color": "terminal.ansiBlue"},
                 "command": [
                     "source $X_TOOLS_PATH &&",
-                    "x_build_export_package"
+                    "x_build_local_package"
                 ]
             },
             {

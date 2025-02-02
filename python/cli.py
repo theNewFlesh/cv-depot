@@ -49,8 +49,8 @@ def get_info():
         nargs=1,
         action='store',
         help='''Command to run in {repo} app.
-    build-edit-prod-dockerfile - Modify prod.dockefile for local build development
-    build-export-package       - Generate pip package of repo and copy it to resources/dist/package.tar.gz
+    build-edit-prod-dockerfile - Edit prod.dockefile to use local package
+    build-local-package        - Generate pip package of repo and copy it to docker/dist
     build-package              - Build production version of repo for publishing
     build-prod                 - Publish pip package of repo to PyPi
     build-publish              - Run production tests first then publish pip package of repo to PyPi
@@ -790,7 +790,7 @@ def main():
     mode, args = get_info()
     lut = {
         'build-edit-prod-dockerfile': x_tools_command('x_build_edit_prod_dockerfile', args),
-        'build-export-package': x_tools_command('x_build_export_package', args),
+        'build-local-package': x_tools_command('x_build_local_package', args),
         'build-package': x_tools_command('x_build_package', args),
         'build-prod': x_tools_command('x_build_prod', args),
         'build-publish': x_tools_command('x_build_publish', args),

@@ -40,11 +40,7 @@ RUN echo "\n${CYAN}SETUP PYTHON3.10${CLEAR}"; \
 # install cv-depot
 USER ubuntu
 ARG VERSION
-ARG URL="YOUR PRIVATE PYPI URL"
-RUN echo "\n${CYAN}INSTALL cv-depot${CLEAR}"; \
-    pip3.10 install \
-        --user \
-        --index-url "https://__token__:$PYPI_ACCESS_TOKEN@$URL" \
-        cv-depot==$VERSION
+RUN echo "\n${CYAN}INSTALL CV-DEPOT${CLEAR}"; \
+    pip3.10 install --user cv-depot==$VERSION
 
 ENV PATH="$PATH:/home/ubuntu/.local/bin"
