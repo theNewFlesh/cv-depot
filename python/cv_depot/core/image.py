@@ -3,6 +3,7 @@ from numpy.typing import NDArray  # noqa F401
 
 from copy import deepcopy
 from pathlib import Path
+import base64
 import os
 import re
 
@@ -169,8 +170,8 @@ NUM_CHANNELS: {self.num_channels}
    BIT_DEPTH: {self.bit_depth.name}
       FORMAT: {fmat}'''
 
-    def _repr_html_(self):
-        # type: () -> str
+    def _repr_png_(self):
+        # type: () -> Union[None, str, bytes]
         '''
         Creates a HTML representation of image data. Either an image or image
         info.
@@ -178,7 +179,7 @@ NUM_CHANNELS: {self.num_channels}
         Returns:
             str: HTML.
         '''
-        if self.num_channels not in [1, 3]:
+        if self.num_channels not in [1, 3, 4]:
             html = self.__repr__()
             html = re.sub('<', '&lt;', html)
             html = re.sub('>', '&gt;', html)
@@ -187,8 +188,7 @@ NUM_CHANNELS: {self.num_channels}
             html = f'<p style="font-family: monospace">{html}</p>'
             return html
 
-        # TODO: figure out a image display without using pims
-        return 'Image could not be displayed.'
+        return self.to_pil()._repr_png_()
 
     def __getitem__(self, indices):
         # type: (Union[int, tuple, list, slice, str]) -> Image
@@ -201,7 +201,7 @@ NUM_CHANNELS: {self.num_channels}
 
         Raises:
             IndexError: If number of indices provided is greater than 3.
-            IndexError: If channel given is inlegal.
+            IndexError: If channel given is illegal.
             IndexError: If three lists are given as indices.
 
         Returns:
@@ -504,3 +504,21 @@ NUM_CHANNELS: {self.num_channels}
         if self.format is None:
             return None
         return self.format.extension
+
+    def to_pil(self):
+        # type: () -> pil.Image
+        '''
+        Returns pil.Image.
+
+        Returns:
+            pil: Image as pil.Image.
+        '''
+        if self.num_channels == 1:
+            mode = 'L'
+        elif self.num_channels == 3:
+            mode = 'RGB'
+        elif self.num_channels == 4:
+            mode = 'RGBA'
+        else:
+            raise ValueError('PIL only accepts image with 1, 3 or 4 channels.')
+        return pil.fromarray(self.data, mode=mode)

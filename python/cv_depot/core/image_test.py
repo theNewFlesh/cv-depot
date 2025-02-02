@@ -193,7 +193,7 @@ NUM_CHANNELS: 3
       FORMAT: TIFF'''
             self.assertEqual(repr(result), expected)
 
-    def test_repr_html(self):
+    def test_repr_png(self):
         with TemporaryDirectory() as root:
             expected = np.zeros((10, 5, 3), dtype=np.uint8)
             expected[:, :, 0] = np.ones((10, 5), dtype=np.uint8) * 128
@@ -201,7 +201,7 @@ NUM_CHANNELS: 3
             filepath = Path(root, 'test.tiff')
             Image.from_array(expected).write(filepath)
 
-            result = Image.read(filepath)[:, :, list('rg')]._repr_html_()
+            result = Image.read(filepath)[:, :, list('rg')]._repr_png_()
             items = [
                 'Image',
                 'WIDTH', '5',
@@ -505,3 +505,30 @@ NUM_CHANNELS: 3
         result = Image.from_array(temp)
         result._data = result.data.astype(np.float16)
         self.assertEqual(result.bit_depth, BitDepth.FLOAT16)
+
+    def test_to_pil(self):
+        # 1 channel
+        temp = np.zeros((10, 5), dtype=np.uint8)
+        result = Image.from_array(temp).to_pil()
+        self.assertIsInstance(result, pil.Image)
+
+        # 1 channel
+        temp = np.zeros((10, 5, 1), dtype=np.int8)
+        result = Image.from_array(temp).to_pil()
+        self.assertIsInstance(result, pil.Image)
+
+        # 3 channels
+        temp = np.zeros((10, 5, 3), dtype=np.float16)
+        result = Image.from_array(temp).to_pil()
+        self.assertIsInstance(result, pil.Image)
+
+        # 3 channels
+        temp = np.zeros((10, 5, 4), dtype=np.float32)
+        result = Image.from_array(temp).to_pil()
+        self.assertIsInstance(result, pil.Image)
+
+    def test_to_pil_errors(self):
+        expected = 'PIL only accepts image with 1, 3 or 4 channels.'
+        temp = np.zeros((10, 5, 5), dtype=np.float32)
+        with self.assertRaisesRegex(ValueError, expected):
+            Image.from_array(temp).to_pil()
