@@ -2,6 +2,7 @@ from typing import Any, Optional, Tuple, Union  # noqa F401
 from numpy.typing import NDArray  # noqa F401
 
 from copy import deepcopy
+from itertools import combinations, chain
 from pathlib import Path
 import base64
 import os
@@ -205,6 +206,35 @@ NUM_CHANNELS: {self.num_channels}
         html = f'{cont}{desc}{space}{img}</div>'
         return html
 
+    def _string_to_channels(self, string):
+        # type: (str) -> list
+        '''
+        Converts string to list of channels.
+
+        Args:
+            string (str): String representation of channels.
+
+        Returns:
+            list: List of channels.
+        '''
+        # special rgba short circuit
+        combos = [list(combinations('rgba', i)) for i in range(1, 5)]  # type: ignore
+        combos = list(map(set, chain(*combos)))  # type: ignore
+        if set(string) in combos:
+            return list(string)
+
+        # if channels is actually a layer name
+        if string in self.channel_layers:
+            found = list(filter(
+                lambda x: re.search(string + r'\..+', str(x)),
+                self.channels
+            ))
+            if found != []:
+                # found channels that matched [layer-name].[channel] pattern
+                return found
+            return list(string)
+        return [string]
+
     def __getitem__(self, indices):
         # type: (Union[int, tuple, list, slice, str]) -> Image
         '''
@@ -244,7 +274,7 @@ NUM_CHANNELS: {self.num_channels}
         # convert channels to list of indices
         if channels.__class__.__name__ in ['str', 'tuple', 'list']:
             if isinstance(channels, str):
-                channels = [channels]
+                channels = self._string_to_channels(channels)
             chans = []
             for channel in channels:
                 if isinstance(channel, str):

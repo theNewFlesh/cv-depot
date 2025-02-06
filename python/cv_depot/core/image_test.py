@@ -243,6 +243,38 @@ NUM_CHANNELS: 3
             ind = [0, 1, 2]
             img[ind, ind, ind]
 
+    def test_string_to_channels(self):
+        temp = np.zeros((10, 5, 14), dtype=np.float16)
+        img = Image.from_array(temp)
+        img = img.set_channels([
+            'r', 'g', 'b', 'a',
+            'diffuse.r', 'diffuse.g', 'diffuse.b', 'diffuse.a',
+            'spec.r', 'spec.g', 'spec.b',
+            'x', 'y', 'z',
+        ])
+
+        # rgba
+        for item in ['r', 'g', 'b', 'a', 'rgb', 'rgba', 'rg', 'agb']:
+            result = img._string_to_channels(item)
+            self.assertEqual(result, list(item))
+
+        # layer name
+        result = img._string_to_channels('diffuse')
+        expected = ['diffuse.r', 'diffuse.g', 'diffuse.b', 'diffuse.a']
+        self.assertEqual(result, expected)
+
+        result = img._string_to_channels('spec')
+        expected = ['spec.r', 'spec.g', 'spec.b']
+        self.assertEqual(result, expected)
+
+        # headless layer name
+        result = img._string_to_channels('xyz')
+        self.assertEqual(result, list('xyz'))
+
+        # non layer
+        result = img._string_to_channels('taco')
+        self.assertEqual(result, ['taco'])
+
     def test_getitem(self):
         temp = np.zeros((10, 5, 3), dtype=np.float32)
         expected = np.ones((10, 5), dtype=np.float32)
