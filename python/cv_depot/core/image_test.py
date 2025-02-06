@@ -184,16 +184,27 @@ class ImageTests(unittest.TestCase):
             Image.from_array(expected).write(filepath)
 
             result = Image.read(filepath)
-            expected = '''<Image>
+            expected = '''
        WIDTH: 5
       HEIGHT: 10
 NUM_CHANNELS: 3
-    CHANNELS: ['r', 'g', 'b']
+    CHANNELS: rgb
    BIT_DEPTH: UINT8
-      FORMAT: TIFF'''
+      FORMAT: TIFF'''[1:]
             self.assertEqual(repr(result), expected)
 
-    def test_repr_png(self):
+    def test_repr_html(self):
+        with TemporaryDirectory() as root:
+            expected = np.zeros((10, 5, 3), dtype=np.uint8)
+            expected[:, :, 0] = np.ones((10, 5), dtype=np.uint8) * 128
+
+            filepath = Path(root, 'test.png')
+            Image.from_array(expected).write(filepath)
+
+            result = Image.read(filepath)._repr_html_()
+            self.assertRegex(result, '<img src=')
+
+    def test_repr_html_bad_image(self):
         with TemporaryDirectory() as root:
             expected = np.zeros((10, 5, 3), dtype=np.uint8)
             expected[:, :, 0] = np.ones((10, 5), dtype=np.uint8) * 128
@@ -201,13 +212,12 @@ NUM_CHANNELS: 3
             filepath = Path(root, 'test.tiff')
             Image.from_array(expected).write(filepath)
 
-            result = Image.read(filepath)[:, :, list('rg')]._repr_png_()
+            result = Image.read(filepath)[:, :, list('rg')]._repr_html_()
             items = [
-                'Image',
                 'WIDTH', '5',
                 'HEIGHT', '10',
                 'NUM_CHANNELS', '2',
-                'CHANNELS', 'r', 'g',
+                'CHANNELS', 'rg',
                 'BIT_DEPTH', 'UINT8',
                 'FORMAT', 'None'
             ]

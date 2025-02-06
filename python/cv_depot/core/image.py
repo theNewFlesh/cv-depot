@@ -3,6 +3,7 @@ from numpy.typing import NDArray  # noqa F401
 
 from copy import deepcopy
 from pathlib import Path
+import base64
 import os
 import re
 
@@ -153,6 +154,7 @@ class Image():
         self._data = data
         self.metadata = metadata
         self.format = format_
+        self.display_width = 1.0
     # --------------------------------------------------------------------------
 
     def __repr__(self):
@@ -160,17 +162,18 @@ class Image():
         fmat = str(None)
         if self.format is not None:
             fmat = self.format.name
+        chan = ''.join(map(str, self.channels))
 
-        return f'''<Image>
+        return f'''
        WIDTH: {self.width}
       HEIGHT: {self.height}
 NUM_CHANNELS: {self.num_channels}
-    CHANNELS: {self.channels}
+    CHANNELS: {chan}
    BIT_DEPTH: {self.bit_depth.name}
-      FORMAT: {fmat}'''
+      FORMAT: {fmat}'''[1:]
 
-    def _repr_png_(self):
-        # type: () -> Union[None, str, bytes]
+    def _repr_html_(self):
+        # type: () -> str
         '''
         Creates a HTML representation of image data. Either an image or image
         info.
@@ -178,16 +181,26 @@ NUM_CHANNELS: {self.num_channels}
         Returns:
             str: HTML.
         '''
+        desc = self.__repr__()
+        desc = re.sub('<', '&lt;', desc)
+        desc = re.sub('>', '&gt;', desc)
+        desc = re.sub('\n', '<br>', desc)
+        desc = re.sub(' ', '&nbsp;', desc)
+        desc = f'<p style="font-family: monospace; font-size: 13px;">{desc}</p>'
         if self.num_channels not in [1, 3, 4]:
-            html = self.__repr__()
-            html = re.sub('<', '&lt;', html)
-            html = re.sub('>', '&gt;', html)
-            html = re.sub('\n', '<br>', html)
-            html = re.sub(' ', '&nbsp;', html)
-            html = f'<p style="font-family: monospace">{html}</p>'
-            return html
+            return desc
 
-        return self.to_pil()._repr_png_()
+        width = int(100 * self.display_width)
+        png = self.to_pil()._repr_png_()
+        data = base64.b64encode(png).decode('utf-8')  # type: ignore
+        img = f'<img src="data:image/png;base64,{data}" style="width: {width}%;"/>'
+        cont = '<div style="display: flex;">'
+        item = '<div style="flex-grow: 5;">'
+        desc = f'{item}{desc}</div>'
+        img = f'{item}{img}</div>'
+        space = '<div style="width: 10px;"></div>'
+        html = f'{cont}{desc}{space}{img}</div>'
+        return html
 
     def __getitem__(self, indices):
         # type: (Union[int, tuple, list, slice, str]) -> Image
