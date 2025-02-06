@@ -514,6 +514,22 @@ NUM_CHANNELS: 3
             result = Image.read(filepath)
             self.assertEqual(result.max_channels, ImageFormat.EXR.max_channels)
 
+    def test_channel_layers(self):
+        arr = np.zeros((10, 5, 11), dtype=np.float32)
+        image = Image.from_array(arr)
+
+        expected = ['rgba', '4567', '8910']
+        self.assertEqual(image.channel_layers, expected)
+
+        image = image.set_channels([
+            'r', 'g', 'b',
+            'diffuse.r', 'diffuse.g', 'diffuse.b', 'diffuse.a',
+            'spec.r', 'spec.g', 'spec.b',
+            'depth.z',
+        ])
+        expected = ['rgb', 'diffuse', 'spec', 'depth']
+        self.assertEqual(image.channel_layers, expected)
+
     def test_num_channels(self):
         temp = np.zeros((10, 5, 7), dtype=np.float32)
         result = Image.from_array(temp)

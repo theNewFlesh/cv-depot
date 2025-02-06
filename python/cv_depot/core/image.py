@@ -412,6 +412,24 @@ NUM_CHANNELS: {self.num_channels}
         data = Image.from_array(data).to_bit_depth(self.bit_depth)._data
         metadata = deepcopy(self.metadata)
         return Image(data, metadata=metadata, format_=self.format, allow=True)
+
+    def to_pil(self):
+        # type: () -> pil.Image
+        '''
+        Returns pil.Image.
+
+        Returns:
+            pil: Image as pil.Image.
+        '''
+        if self.num_channels == 1:
+            mode = 'L'
+        elif self.num_channels == 3:
+            mode = 'RGB'
+        elif self.num_channels == 4:
+            mode = 'RGBA'
+        else:
+            raise ValueError('PIL only accepts image with 1, 3 or 4 channels.')
+        return pil.fromarray(self.data, mode=mode)
     # --------------------------------------------------------------------------
 
     @property
@@ -518,6 +536,31 @@ NUM_CHANNELS: {self.num_channels}
         return self.format.max_channels
 
     @property
+    def channel_layers(self):
+        # type: () -> list[str]
+        '''
+        list[str]: List of channel layers.
+        '''
+        channels = [str(x) for x in self.channels]
+        with_layer = list(filter(lambda x: '.' in str(x), channels))  # type: list[str]
+        wo_layer_name = list(filter(lambda x: '.' not in str(x), channels))
+
+        # break out channels without layer names into groups of 4
+        len_ = len(wo_layer_name)
+        layers = []
+        for idx in range(0, len_, 4):
+            layer = wo_layer_name[idx:min(idx + 4, len_)]
+            layer = ''.join(layer)
+            layers.append(layer)
+
+        # append all unique layers of channels with layer names
+        for chan in with_layer:
+            layer = ''.join(chan.split('.')[0])
+            if layer not in layers:
+                layers.append(layer)
+        return layers
+
+    @property
     def bit_depth(self):
         # type: () -> BitDepth
         '''
@@ -534,21 +577,3 @@ NUM_CHANNELS: {self.num_channels}
         if self.format is None:
             return None
         return self.format.extension
-
-    def to_pil(self):
-        # type: () -> pil.Image
-        '''
-        Returns pil.Image.
-
-        Returns:
-            pil: Image as pil.Image.
-        '''
-        if self.num_channels == 1:
-            mode = 'L'
-        elif self.num_channels == 3:
-            mode = 'RGB'
-        elif self.num_channels == 4:
-            mode = 'RGBA'
-        else:
-            raise ValueError('PIL only accepts image with 1, 3 or 4 channels.')
-        return pil.fromarray(self.data, mode=mode)
