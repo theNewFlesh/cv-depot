@@ -223,8 +223,8 @@ NUM_CHANNELS: {self.num_channels}
             list: List of channels.
         '''
         # special rgba short circuit
-        combos = [list(combinations('rgba', i)) for i in range(1, 5)]  # type: ignore
-        combos = list(map(set, chain(*combos)))  # type: ignore
+        combos = [list(combinations('rgba', i)) for i in range(1, 5)]  # type: Any
+        combos = list(map(set, chain(*combos)))
         if set(string) in combos:
             return list(string)
 
@@ -591,8 +591,8 @@ NUM_CHANNELS: {self.num_channels}
         len_ = len(wo_layer_name)
         layers = []
         for idx in range(0, len_, 4):
-            layer = wo_layer_name[idx:min(idx + 4, len_)]
-            layer = ''.join(layer)
+            layer_ = wo_layer_name[idx:min(idx + 4, len_)]
+            layer = ''.join(layer_)
             layers.append(layer)
 
         # append all unique layers of channels with layer names
