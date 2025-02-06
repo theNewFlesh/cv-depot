@@ -388,6 +388,19 @@ NUM_CHANNELS: 3
         with self.assertRaisesRegex(ValueError, expected):
             Image.from_array(img).to_bit_depth(BitDepth.UINT8)
 
+    def test_normalize(self):
+        img = np.zeros((10, 10, 3), dtype=np.float16)
+        img[:, :, 0] = np.zeros((10, 10), dtype=np.float16) - 0.9
+        img[:, :, 1] = np.zeros((10, 10), dtype=np.float16) + 5.2
+
+        image = cvimg.Image.from_array(img)
+        self.assertEqual(image.data.min(), -0.9)
+        self.assertEqual(image.data.max(), 5.2)
+
+        result = image.normalize()
+        self.assertEqual(result.data.min(), 0)
+        self.assertEqual(result.data.max(), 1.0)
+
     def test_info(self):
         with TemporaryDirectory() as root:
             filepath = Path(root, 'test.exr')

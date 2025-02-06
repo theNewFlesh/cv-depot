@@ -191,7 +191,7 @@ NUM_CHANNELS: {self.num_channels}
             return desc
 
         width = int(100 * self.display_width)
-        png = self.to_pil()._repr_png_()
+        png = self.to_bit_depth(BitDepth.UINT8).to_pil()._repr_png_()
         data = base64.b64encode(png).decode('utf-8')  # type: ignore
         img = f'<img src="data:image/png;base64,{data}" style="width: {width}%;"/>'
         cont = '<div style="display: flex;">'
@@ -394,6 +394,20 @@ NUM_CHANNELS: {self.num_channels}
 
         metadata = deepcopy(self.metadata)
         return Image(image, metadata=metadata, format_=self.format, allow=True)
+
+    def normalize(self):
+        # type: () -> Image
+        '''
+        Normalizes image to [0, 1] range.
+
+        Returns:
+            Image: Normalized image.
+        '''
+        data = self.to_bit_depth(BitDepth.FLOAT32)._data
+        max_, min_ = data.max(), data.min()
+        self._data = (data - min_) / (max_ - min_)
+        self._data = self.to_bit_depth(self.bit_depth)._data
+        return self
     # --------------------------------------------------------------------------
 
     @property
