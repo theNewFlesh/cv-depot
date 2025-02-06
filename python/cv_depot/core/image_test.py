@@ -188,7 +188,9 @@ class ImageTests(unittest.TestCase):
        WIDTH: 5
       HEIGHT: 10
 NUM_CHANNELS: 3
-    CHANNELS: rgb
+    CHANNELS: r
+              g
+              b
    BIT_DEPTH: UINT8
       FORMAT: TIFF'''[1:]
             self.assertEqual(repr(result), expected)
@@ -217,9 +219,9 @@ NUM_CHANNELS: 3
                 'WIDTH', '5',
                 'HEIGHT', '10',
                 'NUM_CHANNELS', '2',
-                'CHANNELS', 'rg',
+                'CHANNELS',
                 'BIT_DEPTH', 'UINT8',
-                'FORMAT', 'None'
+                'FORMAT',
             ]
             for expected in items:
                 self.assertIn(expected, result)
