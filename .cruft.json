@@ -23,7 +23,7 @@
       "include_gcc": "yes",
       "include_helm": "no",
       "include_mkdocs": "no",
-      "include_nvidia": "no",
+      "include_nvidia": "yes",
       "include_openexr": "yes",
       "include_prod_cli": "yes",
       "include_prod_envs": "yes",
