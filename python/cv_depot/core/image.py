@@ -277,9 +277,11 @@ NUM_CHANNELS: {self.num_channels}
             columns = indices[0]
 
         # convert channels to list of indices
+        channel_meta = self.metadata.get('channels', [])
         if channels.__class__.__name__ in ['str', 'tuple', 'list']:
             if isinstance(channels, str):
                 channels = self._string_to_channels(channels)
+            channel_meta = channels
             chans = []
             for channel in channels:
                 if isinstance(channel, str):
@@ -308,8 +310,13 @@ NUM_CHANNELS: {self.num_channels}
             msg = 'Three lists are not acceptable as indices.'
             raise IndexError(msg)
 
+        if isinstance(channels, slice):
+            channel_meta = self.channels[channels]
+
         data = self._data[rows, columns, channels]
-        return Image.from_array(data)
+        metadata = deepcopy(self.metadata)
+        metadata['channels'] = channel_meta
+        return Image(data, metadata=metadata, format_=self.format, allow=True)
     # --------------------------------------------------------------------------
 
     def set_channels(self, channels):

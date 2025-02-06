@@ -1,3 +1,4 @@
+from copy import deepcopy
 from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
@@ -325,6 +326,37 @@ NUM_CHANNELS: 3
         expected = img.data[foo, :, [2, 1, 0]].ravel().tobytes()
         result = img[:, foo, list('zyx')].data.ravel().tobytes()
         self.assertEqual(result, expected)
+
+    def test_getitem_metadata(self):
+        temp = np.zeros((10, 5, 3), dtype=np.float32)
+        img = Image.from_array(temp)
+        img = img.set_channels(list('xyz'))
+        img.metadata['foo'] = 'bar'
+        expected = deepcopy(img.metadata)
+
+        result = img[:, :, :]
+        self.assertEqual(result.metadata, expected)
+
+        result = img[:, :, 'xyz']
+        self.assertEqual(result.metadata, expected)
+
+        expected['channels'] = ['x']
+        result = img[:, :, 'x']
+        self.assertEqual(result.metadata, expected)
+
+        expected['channels'] = ['x', 'z']
+        result = img[:, :, list('xz')]
+        self.assertEqual(result.metadata, expected)
+
+        result = img[:, :, 1:3]
+        expected['channels'] = ['y', 'z']
+        self.assertEqual(result.metadata, expected)
+
+        img = img.set_channels(['x.0', 'x.1', 'x.2'])
+        expected = deepcopy(img.metadata)
+
+        result = img[:, :, 'x']
+        self.assertEqual(result.metadata, expected)
 
     def test_getitem_variable_indices(self):
         temp = np.zeros((10, 5, 3), dtype=np.float32)
