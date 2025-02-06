@@ -191,7 +191,10 @@ NUM_CHANNELS: {self.num_channels}
             return desc
 
         width = int(100 * self.display_width)
-        png = self.to_bit_depth(BitDepth.UINT8).to_pil()._repr_png_()
+        this = self
+        if _has_super_brights(self) or _has_super_darks(self):
+            this = self.to_unit_space()
+        png = this.to_bit_depth(BitDepth.UINT8).to_pil()._repr_png_()
         data = base64.b64encode(png).decode('utf-8')  # type: ignore
         img = f'<img src="data:image/png;base64,{data}" style="width: {width}%;"/>'
         cont = '<div style="display: flex;">'
@@ -395,7 +398,7 @@ NUM_CHANNELS: {self.num_channels}
         metadata = deepcopy(self.metadata)
         return Image(image, metadata=metadata, format_=self.format, allow=True)
 
-    def normalize(self):
+    def to_unit_space(self):
         # type: () -> Image
         '''
         Normalizes image to [0, 1] range.
@@ -403,11 +406,12 @@ NUM_CHANNELS: {self.num_channels}
         Returns:
             Image: Normalized image.
         '''
-        data = self.to_bit_depth(BitDepth.FLOAT32)._data
+        data = self.to_bit_depth(BitDepth.FLOAT32)._data.copy()
         max_, min_ = data.max(), data.min()
-        self._data = (data - min_) / (max_ - min_)
-        self._data = self.to_bit_depth(self.bit_depth)._data
-        return self
+        data = (data - min_) / (max_ - min_)
+        data = Image.from_array(data).to_bit_depth(self.bit_depth)._data
+        metadata = deepcopy(self.metadata)
+        return Image(data, metadata=metadata, format_=self.format, allow=True)
     # --------------------------------------------------------------------------
 
     @property
