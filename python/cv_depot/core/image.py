@@ -197,10 +197,7 @@ NUM_CHANNELS: {self.num_channels}
             return desc
 
         width = int(100 * self.display_width)
-        this = self
-        if _has_super_brights(self) or _has_super_darks(self):
-            this = self.to_unit_space()
-        png = this.to_bit_depth(BitDepth.UINT8).to_pil()._repr_png_()
+        png = self._repr_png_()
         data = base64.b64encode(png).decode('utf-8')  # type: ignore
         img = f'<img src="data:image/png;base64,{data}" style="width: {width}%;"/>'
         cont = '<div style="display: flex;">'
@@ -210,6 +207,19 @@ NUM_CHANNELS: {self.num_channels}
         space = '<div style="width: 10px;"></div>'
         html = f'{cont}{desc}{space}{img}</div>'
         return html
+
+    def _repr_png_(self):
+        # type: () -> str
+        '''
+        Creates a PNG representation of image data.
+
+        Returns:
+            str: PNG.
+        '''
+        this = self
+        if _has_super_brights(self) or _has_super_darks(self):
+            this = self.to_unit_space()
+        return this.to_bit_depth(BitDepth.UINT8).to_pil()._repr_png_()
 
     def _string_to_channels(self, string):
         # type: (str) -> list
