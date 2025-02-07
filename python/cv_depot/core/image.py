@@ -1,5 +1,6 @@
 from typing import Any, Optional, Tuple, Union  # noqa F401
 from numpy.typing import NDArray  # noqa F401
+from cv_depot.core.types import Filepath  # noqa F401
 
 from copy import deepcopy
 from itertools import combinations, chain
@@ -77,7 +78,7 @@ class Image():
 
     @staticmethod
     def read(filepath):
-        # type: (Union[str, Path]) -> Image
+        # type: (Filepath) -> Image
         '''
         Constructs an Image instance given a full path to an image file.
 
@@ -337,7 +338,7 @@ NUM_CHANNELS: {self.num_channels}
         )
 
     def write(self, filepath, codec=ImageCodec.PIZ):
-        # type: (Union[str, Path], ImageCodec) -> None
+        # type: (Filepath, ImageCodec) -> None
         '''
         Write image to file.
 
