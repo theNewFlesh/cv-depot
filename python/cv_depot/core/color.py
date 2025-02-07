@@ -9,7 +9,7 @@ from enum import Enum
 from lunchbox.enforce import Enforce
 import numpy as np
 
-from cv_depot.core.image import BitDepth
+from cv_depot.core.enum import BitDepth
 # ------------------------------------------------------------------------------
 
 

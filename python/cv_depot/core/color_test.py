@@ -4,7 +4,7 @@ from lunchbox.enforce import EnforceError
 import numpy as np
 
 from cv_depot.core.color import BasicColor, Color
-from cv_depot.core.image import BitDepth
+from cv_depot.core.enum import BitDepth
 # ------------------------------------------------------------------------------
 
 
