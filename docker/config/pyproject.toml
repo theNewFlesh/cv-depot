@@ -1,6 +1,6 @@
 [project]
 name = "cv-depot"
-version = "0.4.2"
+version = "0.5.0"
 description = "Computer Vision Tools"
 authors = [
     { name = "Alex Braun", email = "alexander.g.braun@gmail.com" },
@@ -28,6 +28,8 @@ classifiers = [
 requires-python = ">=3.10"
 dependencies = [
     "click>=8.1.3",
+    "IPython",
+    "ipywidgets",
     "lunchbox>=0.3.3",
     "numpy>=2.2.2",
     "opencv-python>=4.10.0.84",
