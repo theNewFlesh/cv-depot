@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
@@ -8,15 +6,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Introduction &mdash; cv-depot  documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="_static/style.css" />
 
   
-      <script src="_static/jquery.js?v=5d32c60e"></script>
-      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=5929fcd5"></script>
-      <script src="_static/doctools.js?v=9bcbadda"></script>
-      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -35,6 +37,9 @@
           <a href="index.html" class="icon icon-home">
             cv-depot
           </a>
+              <div class="version">
+                0.6.0
+              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -109,19 +114,20 @@
            <div itemprop="articleBody">
              
   <!-- <img id="logo" src="resources/logo.png" style="max-width: 717px"> -->
-<p><a class="reference external" href="https://github.com/the-new-flesh/cv-depot/blob/master/LICENSE"><img alt="" src="https://img.shields.io/badge/License-MIT-F77E70?style=for-the-badge" /></a>
-<a class="reference external" href="https://github.com/the-new-flesh/cv-depot/blob/master/docker/config/pyproject.toml"><img alt="" src="https://img.shields.io/pypi/pyversions/cv-depot?style=for-the-badge&amp;label=Python&amp;color=A0D17B&amp;logo=python&amp;logoColor=A0D17B" /></a>
+<p><a class="reference external" href="https://github.com/thenewflesh/cv-depot/blob/master/LICENSE"><img alt="" src="https://img.shields.io/badge/License-MIT-F77E70?style=for-the-badge" /></a>
+<a class="reference external" href="https://github.com/thenewflesh/cv-depot/blob/master/docker/config/pyproject.toml"><img alt="" src="https://img.shields.io/pypi/pyversions/cv-depot?style=for-the-badge&amp;label=Python&amp;color=A0D17B&amp;logo=python&amp;logoColor=A0D17B" /></a>
 <a class="reference external" href="https://pypi.org/project/cv-depot/"><img alt="" src="https://img.shields.io/pypi/v/cv-depot?style=for-the-badge&amp;label=PyPI&amp;color=5F95DE&amp;logo=pypi&amp;logoColor=5F95DE" /></a>
 <a class="reference external" href="https://pepy.tech/project/cv-depot"><img alt="" src="https://img.shields.io/pypi/dm/cv-depot?style=for-the-badge&amp;label=Downloads&amp;color=5F95DE" /></a></p>
+<p><img src="resources/logo.png"width="666px" height="360px"></p>
 <section id="introduction">
-<h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h1>
-<p>Computer Vision Tools</p>
-<p>See <a class="reference external" href="https://the-new-flesh.github.io/cv-depot/">documentation</a> for details.</p>
+<h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h1>
+<p>Tools for Computer Vision Pipelines</p>
+<p>See <a class="reference external" href="https://thenewflesh.github.io/cv-depot/">documentation</a> for details.</p>
 </section>
 <section id="installation-for-developers">
-<h1>Installation for Developers<a class="headerlink" href="#installation-for-developers" title="Link to this heading">¶</a></h1>
+<h1>Installation for Developers<a class="headerlink" href="#installation-for-developers" title="Link to this heading"></a></h1>
 <section id="docker">
-<h2>Docker<a class="headerlink" href="#docker" title="Link to this heading">¶</a></h2>
+<h2>Docker<a class="headerlink" href="#docker" title="Link to this heading"></a></h2>
 <ol class="arabic simple">
 <li><p>Install <a class="reference external" href="https://docs.docker.com/desktop/">docker-desktop</a></p></li>
 <li><p>Ensure docker-desktop has at least 4 GB of memory allocated to it.</p></li>
@@ -138,7 +144,7 @@
 <p>Run <code class="docutils literal notranslate"><span class="pre">bin/cv-depot</span> <span class="pre">--help</span></code> for more help on the command line tool.</p>
 </section>
 <section id="zsh-setup">
-<h2>ZSH Setup<a class="headerlink" href="#zsh-setup" title="Link to this heading">¶</a></h2>
+<h2>ZSH Setup<a class="headerlink" href="#zsh-setup" title="Link to this heading"></a></h2>
 <ol class="arabic">
 <li><p><code class="docutils literal notranslate"><span class="pre">bin/cv-depot</span></code> must be run from this repository’s top level directory.</p></li>
 <li><p>Therefore, if using zsh, it is recommended that you paste the following line
@@ -167,22 +173,22 @@ tab to cycle through</p></li>
 </section>
 </section>
 <section id="installation-for-production">
-<h1>Installation for Production<a class="headerlink" href="#installation-for-production" title="Link to this heading">¶</a></h1>
+<h1>Installation for Production<a class="headerlink" href="#installation-for-production" title="Link to this heading"></a></h1>
 <section id="python">
-<h2>Python<a class="headerlink" href="#python" title="Link to this heading">¶</a></h2>
+<h2>Python<a class="headerlink" href="#python" title="Link to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">cv-depot</span></code></p>
 </section>
 <section id="id1">
-<h2>Docker<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
+<h2>Docker<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
 <ol class="arabic simple">
 <li><p>Install <a class="reference external" href="https://docs.docker.com/desktop/">docker-desktop</a></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">pull</span> <span class="pre">theNewFlesh/cv-depot:[version]</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">pull</span> <span class="pre">theNewFlesh/cv-depot:[mode]-[version]</span></code></p></li>
 </ol>
 </section>
 </section>
 <hr class="docutils" />
 <section id="quickstart-guide">
-<h1>Quickstart Guide<a class="headerlink" href="#quickstart-guide" title="Link to this heading">¶</a></h1>
+<h1>Quickstart Guide<a class="headerlink" href="#quickstart-guide" title="Link to this heading"></a></h1>
 <p>This repository contains a suite commands for the whole development process.
 This includes everything from testing, to documentation generation and
 publishing pip packages.</p>
@@ -196,7 +202,7 @@ publishing pip packages.</p>
 <p>Running the <code class="docutils literal notranslate"><span class="pre">zsh-complete</span></code> command will enable tab completions of the CLI.
 See the zsh setup section for more information.</p>
 <section id="command-groups">
-<h2>Command Groups<a class="headerlink" href="#command-groups" title="Link to this heading">¶</a></h2>
+<h2>Command Groups<a class="headerlink" href="#command-groups" title="Link to this heading"></a></h2>
 <p>Development commands are grouped by one of 10 prefixes:</p>
 <table class="docutils align-default">
 <thead>
@@ -239,7 +245,7 @@ See the zsh setup section for more information.</p>
 </table>
 </section>
 <section id="common-commands">
-<h2>Common Commands<a class="headerlink" href="#common-commands" title="Link to this heading">¶</a></h2>
+<h2>Common Commands<a class="headerlink" href="#common-commands" title="Link to this heading"></a></h2>
 <p>Here are some frequently used commands to get you started:</p>
 <table class="docutils align-default">
 <thead>
@@ -299,13 +305,13 @@ See the zsh setup section for more information.</p>
 </section>
 <hr class="docutils" />
 <section id="development-cli">
-<h1>Development CLI<a class="headerlink" href="#development-cli" title="Link to this heading">¶</a></h1>
+<h1>Development CLI<a class="headerlink" href="#development-cli" title="Link to this heading"></a></h1>
 <p>bin/cv-depot is a command line interface (defined in cli.py) that
 works with any version of python 2.7 and above, as it has no dependencies.
 Commands generally do not expect any arguments or flags.</p>
 <p>Its usage pattern is: <code class="docutils literal notranslate"><span class="pre">bin/cv-depot</span> <span class="pre">COMMAND</span> <span class="pre">[-a</span> <span class="pre">--args]=ARGS</span> <span class="pre">[-h</span> <span class="pre">--help]</span> <span class="pre">[--dryrun]</span></code></p>
 <section id="commands">
-<h2>Commands<a class="headerlink" href="#commands" title="Link to this heading">¶</a></h2>
+<h2>Commands<a class="headerlink" href="#commands" title="Link to this heading"></a></h2>
 <p>The following is a complete list of all available development commands:</p>
 <table class="docutils align-default">
 <thead>
@@ -314,6 +320,12 @@ Commands generally do not expect any arguments or flags.</p>
 </tr>
 </thead>
 <tbody>
+<tr class="row-even"><td><p>build-edit-prod-dockerfile</p></td>
+<td><p>Edit prod.dockefile to use local package</p></td>
+</tr>
+<tr class="row-odd"><td><p>build-local-package</p></td>
+<td><p>Generate local pip package in docker/dist</p></td>
+</tr>
 <tr class="row-even"><td><p>build-package</p></td>
 <td><p>Build production version of repo for publishing</p></td>
 </tr>
@@ -327,175 +339,178 @@ Commands generally do not expect any arguments or flags.</p>
 <td><p>Build test version of repo for prod testing</p></td>
 </tr>
 <tr class="row-even"><td><p>docker-build</p></td>
-<td><p>Build Docker image</p></td>
+<td><p>Build development image</p></td>
 </tr>
 <tr class="row-odd"><td><p>docker-build-from-cache</p></td>
-<td><p>Build Docker image from registry cache</p></td>
+<td><p>Build development image from registry cache</p></td>
 </tr>
 <tr class="row-even"><td><p>docker-build-no-cache</p></td>
-<td><p>Build Docker image without cache</p></td>
+<td><p>Build development image without cache</p></td>
 </tr>
 <tr class="row-odd"><td><p>docker-build-prod</p></td>
 <td><p>Build production image</p></td>
 </tr>
-<tr class="row-even"><td><p>docker-container</p></td>
+<tr class="row-even"><td><p>docker-build-prod-no-cache</p></td>
+<td><p>Build production image without cache</p></td>
+</tr>
+<tr class="row-odd"><td><p>docker-container</p></td>
 <td><p>Display the Docker container id</p></td>
 </tr>
-<tr class="row-odd"><td><p>docker-destroy</p></td>
+<tr class="row-even"><td><p>docker-destroy</p></td>
 <td><p>Shutdown container and destroy its image</p></td>
 </tr>
-<tr class="row-even"><td><p>docker-destroy-prod</p></td>
+<tr class="row-odd"><td><p>docker-destroy-prod</p></td>
 <td><p>Shutdown production container and destroy its image</p></td>
 </tr>
-<tr class="row-odd"><td><p>docker-image</p></td>
+<tr class="row-even"><td><p>docker-image</p></td>
 <td><p>Display the Docker image id</p></td>
 </tr>
-<tr class="row-even"><td><p>docker-prod</p></td>
+<tr class="row-odd"><td><p>docker-prod</p></td>
 <td><p>Start production container</p></td>
 </tr>
-<tr class="row-odd"><td><p>docker-pull-dev</p></td>
+<tr class="row-even"><td><p>docker-pull-dev</p></td>
 <td><p>Pull development image from Docker registry</p></td>
 </tr>
-<tr class="row-even"><td><p>docker-pull-prod</p></td>
+<tr class="row-odd"><td><p>docker-pull-prod</p></td>
 <td><p>Pull production image from Docker registry</p></td>
 </tr>
-<tr class="row-odd"><td><p>docker-push-dev</p></td>
+<tr class="row-even"><td><p>docker-push-dev</p></td>
 <td><p>Push development image to Docker registry</p></td>
 </tr>
-<tr class="row-even"><td><p>docker-push-dev-latest</p></td>
+<tr class="row-odd"><td><p>docker-push-dev-latest</p></td>
 <td><p>Push development image to Docker registry with dev-latest tag</p></td>
 </tr>
-<tr class="row-odd"><td><p>docker-push-prod</p></td>
+<tr class="row-even"><td><p>docker-push-prod</p></td>
 <td><p>Push production image to Docker registry</p></td>
 </tr>
-<tr class="row-even"><td><p>docker-push-prod-latest</p></td>
+<tr class="row-odd"><td><p>docker-push-prod-latest</p></td>
 <td><p>Push production image to Docker registry with prod-latest tag</p></td>
 </tr>
-<tr class="row-odd"><td><p>docker-remove</p></td>
+<tr class="row-even"><td><p>docker-remove</p></td>
 <td><p>Remove Docker image</p></td>
 </tr>
-<tr class="row-even"><td><p>docker-restart</p></td>
-<td><p>Restart Docker container</p></td>
+<tr class="row-odd"><td><p>docker-restart</p></td>
+<td><p>Restart container</p></td>
 </tr>
-<tr class="row-odd"><td><p>docker-start</p></td>
-<td><p>Start Docker container</p></td>
+<tr class="row-even"><td><p>docker-start</p></td>
+<td><p>Start container</p></td>
 </tr>
-<tr class="row-even"><td><p>docker-stop</p></td>
-<td><p>Stop Docker container</p></td>
+<tr class="row-odd"><td><p>docker-stop</p></td>
+<td><p>Stop container</p></td>
 </tr>
-<tr class="row-odd"><td><p>docs</p></td>
+<tr class="row-even"><td><p>docs</p></td>
 <td><p>Generate sphinx documentation</p></td>
 </tr>
-<tr class="row-even"><td><p>docs-architecture</p></td>
+<tr class="row-odd"><td><p>docs-architecture</p></td>
 <td><p>Generate architecture.svg diagram from all import statements</p></td>
 </tr>
-<tr class="row-odd"><td><p>docs-full</p></td>
+<tr class="row-even"><td><p>docs-full</p></td>
 <td><p>Generate documentation, coverage report, diagram and code</p></td>
 </tr>
-<tr class="row-even"><td><p>docs-metrics</p></td>
+<tr class="row-odd"><td><p>docs-metrics</p></td>
 <td><p>Generate code metrics report, plots and tables</p></td>
 </tr>
-<tr class="row-odd"><td><p>library-add</p></td>
+<tr class="row-even"><td><p>library-add</p></td>
 <td><p>Add a given package to a given dependency group</p></td>
 </tr>
-<tr class="row-even"><td><p>library-graph-dev</p></td>
+<tr class="row-odd"><td><p>library-graph-dev</p></td>
 <td><p>Graph dependencies in dev environment</p></td>
 </tr>
-<tr class="row-odd"><td><p>library-graph-prod</p></td>
+<tr class="row-even"><td><p>library-graph-prod</p></td>
 <td><p>Graph dependencies in prod environment</p></td>
 </tr>
-<tr class="row-even"><td><p>library-install-dev</p></td>
+<tr class="row-odd"><td><p>library-install-dev</p></td>
 <td><p>Install all dependencies into dev environment</p></td>
 </tr>
-<tr class="row-odd"><td><p>library-install-prod</p></td>
+<tr class="row-even"><td><p>library-install-prod</p></td>
 <td><p>Install all dependencies into prod environment</p></td>
 </tr>
-<tr class="row-even"><td><p>library-list-dev</p></td>
+<tr class="row-odd"><td><p>library-list-dev</p></td>
 <td><p>List packages in dev environment</p></td>
 </tr>
-<tr class="row-odd"><td><p>library-list-prod</p></td>
+<tr class="row-even"><td><p>library-list-prod</p></td>
 <td><p>List packages in prod environment</p></td>
 </tr>
-<tr class="row-even"><td><p>library-lock-dev</p></td>
+<tr class="row-odd"><td><p>library-lock-dev</p></td>
 <td><p>Resolve dev.lock file</p></td>
 </tr>
-<tr class="row-odd"><td><p>library-lock-prod</p></td>
+<tr class="row-even"><td><p>library-lock-prod</p></td>
 <td><p>Resolve prod.lock file</p></td>
 </tr>
-<tr class="row-even"><td><p>library-remove</p></td>
+<tr class="row-odd"><td><p>library-remove</p></td>
 <td><p>Remove a given package from a given dependency group</p></td>
 </tr>
-<tr class="row-odd"><td><p>library-search</p></td>
+<tr class="row-even"><td><p>library-search</p></td>
 <td><p>Search for pip packages</p></td>
 </tr>
-<tr class="row-even"><td><p>library-sync-dev</p></td>
+<tr class="row-odd"><td><p>library-sync-dev</p></td>
 <td><p>Sync dev environment with packages listed in dev.lock</p></td>
 </tr>
-<tr class="row-odd"><td><p>library-sync-prod</p></td>
+<tr class="row-even"><td><p>library-sync-prod</p></td>
 <td><p>Sync prod environment with packages listed in prod.lock</p></td>
 </tr>
-<tr class="row-even"><td><p>library-update</p></td>
+<tr class="row-odd"><td><p>library-update</p></td>
 <td><p>Update dev dependencies</p></td>
 </tr>
-<tr class="row-odd"><td><p>library-update-pdm</p></td>
+<tr class="row-even"><td><p>library-update-pdm</p></td>
 <td><p>Update PDM</p></td>
 </tr>
-<tr class="row-even"><td><p>quickstart</p></td>
+<tr class="row-odd"><td><p>quickstart</p></td>
 <td><p>Display quickstart guide</p></td>
 </tr>
-<tr class="row-odd"><td><p>session-lab</p></td>
+<tr class="row-even"><td><p>session-lab</p></td>
 <td><p>Run jupyter lab server</p></td>
 </tr>
-<tr class="row-even"><td><p>session-python</p></td>
+<tr class="row-odd"><td><p>session-python</p></td>
 <td><p>Run python session with dev dependencies</p></td>
 </tr>
-<tr class="row-odd"><td><p>state</p></td>
+<tr class="row-even"><td><p>state</p></td>
 <td><p>State of repository and Docker container</p></td>
 </tr>
-<tr class="row-even"><td><p>test-coverage</p></td>
+<tr class="row-odd"><td><p>test-coverage</p></td>
 <td><p>Generate test coverage report</p></td>
 </tr>
-<tr class="row-odd"><td><p>test-dev</p></td>
+<tr class="row-even"><td><p>test-dev</p></td>
 <td><p>Run all tests</p></td>
 </tr>
-<tr class="row-even"><td><p>test-fast</p></td>
+<tr class="row-odd"><td><p>test-fast</p></td>
 <td><p>Test all code excepts tests marked with SKIP_SLOWS_TESTS decorator</p></td>
 </tr>
-<tr class="row-odd"><td><p>test-lint</p></td>
+<tr class="row-even"><td><p>test-lint</p></td>
 <td><p>Run linting and type checking</p></td>
 </tr>
-<tr class="row-even"><td><p>test-prod</p></td>
+<tr class="row-odd"><td><p>test-prod</p></td>
 <td><p>Run tests across all support python versions</p></td>
 </tr>
-<tr class="row-odd"><td><p>version</p></td>
+<tr class="row-even"><td><p>version</p></td>
 <td><p>Full resolution of repo: dependencies, linting, tests, docs, etc</p></td>
 </tr>
-<tr class="row-even"><td><p>version-bump-major</p></td>
+<tr class="row-odd"><td><p>version-bump-major</p></td>
 <td><p>Bump pyproject major version</p></td>
 </tr>
-<tr class="row-odd"><td><p>version-bump-minor</p></td>
+<tr class="row-even"><td><p>version-bump-minor</p></td>
 <td><p>Bump pyproject minor version</p></td>
 </tr>
-<tr class="row-even"><td><p>version-bump-patch</p></td>
+<tr class="row-odd"><td><p>version-bump-patch</p></td>
 <td><p>Bump pyproject patch version</p></td>
 </tr>
-<tr class="row-odd"><td><p>version-commit</p></td>
+<tr class="row-even"><td><p>version-commit</p></td>
 <td><p>Tag with version and commit changes to master</p></td>
 </tr>
-<tr class="row-even"><td><p>zsh</p></td>
+<tr class="row-odd"><td><p>zsh</p></td>
 <td><p>Run ZSH session inside Docker container</p></td>
 </tr>
-<tr class="row-odd"><td><p>zsh-complete</p></td>
+<tr class="row-even"><td><p>zsh-complete</p></td>
 <td><p>Generate oh-my-zsh completions</p></td>
 </tr>
-<tr class="row-even"><td><p>zsh-root</p></td>
+<tr class="row-odd"><td><p>zsh-root</p></td>
 <td><p>Run ZSH session as root inside Docker container</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="flags">
-<h2>Flags<a class="headerlink" href="#flags" title="Link to this heading">¶</a></h2>
+<h2>Flags<a class="headerlink" href="#flags" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Short</p></th>
@@ -522,20 +537,20 @@ Commands generally do not expect any arguments or flags.</p>
 </section>
 <hr class="docutils" />
 <section id="production-cli">
-<h1>Production CLI<a class="headerlink" href="#production-cli" title="Link to this heading">¶</a></h1>
+<h1>Production CLI<a class="headerlink" href="#production-cli" title="Link to this heading"></a></h1>
 <p>cv-depot comes with a command line interface defined in command.py.</p>
 <p>Its usage pattern is: <code class="docutils literal notranslate"><span class="pre">cv-depot</span> <span class="pre">COMMAND</span> <span class="pre">[ARGS]</span> <span class="pre">[FLAGS]</span> <span class="pre">[-h</span> <span class="pre">--help]</span></code></p>
 <section id="id2">
-<h2>Commands<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
+<h2>Commands<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
 <hr class="docutils" />
 <section id="bash-completion">
-<h3>bash-completion<a class="headerlink" href="#bash-completion" title="Link to this heading">¶</a></h3>
+<h3>bash-completion<a class="headerlink" href="#bash-completion" title="Link to this heading"></a></h3>
 <p>Prints BASH completion code to be written to a _cv-depot completion file</p>
 <p>Usage: <code class="docutils literal notranslate"><span class="pre">cv-depot</span> <span class="pre">bash-completion</span></code></p>
 </section>
 <hr class="docutils" />
 <section id="zsh-completion">
-<h3>zsh-completion<a class="headerlink" href="#zsh-completion" title="Link to this heading">¶</a></h3>
+<h3>zsh-completion<a class="headerlink" href="#zsh-completion" title="Link to this heading"></a></h3>
 <p>Prints ZSH completion code to be written to a _cv-depot completion file</p>
 <p>Usage: <code class="docutils literal notranslate"><span class="pre">cv-depot</span> <span class="pre">zsh-completion</span></code></p>
 </section>

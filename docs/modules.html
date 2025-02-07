@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
@@ -8,15 +6,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>&lt;no title&gt; &mdash; cv-depot  documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="_static/style.css" />
 
   
-      <script src="_static/jquery.js?v=5d32c60e"></script>
-      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=5929fcd5"></script>
-      <script src="_static/doctools.js?v=9bcbadda"></script>
-      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -35,6 +37,9 @@
           <a href="index.html" class="icon icon-home">
             cv-depot
           </a>
+              <div class="version">
+                0.6.0
+              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -195,8 +200,12 @@
 <li class="toctree-l2"><a class="reference internal" href="core.html#module-cv_depot.core.image">image</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="core.html#cv_depot.core.image.Image"><code class="docutils literal notranslate"><span class="pre">Image</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="core.html#cv_depot.core.image.Image.__init__"><code class="docutils literal notranslate"><span class="pre">Image.__init__()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="core.html#cv_depot.core.image.Image._repr_png_"><code class="docutils literal notranslate"><span class="pre">Image._repr_png_()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="core.html#cv_depot.core.image.Image._repr"><code class="docutils literal notranslate"><span class="pre">Image._repr()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="core.html#cv_depot.core.image.Image._repr_html_"><code class="docutils literal notranslate"><span class="pre">Image._repr_html_()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="core.html#cv_depot.core.image.Image._repr_png"><code class="docutils literal notranslate"><span class="pre">Image._repr_png()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="core.html#cv_depot.core.image.Image._string_to_channels"><code class="docutils literal notranslate"><span class="pre">Image._string_to_channels()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="core.html#cv_depot.core.image.Image.bit_depth"><code class="docutils literal notranslate"><span class="pre">Image.bit_depth</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="core.html#cv_depot.core.image.Image.channel_layers"><code class="docutils literal notranslate"><span class="pre">Image.channel_layers</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="core.html#cv_depot.core.image.Image.channels"><code class="docutils literal notranslate"><span class="pre">Image.channels</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="core.html#cv_depot.core.image.Image.data"><code class="docutils literal notranslate"><span class="pre">Image.data</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="core.html#cv_depot.core.image.Image.extension"><code class="docutils literal notranslate"><span class="pre">Image.extension</span></code></a></li>
@@ -210,6 +219,7 @@
 <li class="toctree-l4"><a class="reference internal" href="core.html#cv_depot.core.image.Image.shape"><code class="docutils literal notranslate"><span class="pre">Image.shape</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="core.html#cv_depot.core.image.Image.to_bit_depth"><code class="docutils literal notranslate"><span class="pre">Image.to_bit_depth()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="core.html#cv_depot.core.image.Image.to_pil"><code class="docutils literal notranslate"><span class="pre">Image.to_pil()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="core.html#cv_depot.core.image.Image.to_unit_space"><code class="docutils literal notranslate"><span class="pre">Image.to_unit_space()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="core.html#cv_depot.core.image.Image.width"><code class="docutils literal notranslate"><span class="pre">Image.width</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="core.html#cv_depot.core.image.Image.width_and_height"><code class="docutils literal notranslate"><span class="pre">Image.width_and_height</span></code></a></li>
 </ul>
@@ -220,6 +230,20 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="core.html#module-cv_depot.core.tools">tools</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="core.html#cv_depot.core.tools.get_channels_from_array"><code class="docutils literal notranslate"><span class="pre">get_channels_from_array()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#module-cv_depot.core.viewer">viewer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="core.html#cv_depot.core.viewer.ImageViewer"><code class="docutils literal notranslate"><span class="pre">ImageViewer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="core.html#cv_depot.core.viewer.ImageViewer.__init__"><code class="docutils literal notranslate"><span class="pre">ImageViewer.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="core.html#cv_depot.core.viewer.ImageViewer._get_channel_options"><code class="docutils literal notranslate"><span class="pre">ImageViewer._get_channel_options()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="core.html#cv_depot.core.viewer.ImageViewer._get_info"><code class="docutils literal notranslate"><span class="pre">ImageViewer._get_info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="core.html#cv_depot.core.viewer.ImageViewer._get_layer_options"><code class="docutils literal notranslate"><span class="pre">ImageViewer._get_layer_options()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="core.html#cv_depot.core.viewer.ImageViewer._get_png"><code class="docutils literal notranslate"><span class="pre">ImageViewer._get_png()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="core.html#cv_depot.core.viewer.ImageViewer._handle_channel_event"><code class="docutils literal notranslate"><span class="pre">ImageViewer._handle_channel_event()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="core.html#cv_depot.core.viewer.ImageViewer._handle_layer_event"><code class="docutils literal notranslate"><span class="pre">ImageViewer._handle_layer_event()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="core.html#cv_depot.core.viewer.ImageViewer.show"><code class="docutils literal notranslate"><span class="pre">ImageViewer.show()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
