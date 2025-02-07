@@ -178,6 +178,7 @@ RUN echo "\n${CYAN}INSTALL OPENEXR${CLEAR}"; \
     rm -rf /var/lib/apt/lists/*
 
 RUN echo "\n${CYAN}INSTALL FFMPEG${CLEAR}"; \
+    apt update && \
     apt install -y ffmpeg && \
     rm -rf /var/lib/apt/lists/*
 
