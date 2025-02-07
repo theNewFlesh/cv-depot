@@ -466,11 +466,16 @@ NUM_CHANNELS: {self.num_channels}
                 differing values. Default: False.
 
         Raises:
+            EnforceError: If image is not an Image instance.
             ValueError: IF content is True and images cannot be compared.
 
         Returns:
             dict: A dictionary of comparisons.
         '''
+        msg = 'Image must be an instance of Image.'
+        Enforce(image, 'instance of', Image, message=msg)
+        # ----------------------------------------------------------------------
+
         a = self.info
         b = image.info
         output = {}  # type: dict[str, Any]
@@ -501,14 +506,14 @@ NUM_CHANNELS: {self.num_channels}
         return output
 
     def __eq__(self, image):
-        # type: (Image) -> bool
+        # type: (object) -> bool
         '''
         Compare this image with a given image.
 
         Returns:
             bool: True if images are equal.
         '''
-        return self.compare(image, content=True, diff_only=True) == {}
+        return self.compare(image, content=True, diff_only=True) == {}  # type: ignore
     # --------------------------------------------------------------------------
 
     @property

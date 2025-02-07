@@ -505,6 +505,15 @@ NUM_CHANNELS: 3
         result = img1.compare(img1, diff_only=True)
         self.assertEqual(result, {})
 
+    def test_compare_errors(self):
+        img1 = np.zeros((10, 10, 3), dtype=np.uint8)
+        img2 = np.zeros((10, 10, 3), dtype=np.float16)
+        img1 = Image.from_array(img1)
+
+        expected = 'Image must be an instance of Image.'
+        with self.assertRaisesRegex(EnforceError, expected):
+            img1.compare(img2)
+
     def test_eq(self):
         img1 = np.zeros((10, 10, 3), dtype=np.uint8)
         img1 = Image.from_array(img1)
