@@ -35,7 +35,7 @@
             cv-depot
           </a>
               <div class="version">
-                0.6.1
+                0.6.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -90,6 +90,7 @@
   <h1>Source code for cv_depot.core.image</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>  <span class="c1"># noqa F401</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NDArray</span>  <span class="c1"># noqa F401</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cv_depot.core.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">Filepath</span>  <span class="c1"># noqa F401</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deepcopy</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">combinations</span><span class="p">,</span> <span class="n">chain</span>
@@ -180,7 +181,7 @@
 <a class="viewcode-back" href="../../../core.html#cv_depot.core.image.Image.read">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">read</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
-        <span class="c1"># type: (Union[str, Path]) -&gt; Image</span>
+        <span class="c1"># type: (Filepath) -&gt; Image</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Constructs an Image instance given a full path to an image file.</span>
 
@@ -459,7 +460,7 @@
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">codec</span><span class="o">=</span><span class="n">ImageCodec</span><span class="o">.</span><span class="n">PIZ</span><span class="p">):</span>
-        <span class="c1"># type: (Union[str, Path], ImageCodec) -&gt; None</span>
+        <span class="c1"># type: (Filepath, ImageCodec) -&gt; None</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Write image to file.</span>
 
@@ -583,6 +584,70 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;PIL only accepts image with 1, 3 or 4 channels.&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">pil</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="Image.compare">
+<a class="viewcode-back" href="../../../core.html#cv_depot.core.image.Image.compare">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">diff_only</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="c1"># type: (Image, bool, bool) -&gt; dict[str, Any]</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Compare this image with a given image.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            image (Image): Image to compare.</span>
+<span class="sd">            content (bool, optional): If True, compare data. Default: False.</span>
+<span class="sd">            diff_only (bool, optional): If True, only return the keys with</span>
+<span class="sd">                differing values. Default: False.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            EnforceError: If image is not an Image instance.</span>
+<span class="sd">            ValueError: IF content is True and images cannot be compared.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: A dictionary of comparisons.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Image must be an instance of Image.&#39;</span>
+        <span class="n">Enforce</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;instance of&#39;</span><span class="p">,</span> <span class="n">Image</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+        <span class="c1"># ----------------------------------------------------------------------</span>
+
+        <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">info</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># type: dict[str, Any]</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">a</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">output</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">b</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">output</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">output</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">v</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">diff_only</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                    <span class="k">del</span> <span class="n">output</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">content</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_bit_depth</span><span class="p">(</span><span class="n">BitDepth</span><span class="o">.</span><span class="n">FLOAT16</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">to_bit_depth</span><span class="p">(</span><span class="n">BitDepth</span><span class="o">.</span><span class="n">FLOAT16</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">diff</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+            <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Cannot compare images: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+            <span class="n">output</span><span class="p">[</span><span class="s1">&#39;mean_content_difference&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">diff</span>
+            <span class="k">if</span> <span class="n">diff_only</span> <span class="ow">and</span> <span class="n">diff</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">del</span> <span class="n">output</span><span class="p">[</span><span class="s1">&#39;mean_content_difference&#39;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">output</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+        <span class="c1"># type: (object) -&gt; bool</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Compare this image with a given image.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if images are equal.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compare</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">diff_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">==</span> <span class="p">{}</span>  <span class="c1"># type: ignore</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
     <span class="nd">@property</span>

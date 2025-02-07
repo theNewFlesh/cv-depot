@@ -41,6 +41,14 @@ tools
     :undoc-members:
     :show-inheritance:
 
+video
+-----
+.. automodule:: cv_depot.core.video
+    :members:
+    :private-members:
+    :undoc-members:
+    :show-inheritance:
+
 viewer
 ------
 .. automodule:: cv_depot.core.viewer
