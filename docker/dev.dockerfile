@@ -177,6 +177,10 @@ RUN echo "\n${CYAN}INSTALL OPENEXR${CLEAR}"; \
         openexr && \
     rm -rf /var/lib/apt/lists/*
 
+RUN echo "\n${CYAN}INSTALL FFMPEG${CLEAR}"; \
+    apt install -y ffmpeg && \
+    rm -rf /var/lib/apt/lists/*
+
 USER ubuntu
 WORKDIR /home/ubuntu
 
