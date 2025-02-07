@@ -453,6 +453,52 @@ NUM_CHANNELS: {self.num_channels}
         else:
             raise ValueError('PIL only accepts image with 1, 3 or 4 channels.')
         return pil.fromarray(self.data, mode=mode)
+
+    def compare(self, image, content=False, diff_only=False):
+        # type: (Image, bool, bool) -> dict[str, Any]
+        '''
+        Compare this image with a given image.
+
+        Args:
+            image (Image): Image to compare.
+            content (bool, optional): If True, compare data. Default: False.
+            diff_only (bool, optional): If True, only return the keys with
+                differing values. Default: False.
+
+        Raises:
+            ValueError: IF content is True and images cannot be compared.
+
+        Returns:
+            dict: A dictionary of comparisons.
+        '''
+        a = self.info
+        b = image.info
+        output = {}  # type: dict[str, Any]
+        for k, v in a.items():
+            output[k] = (v, b.get(k, None))
+        for k, v in b.items():
+            if k not in output.keys():
+                output[k] = (a.get(k, None), v)
+
+        if diff_only:
+            for k, v in list(output.items()):
+                if v[0] == v[1]:
+                    del output[k]
+
+        if content:
+            x = self.to_bit_depth(BitDepth.FLOAT16).data
+            y = image.to_bit_depth(BitDepth.FLOAT16).data
+
+            try:
+                diff = float(abs(x - y).mean())
+            except ValueError as e:
+                raise ValueError(f'Cannot compare images: {e}')
+
+            output['mean_content_difference'] = diff
+            if diff_only and diff == 0:
+                del output['mean_content_difference']
+
+        return output
     # --------------------------------------------------------------------------
 
     @property

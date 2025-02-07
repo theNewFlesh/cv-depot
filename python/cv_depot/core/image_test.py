@@ -433,6 +433,78 @@ NUM_CHANNELS: 3
         self.assertEqual(result.data.min(), 0)
         self.assertEqual(result.data.max(), 1.0)
 
+    def test_compare(self):
+        img1 = np.zeros((10, 10, 3), dtype=np.uint8)
+        img2 = np.zeros((10, 10, 3), dtype=np.float16)
+        img1 = Image.from_array(img1)
+        img2 = Image.from_array(img2)
+
+        result = img1.compare(img2)
+        expected = {
+            'bit_depth': ('UINT8', 'FLOAT16'),
+            'bits': (8, 16),
+            'channels': (['r', 'g', 'b'], ['r', 'g', 'b']),
+            'dtype': (np.uint8, np.float16),
+            'format_bit_depths': (None, None),
+            'format_channels': (None, None),
+            'format_custom_metadata': (None, None),
+            'format_extension': (None, None),
+            'format_max_channels': (None, None),
+            'height': (10, 10),
+            'num_channels': (3, 3),
+            'signed': (False, True),
+            'type': (int, float),
+            'width': (10, 10),
+        }
+        self.assertEqual(result, expected)
+
+    def test_compare_content(self):
+        img1 = np.zeros((10, 10, 3), dtype=np.uint8)
+        img2 = np.ones((10, 10, 3), dtype=np.uint8)
+        img1 = Image.from_array(img1)
+        img2 = Image.from_array(img2)
+
+        result = img1.compare(img1, content=True, diff_only=True)
+        self.assertEqual(result, {})
+
+        result = img1.compare(img2, diff_only=True)
+        self.assertEqual(result, {})
+
+        result = img1.compare(img2, content=True, diff_only=True)
+        self.assertEqual(list(result.keys()), ['mean_content_difference'])
+
+        result = result['mean_content_difference']
+        self.assertAlmostEqual(result, 1 / 256, delta=0.001)
+
+    def test_compare_content_errors(self):
+        img1 = np.zeros((10, 10, 3), dtype=np.uint8)
+        img2 = np.ones((5, 5, 3), dtype=np.uint8)
+        img1 = Image.from_array(img1)
+        img2 = Image.from_array(img2)
+
+        expected = 'Cannot compare images'
+        with self.assertRaisesRegex(ValueError, expected):
+            img1.compare(img2, content=True)
+
+    def test_compare_diff(self):
+        img1 = np.zeros((10, 10, 3), dtype=np.uint8)
+        img2 = np.zeros((10, 10, 3), dtype=np.float16)
+        img1 = Image.from_array(img1)
+        img2 = Image.from_array(img2)
+
+        result = img1.compare(img2, diff_only=True)
+        expected = {
+            'bit_depth': ('UINT8', 'FLOAT16'),
+            'bits': (8, 16),
+            'dtype': (np.uint8, np.float16),
+            'signed': (False, True),
+            'type': (int, float),
+        }
+        self.assertEqual(result, expected)
+
+        result = img1.compare(img1, diff_only=True)
+        self.assertEqual(result, {})
+
     def test_info(self):
         with TemporaryDirectory() as root:
             filepath = Path(root, 'test.exr')
