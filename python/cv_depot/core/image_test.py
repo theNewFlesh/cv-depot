@@ -184,45 +184,14 @@ class ImageTests(unittest.TestCase):
             filepath = Path(root, 'test.tiff')
             Image.from_array(expected).write(filepath)
 
-            result = Image.read(filepath)
+            result = Image.read(filepath)._repr()
             expected = '''
        WIDTH: 5
       HEIGHT: 10
 NUM_CHANNELS: 3
    BIT_DEPTH: UINT8
       FORMAT: TIFF'''[1:]
-            self.assertEqual(repr(result), expected)
-
-    def test_repr_html(self):
-        with TemporaryDirectory() as root:
-            expected = np.zeros((10, 5, 3), dtype=np.uint8)
-            expected[:, :, 0] = np.ones((10, 5), dtype=np.uint8) * 128
-
-            filepath = Path(root, 'test.png')
-            Image.from_array(expected).write(filepath)
-
-            result = Image.read(filepath)._repr_html_()
-            self.assertRegex(result, '<img src=')
-
-    def test_repr_html_bad_image(self):
-        with TemporaryDirectory() as root:
-            expected = np.zeros((10, 5, 3), dtype=np.uint8)
-            expected[:, :, 0] = np.ones((10, 5), dtype=np.uint8) * 128
-
-            filepath = Path(root, 'test.tiff')
-            Image.from_array(expected).write(filepath)
-
-            result = Image.read(filepath)[:, :, list('rg')]._repr_html_()
-            items = [
-                'WIDTH', '5',
-                'HEIGHT', '10',
-                'NUM_CHANNELS', '2',
-                'CHANNELS',
-                'BIT_DEPTH', 'UINT8',
-                'FORMAT',
-            ]
-            for expected in items:
-                self.assertIn(expected, result)
+            self.assertEqual(result, expected)
 
     def test_getitem_error(self):
         temp = np.zeros((10, 5, 3), dtype=np.float32)

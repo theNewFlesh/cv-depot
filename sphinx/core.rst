@@ -40,3 +40,11 @@ tools
     :private-members:
     :undoc-members:
     :show-inheritance:
+
+viewer
+------
+.. automodule:: cv_depot.core.viewer
+    :members:
+    :private-members:
+    :undoc-members:
+    :show-inheritance:

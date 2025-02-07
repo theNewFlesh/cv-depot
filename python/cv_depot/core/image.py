@@ -4,7 +4,6 @@ from numpy.typing import NDArray  # noqa F401
 from copy import deepcopy
 from itertools import combinations, chain
 from pathlib import Path
-import base64
 import os
 import re
 
@@ -15,6 +14,7 @@ import openexr_tools.tools as exrtools
 import PIL.Image as pil
 
 from cv_depot.core.enum import BitDepth, ImageFormat
+from cv_depot.core.viewer import ImageViewer
 import cv_depot.core.tools as cvt
 # ------------------------------------------------------------------------------
 
@@ -155,10 +155,9 @@ class Image():
         self._data = data
         self.metadata = metadata
         self.format = format_
-        self.display_width = 1.0
     # --------------------------------------------------------------------------
 
-    def __repr__(self):
+    def _repr(self):
         # type: () -> str
         fmat = str(None)
         if self.format is not None:
@@ -172,37 +171,14 @@ NUM_CHANNELS: {self.num_channels}
       FORMAT: {fmat}'''[1:]
 
     def _repr_html_(self):
-        # type: () -> str
+        # type: () -> None
         '''
-        Creates a HTML representation of image data. Either an image or image
-        info.
-
-        Returns:
-            str: HTML.
+        Creates a HTML representation of image data.
         '''
-        desc = self.__repr__()
-        desc = re.sub('<', '&lt;', desc)
-        desc = re.sub('>', '&gt;', desc)
-        desc = re.sub('\n', '<br>', desc)
-        desc = re.sub(' ', '&nbsp;', desc)
-        desc = f'<p style="font-family: monospace; font-size: 13px;">{desc}</p>'
-        if self.num_channels not in [1, 3, 4]:
-            return desc
+        ImageViewer(self).show()
 
-        width = int(100 * self.display_width)
-        png = self._repr_png_()
-        data = base64.b64encode(png).decode('utf-8')  # type: ignore
-        img = f'<img src="data:image/png;base64,{data}" style="width: {width}%;"/>'
-        cont = '<div style="display: flex;">'
-        item = '<div style="flex-grow: 5;">'
-        desc = f'{item}{desc}</div>'
-        img = f'{item}{img}</div>'
-        space = '<div style="width: 10px;"></div>'
-        html = f'{cont}{desc}{space}{img}</div>'
-        return html
-
-    def _repr_png_(self):
-        # type: () -> str
+    def _repr_png(self):
+        # type: () -> Optional[bytes]
         '''
         Creates a PNG representation of image data.
 
@@ -212,7 +188,8 @@ NUM_CHANNELS: {self.num_channels}
         this = self
         if _has_super_brights(self) or _has_super_darks(self):
             this = self.to_unit_space()
-        return this.to_bit_depth(BitDepth.UINT8).to_pil()._repr_png_()
+        output = this.to_bit_depth(BitDepth.UINT8).to_pil()._repr_png_()
+        return output
 
     def _string_to_channels(self, string):
         # type: (str) -> list
