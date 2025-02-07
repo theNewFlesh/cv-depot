@@ -188,12 +188,12 @@ class ImageTests(unittest.TestCase):
             expected = '''
        WIDTH: 5
       HEIGHT: 10
+   BIT_DEPTH: UINT8
+      FORMAT: TIFF
 NUM_CHANNELS: 3
     CHANNELS: r
               g
-              b
-   BIT_DEPTH: UINT8
-      FORMAT: TIFF'''[1:]
+              b'''[1:]
             self.assertEqual(repr(result), expected)
 
     def test_repr_html(self):

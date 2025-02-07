@@ -173,10 +173,10 @@ class Image():
         return f'''
        WIDTH: {self.width}
       HEIGHT: {self.height}
-NUM_CHANNELS: {self.num_channels}
-    CHANNELS: {chans}
    BIT_DEPTH: {self.bit_depth.name}
-      FORMAT: {fmat}'''[1:]
+      FORMAT: {fmat}
+NUM_CHANNELS: {self.num_channels}
+    CHANNELS: {chans}'''[1:]
 
     def _repr_html_(self):
         # type: () -> str
