@@ -505,6 +505,19 @@ NUM_CHANNELS: 3
         result = img1.compare(img1, diff_only=True)
         self.assertEqual(result, {})
 
+    def test_eq(self):
+        img1 = np.zeros((10, 10, 3), dtype=np.uint8)
+        img1 = Image.from_array(img1)
+        self.assertTrue(img1 == img1)
+
+        img2 = np.zeros((10, 10, 3), dtype=np.int8)
+        img2 = Image.from_array(img2)
+        self.assertFalse(img1 == img2)
+
+        img2 = np.ones((10, 10, 3), dtype=np.uint8)
+        img2 = Image.from_array(img2)
+        self.assertFalse(img1 == img2)
+
     def test_info(self):
         with TemporaryDirectory() as root:
             filepath = Path(root, 'test.exr')

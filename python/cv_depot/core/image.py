@@ -499,6 +499,16 @@ NUM_CHANNELS: {self.num_channels}
                 del output['mean_content_difference']
 
         return output
+
+    def __eq__(self, image):
+        # type: (Image) -> bool
+        '''
+        Compare this image with a given image.
+
+        Returns:
+            bool: True if images are equal.
+        '''
+        return self.compare(image, content=True, diff_only=True) == {}
     # --------------------------------------------------------------------------
 
     @property
