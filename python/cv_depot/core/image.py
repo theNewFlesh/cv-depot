@@ -163,20 +163,13 @@ class Image():
         fmat = str(None)
         if self.format is not None:
             fmat = self.format.name
-        tmp = self.channels
-        if len(tmp) > 4:
-            tmp = tmp[:4] + ['...']
-        chan = [str(tmp[0])]
-        chan += [f'              {x}' for x in tmp[1:]]
-        chans = '\n'.join(chan).lstrip('\n')
 
         return f'''
        WIDTH: {self.width}
       HEIGHT: {self.height}
-   BIT_DEPTH: {self.bit_depth.name}
-      FORMAT: {fmat}
 NUM_CHANNELS: {self.num_channels}
-    CHANNELS: {chans}'''[1:]
+   BIT_DEPTH: {self.bit_depth.name}
+      FORMAT: {fmat}'''[1:]
 
     def _repr_html_(self):
         # type: () -> str
