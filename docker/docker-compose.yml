@@ -18,6 +18,7 @@ services:
       - ~/.ssh:/home/ubuntu/.ssh:ro
       - ./config/jupyter:/home/ubuntu/.jupyter
       - ./config/zshrc:/home/ubuntu/.zshrc
+      - ~/Documents/images:/home/ubuntu/images
     working_dir: "/home/ubuntu"
     deploy:
       resources:
