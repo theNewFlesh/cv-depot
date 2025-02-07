@@ -41,7 +41,7 @@ class VideoTests(unittest.TestCase):
 
     def test_get_video_metadata_errors(self):
         expected = '/tmp/non-file is not a file or does not exist.'
-        with self.assertRaisesRegexp(EnforceError, expected):
+        with self.assertRaisesRegex(EnforceError, expected):
             cvid.get_video_metadata('/tmp/non-file')
 
         with TemporaryDirectory() as root:
@@ -51,7 +51,7 @@ class VideoTests(unittest.TestCase):
 
             expected = 'Illegal format: bar. Legal formats: '
             expected += r"\['m4v', 'mov', 'mp4', 'mpg', 'mpeg'\]\."
-            with self.assertRaisesRegexp(EnforceError, expected):
+            with self.assertRaisesRegex(EnforceError, expected):
                 cvid.get_video_metadata(temp)
 
     def test_write_video(self):
@@ -71,7 +71,7 @@ class VideoTests(unittest.TestCase):
             # source
             expected = 'Source must be a video file or file pattern with'
             expected += ' {frame} in it. Given value: .*test_xxxx.png.'
-            with self.assertRaisesRegexp(EnforceError, expected):
+            with self.assertRaisesRegex(EnforceError, expected):
                 cvid.write_video(bad_src, tgt)
 
             # codec
@@ -85,5 +85,5 @@ class VideoTests(unittest.TestCase):
             # framerate
             expected = 'Framerate must be an integer greater than 0. Given '
             expected = 'value: 0.'
-            with self.assertRaisesRegexp(EnforceError, expected):
+            with self.assertRaisesRegex(EnforceError, expected):
                 cvid.write_video(src, tgt, framerate=0)
