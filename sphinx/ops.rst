@@ -24,3 +24,11 @@ edit
     :private-members:
     :undoc-members:
     :show-inheritance:
+
+filter
+------
+.. automodule:: cv_depot.ops.filter
+    :members:
+    :private-members:
+    :undoc-members:
+    :show-inheritance:
