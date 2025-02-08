@@ -13,6 +13,7 @@ The enum module contains Enum classes for manging aspects of imagery such as bit
 depths and video codecs.
 '''
 
+
 class EnumBase(Enum):
     def __repr__(self):
         # type: () -> str
@@ -315,7 +316,7 @@ class VideoCodec(Enum):
             string (str): String representation of codec.
             ffmpeg_code (str): FFMPEG code.
         '''
-        self.string = string  # type: ignore
+        self.string = string
         self.ffmpeg_code = ffmpeg_code
 
     def __repr__(self):
@@ -360,12 +361,12 @@ class Anchor(EnumBase):
         * BOTTOM_CENTER
         * BOTTOM_RIGHT
     '''
-    TOP_LEFT = ('top-left')
-    TOP_CENTER = ('top-center')
-    TOP_RIGHT = ('top-right')
-    CENTER_LEFT = ('center-left')
-    CENTER_CENTER = ('center-center')
-    CENTER_RIGHT = ('center-right')
-    BOTTOM_LEFT = ('bottom-left')
-    BOTTOM_CENTER = ('bottom-center')
-    BOTTOM_RIGHT = ('bottom-right')
+    TOP_LEFT = ('top', 'left')
+    TOP_CENTER = ('top', 'center')
+    TOP_RIGHT = ('top', 'right')
+    CENTER_LEFT = ('center', 'left')
+    CENTER_CENTER = ('center', 'center')
+    CENTER_RIGHT = ('center', 'right')
+    BOTTOM_LEFT = ('bottom', 'left')
+    BOTTOM_CENTER = ('bottom', 'center')
+    BOTTOM_RIGHT = ('bottom', 'right')

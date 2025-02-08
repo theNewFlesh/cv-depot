@@ -1,6 +1,7 @@
 import cv_depot.core.enum  # noqa F401
-import cv_depot.core.channel  # noqa F401
+import cv_depot.core.channel_map  # noqa F401
 import cv_depot.core.color  # noqa F401
+import cv_depot.core.enforce  # noqa F401
 import cv_depot.core.image  # noqa F401
 import cv_depot.core.tools  # noqa F401
 import cv_depot.core.types  # noqa F401

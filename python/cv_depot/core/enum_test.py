@@ -7,31 +7,31 @@ from cv_depot.core.enum import EnumBase, BitDepth, ImageFormat, VideoFormat, Vid
 # ------------------------------------------------------------------------------
 
 
-class TestEnum(EnumBase):
+class FakeEnum(EnumBase):
     FOO_BAR = 1
     TACO = 2
 
 
 class EnumBaseTests(unittest.TestCase):
     def test_repr(self):
-        self.assertEqual(repr(TestEnum.FOO_BAR), 'TestEnum.FOO_BAR')
+        self.assertEqual(repr(FakeEnum.FOO_BAR), 'FakeEnum.FOO_BAR')
 
     def test_from_string(self):
         for item in ['foo_bar', 'FOO_BAR', 'foo-bar', 'FOO-BAR', 'Foo-Bar']:
-            result = TestEnum.from_string(item)
-            self.assertEqual(result, TestEnum.FOO_BAR)
+            result = FakeEnum.from_string(item)
+            self.assertEqual(result, FakeEnum.FOO_BAR)
 
-        result = TestEnum.from_string('taco')
-        self.assertEqual(result, TestEnum.TACO)
+        result = FakeEnum.from_string('taco')
+        self.assertEqual(result, FakeEnum.TACO)
 
     def test_from_string_errors(self):
         expected = 'Value given is not a string. 99 !=.*str'
         with self.assertRaisesRegex(EnforceError, expected):
-            TestEnum.from_string(99)
+            FakeEnum.from_string(99)
 
-        expected = 'FOO is not a TestEnum option. Options:'
+        expected = 'FOO is not a FakeEnum option. Options:'
         with self.assertRaisesRegex(EnforceError, expected):
-            TestEnum.from_string('foo')
+            FakeEnum.from_string('foo')
 # ------------------------------------------------------------------------------
 
 

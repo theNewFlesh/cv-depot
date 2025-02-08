@@ -2,11 +2,11 @@ import unittest
 
 from lunchbox.enforce import EnforceError
 
-from cv_depot.core.channel import ChannelMap
+from cv_depot.core.channel_map import ChannelMap
 # ------------------------------------------------------------------------------
 
 
-class ChannelTests(unittest.TestCase):
+class ChannelMapTests(unittest.TestCase):
     def test_setattr(self):
         cmap = ChannelMap()
         cmap['kiwi'] = '0.r'

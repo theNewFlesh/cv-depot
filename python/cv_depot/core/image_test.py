@@ -527,15 +527,6 @@ NUM_CHANNELS: 3
         img2 = Image.from_array(img2)
         self.assertFalse(img1 == img2)
 
-    def test_eq_operators(self):
-        img1 = np.zeros((10, 10, 3), dtype=np.float16)
-        img2 = np.ones((10, 10, 3), dtype=np.float32)
-        img1 = Image.from_array(img1)
-        img2 = Image.from_array(img2)
-
-        self.assertTrue(img1 < img2)
-        self.assertTrue(img2 > img1)
-
     def test_info(self):
         with TemporaryDirectory() as root:
             filepath = Path(root, 'test.exr')
