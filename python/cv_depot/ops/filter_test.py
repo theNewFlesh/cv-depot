@@ -1,8 +1,10 @@
 import unittest
 
 from lunchbox.enforce import EnforceError
+import cv2
 import numpy as np
 
+from cv_depot.core.color import BasicColor
 from cv_depot.core.image import Image
 import cv_depot.ops.draw as cvdraw
 import cv_depot.ops.filter as cvfilt
@@ -49,3 +51,39 @@ class FilterTests(unittest.TestCase):
         # size < 0
         with self.assertRaises(EnforceError):
             cvfilt.canny_edges(img, -1)
+
+    def get_tophat_image(self):
+        img = np.zeros((128, 128, 3))
+        img = cv2.circle(img, (64, 64), 30, (255), -1)
+        img = cv2.circle(img, (100, 100), 10, (255), -1)
+        img = img.astype(np.uint8)
+        img = Image.from_array(img)
+        return img
+
+    def test_tophat_close(self):
+        img = self.get_tophat_image()
+        before = img.data.sum()
+        result = cvfilt.tophat(img, 10, kind='close').data.sum()
+        self.assertGreater(before, result)
+
+    def test_tophat_open(self):
+        img = self.get_tophat_image()
+        before = img.data.sum()
+        result = cvfilt.tophat(img, 25, kind='open').data.sum()
+        self.assertLess(before, result)
+
+    def test_tophat_error(self):
+        # image
+        with self.assertRaises(EnforceError):
+            cvfilt.tophat(np.zeros((10, 10, 3)), 10)
+
+        # amount
+        swatch = cvdraw.swatch((10, 10, 3), BasicColor.BLACK)
+        with self.assertRaises(EnforceError):
+            cvfilt.tophat(swatch, -1)
+
+        # kind
+        expected = r'Illegal tophat kind: foo\. Legal tophat kinds: '
+        expected += r"\['open', 'close'\]\."
+        with self.assertRaisesRegexp(EnforceError, expected):
+            cvfilt.tophat(swatch, 10, kind='foo')
