@@ -86,7 +86,7 @@ def linear_lookup(lower=0, upper=1):
     r'''
     Generates a linear lookup table with an upper and lower shoulder.
 
-    .. image:: linear_lut.png
+    .. image:: images/linear_lut.png
 
     Args:
         lower (float, optional): Lower shoulder value. Default: 0.
