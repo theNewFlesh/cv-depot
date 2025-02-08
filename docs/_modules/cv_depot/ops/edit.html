@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cv_depot.ops.edit &mdash; cv-depot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/style.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            cv-depot
+          </a>
+              <div class="version">
+                0.8.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#installation-for-developers">Installation for Developers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#installation-for-production">Installation for Production</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#quickstart-guide">Quickstart Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#development-cli">Development CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#production-cli">Production CLI</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../core.html">core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ops.html">ops</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development CLI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">cli</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">cv-depot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">cv_depot.ops.edit</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for cv_depot.ops.edit</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>  <span class="c1"># noqa F401</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cv_depot.core.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">AnyAnchor</span><span class="p">,</span> <span class="n">AnyColor</span>  <span class="c1"># noqa F401</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">lunchbox.enforce</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enforce</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">cv2</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">cv_depot.core.color</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasicColor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cv_depot.core.enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Anchor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cv_depot.core.image</span><span class="w"> </span><span class="kn">import</span> <span class="n">BitDepth</span><span class="p">,</span> <span class="n">Image</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">cv_depot.core.enforce</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">enf</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">cv_depot.ops.draw</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cvdraw</span>
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="reformat">
+<a class="viewcode-back" href="../../../ops.html#cv_depot.ops.edit.reformat">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">reformat</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>
+    <span class="c1"># type: (Image, float, float) -&gt; Image</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Reformat given image by given width and height factors.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        image (Image): Image instance.</span>
+<span class="sd">        width (float): Factor to scale image width by.</span>
+<span class="sd">        height (float): Factor to scale image height by.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        EnforceError: If image is not an Image instance.</span>
+<span class="sd">        ValueError: If width or height of reformatted image is less than 1 pixel.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Image: Reformatted image.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;instance of&#39;</span><span class="p">,</span> <span class="n">Image</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+    <span class="n">source_bit_depth</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">bit_depth</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">to_bit_depth</span><span class="p">(</span><span class="n">BitDepth</span><span class="o">.</span><span class="n">FLOAT32</span><span class="p">)</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="n">width</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">height</span> <span class="o">*</span> <span class="n">height</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Invalid scale factors. Width and height must be at least 1 pixel&#39;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;. Format shape in pixels: (</span><span class="si">{</span><span class="n">width</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">height</span><span class="si">}</span><span class="s1">).&#39;</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span><span class="o">.</span><span class="n">to_bit_depth</span><span class="p">(</span><span class="n">source_bit_depth</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">output</span></div>
+
+
+
+<div class="viewcode-block" id="crop">
+<a class="viewcode-back" href="../../../ops.html#cv_depot.ops.edit.crop">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">crop</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">width_mult</span><span class="p">,</span> <span class="n">height_mult</span><span class="p">,</span> <span class="n">width_offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">height_offset</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="c1"># type: (Image, float, float, int, int) -&gt; Image</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Crop a given image according to a width and height multipliers and offsets.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        image (Image): Image to be cropped.</span>
+<span class="sd">        width_mult (float): Width multiplier.</span>
+<span class="sd">        height_mult (float): Height multiplier.</span>
+<span class="sd">        width_offset (float): Width offset.</span>
+<span class="sd">        height_offset (float): Height offset.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        EnforeError: If image is not an instance of Image.</span>
+<span class="sd">        EnforeError: If width_mult is not &gt; 0 and &lt;= 1.</span>
+<span class="sd">        EnforeError: If height_mult is not &gt; 0 and &lt;= 1.</span>
+<span class="sd">        EnforceError: If crop dimensions are 0 in width or height.</span>
+<span class="sd">        EnforceError: If crop width bounds are outside image dimensions.</span>
+<span class="sd">        EnforceError: If crop height bounds are outside image dimensions.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Image: Cropped image.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;instance of&#39;</span><span class="p">,</span> <span class="n">Image</span><span class="p">)</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">width_mult</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">width_mult</span><span class="p">,</span> <span class="s1">&#39;&lt;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">height_mult</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">height_mult</span><span class="p">,</span> <span class="s1">&#39;&lt;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+    <span class="n">height_offset</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
+
+    <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">width_and_height</span>
+    <span class="n">cw</span> <span class="o">=</span> <span class="n">w</span> <span class="o">*</span> <span class="mf">0.5</span>
+    <span class="n">ch</span> <span class="o">=</span> <span class="n">h</span> <span class="o">*</span> <span class="mf">0.5</span>
+    <span class="n">wb</span> <span class="o">=</span> <span class="n">cw</span> <span class="o">*</span> <span class="n">width_mult</span>
+    <span class="n">hb</span> <span class="o">=</span> <span class="n">ch</span> <span class="o">*</span> <span class="n">height_mult</span>
+
+    <span class="n">w0</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">cw</span> <span class="o">-</span> <span class="n">wb</span><span class="p">)</span> <span class="o">+</span> <span class="n">width_offset</span><span class="p">)</span>
+    <span class="n">w1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cw</span> <span class="o">+</span> <span class="n">wb</span> <span class="o">+</span> <span class="n">width_offset</span><span class="p">)</span>
+    <span class="n">h0</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">ch</span> <span class="o">-</span> <span class="n">hb</span><span class="p">)</span> <span class="o">+</span> <span class="n">height_offset</span><span class="p">)</span>
+    <span class="n">h1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">ch</span> <span class="o">+</span> <span class="n">hb</span> <span class="o">+</span> <span class="n">height_offset</span><span class="p">)</span>
+
+    <span class="n">cw</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cw</span><span class="p">)</span>
+    <span class="n">ch</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span>
+
+    <span class="c1"># ensure crop bounds are within image dimensions</span>
+    <span class="n">dw</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">width_mult</span><span class="p">)</span>
+    <span class="n">dh</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">h</span> <span class="o">*</span> <span class="n">height_mult</span><span class="p">)</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Crop width and height must be greater than 0. &#39;</span>
+    <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;Crop dimensions: </span><span class="si">{</span><span class="n">dw</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">dh</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">width_mult</span><span class="p">,</span> <span class="s1">&#39;&gt;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">h</span> <span class="o">*</span> <span class="n">height_mult</span><span class="p">,</span> <span class="s1">&#39;&gt;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Crop width bounds: (</span><span class="si">{</span><span class="n">w0</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">cw</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">w1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">cw</span><span class="si">}</span><span class="s1">) outside of &#39;</span>
+    <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;image width bounds: (</span><span class="si">{</span><span class="o">-</span><span class="n">cw</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">cw</span><span class="si">}</span><span class="s1">)&#39;</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">w0</span><span class="p">,</span> <span class="s1">&#39;&gt;=&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">w1</span><span class="p">,</span> <span class="s1">&#39;&gt;=&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">w0</span><span class="p">,</span> <span class="s1">&#39;&lt;=&#39;</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">w1</span><span class="p">,</span> <span class="s1">&#39;&lt;=&#39;</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Crop height bounds: (</span><span class="si">{</span><span class="n">h0</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">ch</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">h1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">ch</span><span class="si">}</span><span class="s1">) outside of &#39;</span>
+    <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;image height bounds: (</span><span class="si">{</span><span class="o">-</span><span class="n">ch</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">ch</span><span class="si">}</span><span class="s1">)&#39;</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">h0</span><span class="p">,</span> <span class="s1">&#39;&gt;=&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">h1</span><span class="p">,</span> <span class="s1">&#39;&gt;=&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">h0</span><span class="p">,</span> <span class="s1">&#39;&lt;=&#39;</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">h1</span><span class="p">,</span> <span class="s1">&#39;&lt;=&#39;</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">image</span><span class="p">[</span><span class="n">w0</span><span class="p">:</span><span class="n">w1</span><span class="p">,</span> <span class="n">h0</span><span class="p">:</span><span class="n">h1</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="pad">
+<a class="viewcode-back" href="../../../ops.html#cv_depot.ops.edit.pad">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">pad</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="n">Anchor</span><span class="o">.</span><span class="n">TOP_LEFT</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">BasicColor</span><span class="o">.</span><span class="n">BLACK</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
+    <span class="c1"># type: (Image, tuple[int, int, int], AnyAnchor, AnyColor) -&gt; Image</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Pads a given image into a new image of a given shape.</span>
+
+<span class="sd">    The anchor argument determines which corner of the given image will be</span>
+<span class="sd">    anchored to the padded images respective corner. For instance, an anchor of</span>
+<span class="sd">    &#39;top-left&#39; will anchor the top-left corner of the given image to the</span>
+<span class="sd">    top-left corner of the padded image. &#39;center-left&#39; will vertically center</span>
+<span class="sd">    the image and horizontally anchor to the left of the image. &#39;center-center&#39;</span>
+<span class="sd">    will vertically and horizontally center the image.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        image (Image): Image to be padded.</span>
+<span class="sd">        shape (tuple[int]): Shape (width, height, channels) of padded image.</span>
+<span class="sd">        anchor (Anchor or str, optional): Where the given image will be placed within the</span>
+<span class="sd">            new image. Default: top-left.</span>
+<span class="sd">        color (Color or BasicColor, optional): Padding color.</span>
+<span class="sd">            Default: BasicColor.BLACK</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Image: Padded image.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Shape must be of length 3. Given shape: </span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s1">.&#39;</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">dw</span> <span class="o">=</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">w</span>
+    <span class="n">dh</span> <span class="o">=</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">h</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">dw</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">dh</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Output shape must be greater than or equal to input shape in each&#39;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39; dimension. </span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s1"> !&gt;= </span><span class="si">{</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s1">.&#39;</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+    <span class="c1"># resolve anchor</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">anchor</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">dir_h</span><span class="p">,</span> <span class="n">dir_w</span> <span class="o">=</span> <span class="n">Anchor</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">anchor</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dir_h</span><span class="p">,</span> <span class="n">dir_w</span> <span class="o">=</span> <span class="n">anchor</span><span class="o">.</span><span class="n">value</span>
+
+    <span class="n">lut</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">center</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="s1">&#39;below&#39;</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="s1">&#39;above&#39;</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="s1">&#39;left&#39;</span>
+    <span class="p">)</span>
+    <span class="n">dir_h</span> <span class="o">=</span> <span class="n">lut</span><span class="p">[</span><span class="n">dir_h</span><span class="p">]</span>
+    <span class="n">dir_w</span> <span class="o">=</span> <span class="n">lut</span><span class="p">[</span><span class="n">dir_w</span><span class="p">]</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+    <span class="n">bit_depth</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">bit_depth</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">to_bit_depth</span><span class="p">(</span><span class="n">BitDepth</span><span class="o">.</span><span class="n">FLOAT32</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">dh</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">dir_h</span> <span class="o">!=</span> <span class="s1">&#39;center&#39;</span><span class="p">:</span>
+            <span class="n">pad_h</span> <span class="o">=</span> <span class="n">cvdraw</span><span class="o">.</span><span class="n">swatch</span><span class="p">((</span><span class="n">output</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">dh</span><span class="p">,</span> <span class="n">c</span><span class="p">),</span> <span class="n">color</span><span class="p">)</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">staple</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">pad_h</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="n">dir_h</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ph0</span> <span class="o">=</span> <span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">dh</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="n">c</span><span class="p">)</span>
+            <span class="n">ph1</span> <span class="o">=</span> <span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">dh</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="n">c</span><span class="p">)</span>
+
+            <span class="n">pad_h0</span> <span class="o">=</span> <span class="n">cvdraw</span><span class="o">.</span><span class="n">swatch</span><span class="p">(</span><span class="n">ph0</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">staple</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">pad_h0</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;above&#39;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">ph1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">pad_h1</span> <span class="o">=</span> <span class="n">cvdraw</span><span class="o">.</span><span class="n">swatch</span><span class="p">(</span><span class="n">ph1</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span>
+                <span class="n">output</span> <span class="o">=</span> <span class="n">staple</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">pad_h1</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;below&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">dw</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">dir_w</span> <span class="o">!=</span> <span class="s1">&#39;center&#39;</span><span class="p">:</span>
+            <span class="n">pad_w</span> <span class="o">=</span> <span class="n">cvdraw</span><span class="o">.</span><span class="n">swatch</span><span class="p">((</span><span class="n">dw</span><span class="p">,</span> <span class="n">output</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="n">c</span><span class="p">),</span> <span class="n">color</span><span class="p">)</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">staple</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">pad_w</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="n">dir_w</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pw0</span> <span class="o">=</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">dw</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="n">output</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+            <span class="n">pw1</span> <span class="o">=</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">dw</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="n">output</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+
+            <span class="n">pad_w0</span> <span class="o">=</span> <span class="n">cvdraw</span><span class="o">.</span><span class="n">swatch</span><span class="p">(</span><span class="n">pw0</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">staple</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">pad_w0</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">pw1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">pad_w1</span> <span class="o">=</span> <span class="n">cvdraw</span><span class="o">.</span><span class="n">swatch</span><span class="p">(</span><span class="n">pw1</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span>
+                <span class="n">output</span> <span class="o">=</span> <span class="n">staple</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">pad_w1</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
+
+    <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">to_bit_depth</span><span class="p">(</span><span class="n">bit_depth</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">output</span></div>
+
+
+
+<div class="viewcode-block" id="staple">
+<a class="viewcode-back" href="../../../ops.html#cv_depot.ops.edit.staple">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">staple</span><span class="p">(</span><span class="n">image_a</span><span class="p">,</span> <span class="n">image_b</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+    <span class="c1"># type: (Image, Image, str, float) -&gt; Image</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Joins two images along a given direction.</span>
+
+<span class="sd">    .. image:: images/staple.png</span>
+
+<span class="sd">    Images must be the same height if stapling along left/right axis.</span>
+<span class="sd">    Images must be the same width if stapling along above/below axis.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        image_a (Image): Image A.</span>
+<span class="sd">        image_b (Image): Image B.</span>
+<span class="sd">        direction (str, optional): Where image b will be placed relative to a.</span>
+<span class="sd">            Options include: left, right, above, below. Default: right.</span>
+<span class="sd">        fill_value (float, optional): Value to fill additional channels with.</span>
+<span class="sd">            Default: 0.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If illegal direction given.</span>
+<span class="sd">        ValueError: If direction is left/right and image heights are not</span>
+<span class="sd">            equal.</span>
+<span class="sd">        ValueError: If direction is above/below and image widths are not</span>
+<span class="sd">            equal.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Image: Stapled Image.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">direction</span> <span class="o">=</span> <span class="n">direction</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">dirs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="s1">&#39;above&#39;</span><span class="p">,</span> <span class="s1">&#39;below&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">direction</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dirs</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Illegal direction: </span><span class="si">{</span><span class="n">direction</span><span class="si">}</span><span class="s1">. Legal directions: </span><span class="si">{</span><span class="n">dirs</span><span class="si">}</span><span class="s1">.&#39;</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">direction</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">]:</span>
+        <span class="n">h0</span> <span class="o">=</span> <span class="n">image_a</span><span class="o">.</span><span class="n">height</span>
+        <span class="n">h1</span> <span class="o">=</span> <span class="n">image_b</span><span class="o">.</span><span class="n">height</span>
+        <span class="k">if</span> <span class="n">h0</span> <span class="o">!=</span> <span class="n">h1</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Image heights must be equal. </span><span class="si">{</span><span class="n">h0</span><span class="si">}</span><span class="s1"> != </span><span class="si">{</span><span class="n">h1</span><span class="si">}</span><span class="s1">.&#39;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">direction</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;above&#39;</span><span class="p">,</span> <span class="s1">&#39;below&#39;</span><span class="p">]:</span>
+        <span class="n">w0</span> <span class="o">=</span> <span class="n">image_a</span><span class="o">.</span><span class="n">width</span>
+        <span class="n">w1</span> <span class="o">=</span> <span class="n">image_b</span><span class="o">.</span><span class="n">width</span>
+        <span class="k">if</span> <span class="n">w0</span> <span class="o">!=</span> <span class="n">w1</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Image widths must be equal. </span><span class="si">{</span><span class="n">w0</span><span class="si">}</span><span class="s1"> != </span><span class="si">{</span><span class="n">w1</span><span class="si">}</span><span class="s1">.&#39;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="c1"># pad images so number of channels are equal</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">image_a</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">image_b</span><span class="o">.</span><span class="n">data</span>
+
+    <span class="c1"># needed for one channel images which make (h, w) arrays</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">ca</span> <span class="o">=</span> <span class="n">image_a</span><span class="o">.</span><span class="n">num_channels</span>
+    <span class="n">cb</span> <span class="o">=</span> <span class="n">image_b</span><span class="o">.</span><span class="n">num_channels</span>
+    <span class="k">if</span> <span class="n">ca</span> <span class="o">!=</span> <span class="n">cb</span><span class="p">:</span>
+        <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">image_a</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">ca</span> <span class="o">-</span> <span class="n">cb</span><span class="p">)</span>
+        <span class="n">pad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">c</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">*</span> <span class="n">fill_value</span>
+        <span class="k">if</span> <span class="n">ca</span> <span class="o">&gt;</span> <span class="n">cb</span><span class="p">:</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">b</span><span class="p">,</span> <span class="n">pad</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">pad</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="s1">&#39;above&#39;</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">direction</span> <span class="o">==</span> <span class="s1">&#39;below&#39;</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">direction</span> <span class="o">==</span> <span class="s1">&#39;left&#39;</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">direction</span> <span class="o">==</span> <span class="s1">&#39;right&#39;</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">Image</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="cut">
+<a class="viewcode-back" href="../../../ops.html#cv_depot.ops.edit.cut">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">cut</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s1">&#39;vertical&#39;</span><span class="p">):</span>
+    <span class="c1"># (Image, Union[int, list[int]], str) -&gt; Image</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Splits a given image into two images along a vertical or horizontal axis.</span>
+
+<span class="sd">    .. image:: images/cut.png</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        image (Image): Image to be cut.</span>
+<span class="sd">        indices (int or list[int]): Indices of where to cut along cross-axis.</span>
+<span class="sd">        axis (str, optional): Axis to cut along.</span>
+<span class="sd">            Options include: vertical, horizontal. Default: vertical.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        EnforceError: If image is not an Image instance.</span>
+<span class="sd">        EnforceError: If indices is not an int or list of ints.</span>
+<span class="sd">        EnforceError: If illegal axis is given.</span>
+<span class="sd">        IndexError: If indices contains index that is outside of bounds.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple[Image]: Two Image instances.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;instance of&#39;</span><span class="p">,</span> <span class="n">Image</span><span class="p">)</span>
+
+    <span class="n">axis</span> <span class="o">=</span> <span class="n">axis</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Illegal axis: </span><span class="si">{a}</span><span class="s1">. Legal axes include: </span><span class="si">{b}</span><span class="s1">.&#39;</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;vertical&#39;</span><span class="p">,</span> <span class="s1">&#39;horizontal&#39;</span><span class="p">],</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="c1"># create indices</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="s1">&#39;instance of&#39;</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+    <span class="n">enf</span><span class="o">.</span><span class="n">enforce_homogenous_type</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">indices</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;instance of&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>  <span class="c1"># tyep: ignore</span>
+
+    <span class="n">indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">max_</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">width</span>
+    <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="s1">&#39;horizontal&#39;</span><span class="p">:</span>
+        <span class="n">max_</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">height</span>
+    <span class="n">indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">max_</span><span class="p">)</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">indices</span><span class="p">)))</span>
+
+    <span class="n">max_i</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">max_i</span> <span class="o">&gt;</span> <span class="n">max_</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Index out of bounds. </span><span class="si">{</span><span class="n">max_i</span><span class="si">}</span><span class="s1"> &gt; </span><span class="si">{</span><span class="n">max_</span><span class="si">}</span><span class="s1">.&#39;</span>
+        <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="n">min_i</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">min_i</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Index out of bounds. </span><span class="si">{</span><span class="n">min_i</span><span class="si">}</span><span class="s1"> &lt; 0.&#39;</span>
+        <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+    <span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">indices</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">prev</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="s1">&#39;vertical&#39;</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">image</span><span class="p">[</span><span class="n">prev</span><span class="p">:</span><span class="n">i</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">image</span><span class="p">[:,</span> <span class="n">prev</span><span class="p">:</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">output</span></div>
+
+
+
+<div class="viewcode-block" id="chop">
+<a class="viewcode-back" href="../../../ops.html#cv_depot.ops.edit.chop">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">chop</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">channel</span><span class="o">=</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;vertical-horizontal&#39;</span><span class="p">):</span>
+    <span class="c1"># type: (Image, str, str) -&gt; dict[tuple[int, int], Image]</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Chops up a given image into smaller images that bound single contiguous</span>
+<span class="sd">    objects within a given channel.</span>
+
+<span class="sd">    .. image:: images/chop_example.png</span>
+
+<span class="sd">    Chop has the following modes:</span>
+
+<span class="sd">    .. image:: images/chop_modes.png</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        image (Image): Image instance.</span>
+<span class="sd">        channel (str, optional): Channel to chop image by. Default: &#39;a&#39;.</span>
+<span class="sd">        mode (str, optional): The type and order of cuts to ber performed.</span>
+<span class="sd">            Default: vertical-horizontal. Options include:</span>
+
+<span class="sd">                * vertical - Make only vertical cuts along the width axis.</span>
+<span class="sd">                * horizontal - Make only horizontal cuts along the height axis.</span>
+<span class="sd">                * vertical-horizontal - Cut along the width axis first and then</span>
+<span class="sd">                    the height axis of each resulting segement.</span>
+<span class="sd">                * horizontal-vertical - Cut along the height axis first and then</span>
+<span class="sd">                    the width axis of each resulting segement.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        EnforceError: If image is not an Image or NDArray.</span>
+<span class="sd">        EnforceError: If channel is not in image channels.</span>
+<span class="sd">        EnforceError: If illegal mode given.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: Dictionary of form (width, height): Image.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># enforce image</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;instance of&#39;</span><span class="p">,</span> <span class="n">Image</span><span class="p">)</span>
+
+    <span class="c1"># enforce channel</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{a}</span><span class="s1"> is not a valid channel. Channels include: </span><span class="si">{b}</span><span class="s1">.&#39;</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">channels</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="c1"># enforce mode</span>
+    <span class="n">modes</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;vertical&#39;</span><span class="p">,</span> <span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="s1">&#39;vertical-horizontal&#39;</span><span class="p">,</span> <span class="s1">&#39;horizontal-vertical&#39;</span>
+    <span class="p">]</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{a}</span><span class="s1"> is not a legal mode. Legal modes include: </span><span class="si">{b}</span><span class="s1">.&#39;</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="n">modes</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_bounding_boxes</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+        <span class="c1"># type: (Image) -&gt; list[list[tuple[int, int]]]</span>
+        <span class="n">hgt</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">height</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">to_bit_depth</span><span class="p">(</span><span class="n">BitDepth</span><span class="o">.</span><span class="n">UINT8</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">contours</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">findContours</span><span class="p">(</span>
+            <span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">RETR_EXTERNAL</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CHAIN_APPROX_SIMPLE</span>
+        <span class="p">)</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="n">contours</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">contours</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="n">contours</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">boundingRect</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+            <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">([</span>
+                <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">hgt</span> <span class="o">-</span> <span class="p">(</span><span class="n">y</span> <span class="o">+</span> <span class="n">h</span><span class="p">)),</span>
+                <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">w</span><span class="p">,</span> <span class="n">hgt</span> <span class="o">-</span> <span class="n">y</span><span class="p">),</span>
+            <span class="p">])</span>
+        <span class="k">return</span> <span class="n">output</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_indices</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
+        <span class="c1"># type: (Image, str) -&gt; list[int]</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Determines where cuts should be made along a given access, according to</span>
+<span class="sd">        a given threshold.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            image (Image): A one channel image.</span>
+<span class="sd">            axis (str): The axis to cut the image along. Options include:</span>
+<span class="sd">                vertical or horizontal.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list[int]: Indices along a given axis that demarcate object bounds.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># find indices of bbox edges across a single axis</span>
+        <span class="n">bboxes</span> <span class="o">=</span> <span class="n">get_bounding_boxes</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>  <span class="c1"># type: Any</span>
+        <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="s1">&#39;vertical&#39;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">bbox</span> <span class="ow">in</span> <span class="n">bboxes</span><span class="p">:</span>
+                <span class="n">indices</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">indices</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">bbox</span> <span class="ow">in</span> <span class="n">bboxes</span><span class="p">:</span>
+                <span class="n">indices</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">indices</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+
+        <span class="n">max_</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">width</span> <span class="k">if</span> <span class="n">axis</span> <span class="o">==</span> <span class="s1">&#39;vertical&#39;</span> <span class="k">else</span> <span class="n">image</span><span class="o">.</span><span class="n">height</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_</span><span class="p">],</span> <span class="n">indices</span><span class="p">)</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+        <span class="n">indices</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">max_</span><span class="p">)</span>
+
+        <span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
+                <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">output</span>
+    <span class="c1"># ------------------------------------------------------------------------</span>
+
+    <span class="c1"># get axes</span>
+    <span class="n">axes</span> <span class="o">=</span> <span class="n">mode</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+    <span class="n">a0</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># get indices along first axis</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">get_indices</span><span class="p">(</span><span class="n">image</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">channel</span><span class="p">],</span> <span class="n">a0</span><span class="p">)</span>
+    <span class="n">segments</span> <span class="o">=</span> <span class="n">cut</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">a0</span><span class="p">)</span>
+
+    <span class="c1"># if only one axis return segments</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">axes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;vertical&#39;</span><span class="p">:</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="p">{(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="n">item</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">segments</span><span class="p">)}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">yl</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="n">yl</span> <span class="o">-</span> <span class="n">y</span><span class="p">):</span> <span class="n">item</span> <span class="k">for</span> <span class="n">y</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">segments</span><span class="p">)}</span>
+        <span class="k">return</span> <span class="n">output</span>
+
+    <span class="c1"># otherwise chop each segement according to its edge detect indices</span>
+    <span class="n">a1</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">xl</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">segment</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">segments</span><span class="p">):</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">get_indices</span><span class="p">(</span><span class="n">segment</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">channel</span><span class="p">],</span> <span class="n">a1</span><span class="p">)</span>
+        <span class="n">images</span> <span class="o">=</span> <span class="n">cut</span><span class="p">(</span><span class="n">segment</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">a1</span><span class="p">)</span>
+        <span class="n">yl</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">images</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">y</span><span class="p">,</span> <span class="n">image</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">images</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">a0</span> <span class="o">==</span> <span class="s1">&#39;vertical&#39;</span><span class="p">:</span>
+                <span class="n">output</span><span class="p">[(</span><span class="n">x</span><span class="p">,</span> <span class="n">yl</span> <span class="o">-</span> <span class="n">y</span><span class="p">)]</span> <span class="o">=</span> <span class="n">image</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">output</span><span class="p">[(</span><span class="n">y</span><span class="p">,</span> <span class="n">xl</span> <span class="o">-</span> <span class="n">x</span><span class="p">)]</span> <span class="o">=</span> <span class="n">image</span>
+    <span class="k">return</span> <span class="n">output</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Alex Braun &lt;alexander.g.braun@gmail.com&gt;.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

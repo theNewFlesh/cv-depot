@@ -22,7 +22,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="cli" href="cli.html" />
+    <link rel="next" title="ops" href="ops.html" />
     <link rel="prev" title="&lt;no title&gt;" href="modules.html" /> 
 </head>
 
@@ -38,7 +38,7 @@
             cv-depot
           </a>
               <div class="version">
-                0.6.2
+                0.8.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -60,10 +60,10 @@
 <p class="caption" role="heading"><span class="caption-text">Python API</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">core</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#module-cv_depot.core.channel">channel</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#cv_depot.core.channel.ChannelMap"><code class="docutils literal notranslate"><span class="pre">ChannelMap</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.channel.ChannelMap.source"><code class="docutils literal notranslate"><span class="pre">ChannelMap.source</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.channel.ChannelMap.target"><code class="docutils literal notranslate"><span class="pre">ChannelMap.target</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-cv_depot.core.channel_map">channel_map</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cv_depot.core.channel_map.ChannelMap"><code class="docutils literal notranslate"><span class="pre">ChannelMap</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.channel_map.ChannelMap.source"><code class="docutils literal notranslate"><span class="pre">ChannelMap.source</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.channel_map.ChannelMap.target"><code class="docutils literal notranslate"><span class="pre">ChannelMap.target</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -126,7 +126,23 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#module-cv_depot.core.enforce">enforce</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cv_depot.core.enforce.enforce_homogenous_type"><code class="docutils literal notranslate"><span class="pre">enforce_homogenous_type()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#module-cv_depot.core.enum">enum</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cv_depot.core.enum.Anchor"><code class="docutils literal notranslate"><span class="pre">Anchor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.enum.Anchor.BOTTOM_CENTER"><code class="docutils literal notranslate"><span class="pre">Anchor.BOTTOM_CENTER</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.enum.Anchor.BOTTOM_LEFT"><code class="docutils literal notranslate"><span class="pre">Anchor.BOTTOM_LEFT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.enum.Anchor.BOTTOM_RIGHT"><code class="docutils literal notranslate"><span class="pre">Anchor.BOTTOM_RIGHT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.enum.Anchor.CENTER_CENTER"><code class="docutils literal notranslate"><span class="pre">Anchor.CENTER_CENTER</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.enum.Anchor.CENTER_LEFT"><code class="docutils literal notranslate"><span class="pre">Anchor.CENTER_LEFT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.enum.Anchor.CENTER_RIGHT"><code class="docutils literal notranslate"><span class="pre">Anchor.CENTER_RIGHT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.enum.Anchor.TOP_CENTER"><code class="docutils literal notranslate"><span class="pre">Anchor.TOP_CENTER</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.enum.Anchor.TOP_LEFT"><code class="docutils literal notranslate"><span class="pre">Anchor.TOP_LEFT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.enum.Anchor.TOP_RIGHT"><code class="docutils literal notranslate"><span class="pre">Anchor.TOP_RIGHT</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#cv_depot.core.enum.BitDepth"><code class="docutils literal notranslate"><span class="pre">BitDepth</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.enum.BitDepth.FLOAT16"><code class="docutils literal notranslate"><span class="pre">BitDepth.FLOAT16</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.enum.BitDepth.FLOAT32"><code class="docutils literal notranslate"><span class="pre">BitDepth.FLOAT32</span></code></a></li>
@@ -134,7 +150,17 @@
 <li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.enum.BitDepth.UINT8"><code class="docutils literal notranslate"><span class="pre">BitDepth.UINT8</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.enum.BitDepth.__init__"><code class="docutils literal notranslate"><span class="pre">BitDepth.__init__()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.enum.BitDepth.from_dtype"><code class="docutils literal notranslate"><span class="pre">BitDepth.from_dtype()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.enum.BitDepth.from_string"><code class="docutils literal notranslate"><span class="pre">BitDepth.from_string()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#cv_depot.core.enum.Direction"><code class="docutils literal notranslate"><span class="pre">Direction</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.enum.Direction.BOTTOM"><code class="docutils literal notranslate"><span class="pre">Direction.BOTTOM</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.enum.Direction.LEFT"><code class="docutils literal notranslate"><span class="pre">Direction.LEFT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.enum.Direction.RIGHT"><code class="docutils literal notranslate"><span class="pre">Direction.RIGHT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.enum.Direction.TOP"><code class="docutils literal notranslate"><span class="pre">Direction.TOP</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#cv_depot.core.enum.EnumBase"><code class="docutils literal notranslate"><span class="pre">EnumBase</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.enum.EnumBase.from_string"><code class="docutils literal notranslate"><span class="pre">EnumBase.from_string()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#cv_depot.core.enum.ImageFormat"><code class="docutils literal notranslate"><span class="pre">ImageFormat</span></code></a><ul>
@@ -150,7 +176,6 @@
 <li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.enum.VideoCodec.H264"><code class="docutils literal notranslate"><span class="pre">VideoCodec.H264</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.enum.VideoCodec.H265"><code class="docutils literal notranslate"><span class="pre">VideoCodec.H265</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.enum.VideoCodec.__init__"><code class="docutils literal notranslate"><span class="pre">VideoCodec.__init__()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.enum.VideoCodec.from_string"><code class="docutils literal notranslate"><span class="pre">VideoCodec.from_string()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#cv_depot.core.enum.VideoFormat"><code class="docutils literal notranslate"><span class="pre">VideoFormat</span></code></a><ul>
@@ -220,6 +245,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="ops.html">ops</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Development CLI</span></p>
 <ul>
@@ -253,17 +279,17 @@
              
   <section id="core">
 <h1>core<a class="headerlink" href="#core" title="Link to this heading"></a></h1>
-<section id="module-cv_depot.core.channel">
-<span id="channel"></span><h2>channel<a class="headerlink" href="#module-cv_depot.core.channel" title="Link to this heading"></a></h2>
+<section id="module-cv_depot.core.channel_map">
+<span id="channel-map"></span><h2>channel_map<a class="headerlink" href="#module-cv_depot.core.channel_map" title="Link to this heading"></a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="cv_depot.core.channel.ChannelMap">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cv_depot.core.channel.</span></span><span class="sig-name descname"><span class="pre">ChannelMap</span></span><a class="reference internal" href="_modules/cv_depot/core/channel.html#ChannelMap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_depot.core.channel.ChannelMap" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="cv_depot.core.channel_map.ChannelMap">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cv_depot.core.channel_map.</span></span><span class="sig-name descname"><span class="pre">ChannelMap</span></span><a class="reference internal" href="_modules/cv_depot/core/channel_map.html#ChannelMap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_depot.core.channel_map.ChannelMap" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">OrderedDict</span></code></p>
 <p>A channel to channel mapping between multiple source images and one target
 image.</p>
 <dl class="py property">
-<dt class="sig sig-object py" id="cv_depot.core.channel.ChannelMap.source">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">source</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#cv_depot.core.channel.ChannelMap.source" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="cv_depot.core.channel_map.ChannelMap.source">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">source</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#cv_depot.core.channel_map.ChannelMap.source" title="Link to this definition"></a></dt>
 <dd><p>Ordered list of source channels.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
@@ -273,8 +299,8 @@ image.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="cv_depot.core.channel.ChannelMap.target">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">target</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#cv_depot.core.channel.ChannelMap.target" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="cv_depot.core.channel_map.ChannelMap.target">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">target</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#cv_depot.core.channel_map.ChannelMap.target" title="Link to this definition"></a></dt>
 <dd><p>Ordered list of target channels.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
@@ -803,12 +829,101 @@ Default: BitDepth.FLOAT32.</p>
 </dd></dl>
 
 </section>
+<section id="module-cv_depot.core.enforce">
+<span id="enforce"></span><h2>enforce<a class="headerlink" href="#module-cv_depot.core.enforce" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="cv_depot.core.enforce.enforce_homogenous_type">
+<span class="sig-prename descclassname"><span class="pre">cv_depot.core.enforce.</span></span><span class="sig-name descname"><span class="pre">enforce_homogenous_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iterable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Iterable'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_depot/core/enforce.html#enforce_homogenous_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_depot.core.enforce.enforce_homogenous_type" title="Link to this definition"></a></dt>
+<dd><p>Ensures that iterable only contains only one type of object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>items</strong> (<em>iterable</em>) – Iterable.</p></li>
+<li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – First word in error message. Default: Iterable.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>EnforceError</strong> – If iterable contains more than one type of object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 <section id="module-cv_depot.core.enum">
 <span id="enum"></span><h2>enum<a class="headerlink" href="#module-cv_depot.core.enum" title="Link to this heading"></a></h2>
 <dl class="py class">
+<dt class="sig sig-object py" id="cv_depot.core.enum.Anchor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cv_depot.core.enum.</span></span><span class="sig-name descname"><span class="pre">Anchor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_depot/core/enum.html#Anchor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_depot.core.enum.Anchor" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#cv_depot.core.enum.EnumBase" title="cv_depot.core.enum.EnumBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">EnumBase</span></code></a></p>
+<p>Legal anchors.</p>
+<p>Includes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>TOP_LEFT</p></li>
+<li><p>TOP_CENTER</p></li>
+<li><p>TOP_RIGHT</p></li>
+<li><p>CENTER_LEFT</p></li>
+<li><p>CENTER_CENTER</p></li>
+<li><p>CENTER_RIGHT</p></li>
+<li><p>BOTTOM_LEFT</p></li>
+<li><p>BOTTOM_CENTER</p></li>
+<li><p>BOTTOM_RIGHT</p></li>
+</ul>
+</div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_depot.core.enum.Anchor.BOTTOM_CENTER">
+<span class="sig-name descname"><span class="pre">BOTTOM_CENTER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('bottom',</span> <span class="pre">'center')</span></em><a class="headerlink" href="#cv_depot.core.enum.Anchor.BOTTOM_CENTER" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_depot.core.enum.Anchor.BOTTOM_LEFT">
+<span class="sig-name descname"><span class="pre">BOTTOM_LEFT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('bottom',</span> <span class="pre">'left')</span></em><a class="headerlink" href="#cv_depot.core.enum.Anchor.BOTTOM_LEFT" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_depot.core.enum.Anchor.BOTTOM_RIGHT">
+<span class="sig-name descname"><span class="pre">BOTTOM_RIGHT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('bottom',</span> <span class="pre">'right')</span></em><a class="headerlink" href="#cv_depot.core.enum.Anchor.BOTTOM_RIGHT" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_depot.core.enum.Anchor.CENTER_CENTER">
+<span class="sig-name descname"><span class="pre">CENTER_CENTER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('center',</span> <span class="pre">'center')</span></em><a class="headerlink" href="#cv_depot.core.enum.Anchor.CENTER_CENTER" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_depot.core.enum.Anchor.CENTER_LEFT">
+<span class="sig-name descname"><span class="pre">CENTER_LEFT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('center',</span> <span class="pre">'left')</span></em><a class="headerlink" href="#cv_depot.core.enum.Anchor.CENTER_LEFT" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_depot.core.enum.Anchor.CENTER_RIGHT">
+<span class="sig-name descname"><span class="pre">CENTER_RIGHT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('center',</span> <span class="pre">'right')</span></em><a class="headerlink" href="#cv_depot.core.enum.Anchor.CENTER_RIGHT" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_depot.core.enum.Anchor.TOP_CENTER">
+<span class="sig-name descname"><span class="pre">TOP_CENTER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('top',</span> <span class="pre">'center')</span></em><a class="headerlink" href="#cv_depot.core.enum.Anchor.TOP_CENTER" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_depot.core.enum.Anchor.TOP_LEFT">
+<span class="sig-name descname"><span class="pre">TOP_LEFT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('top',</span> <span class="pre">'left')</span></em><a class="headerlink" href="#cv_depot.core.enum.Anchor.TOP_LEFT" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_depot.core.enum.Anchor.TOP_RIGHT">
+<span class="sig-name descname"><span class="pre">TOP_RIGHT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('top',</span> <span class="pre">'right')</span></em><a class="headerlink" href="#cv_depot.core.enum.Anchor.TOP_RIGHT" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="cv_depot.core.enum.BitDepth">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cv_depot.core.enum.</span></span><span class="sig-name descname"><span class="pre">BitDepth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_depot/core/enum.html#BitDepth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_depot.core.enum.BitDepth" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#cv_depot.core.enum.EnumBase" title="cv_depot.core.enum.EnumBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">EnumBase</span></code></a></p>
 <p>Legal bit depths.</p>
 <p>Includes:</p>
 <blockquote>
@@ -881,23 +996,68 @@ Default: BitDepth.FLOAT32.</p>
 </dl>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cv_depot.core.enum.Direction">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cv_depot.core.enum.</span></span><span class="sig-name descname"><span class="pre">Direction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_depot/core/enum.html#Direction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_depot.core.enum.Direction" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#cv_depot.core.enum.EnumBase" title="cv_depot.core.enum.EnumBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">EnumBase</span></code></a></p>
+<p>Legal directions.</p>
+<p>Includes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>TOP</p></li>
+<li><p>BOTTOM</p></li>
+<li><p>LEFT</p></li>
+<li><p>RIGHT</p></li>
+</ul>
+</div></blockquote>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_depot.core.enum.Direction.BOTTOM">
+<span class="sig-name descname"><span class="pre">BOTTOM</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'bottom'</span></em><a class="headerlink" href="#cv_depot.core.enum.Direction.BOTTOM" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_depot.core.enum.Direction.LEFT">
+<span class="sig-name descname"><span class="pre">LEFT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'left'</span></em><a class="headerlink" href="#cv_depot.core.enum.Direction.LEFT" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_depot.core.enum.Direction.RIGHT">
+<span class="sig-name descname"><span class="pre">RIGHT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'right'</span></em><a class="headerlink" href="#cv_depot.core.enum.Direction.RIGHT" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cv_depot.core.enum.Direction.TOP">
+<span class="sig-name descname"><span class="pre">TOP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'top'</span></em><a class="headerlink" href="#cv_depot.core.enum.Direction.TOP" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cv_depot.core.enum.EnumBase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cv_depot.core.enum.</span></span><span class="sig-name descname"><span class="pre">EnumBase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_depot/core/enum.html#EnumBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_depot.core.enum.EnumBase" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>An enumeration.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="cv_depot.core.enum.BitDepth.from_string">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_depot/core/enum.html#BitDepth.from_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_depot.core.enum.BitDepth.from_string" title="Link to this definition"></a></dt>
-<dd><p>Construct a BitDepth instance from a given string.</p>
+<dt class="sig sig-object py" id="cv_depot.core.enum.EnumBase.from_string">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_depot/core/enum.html#EnumBase.from_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_depot.core.enum.EnumBase.from_string" title="Link to this definition"></a></dt>
+<dd><p>Constructs an enum instance from a given string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>string</strong> (<em>str</em>) – Dtype string. Options include:
-[float16, float32, uint8, int8].</p>
+<dd class="field-odd"><p><strong>string</strong> (<em>int</em>) – Enum string.</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>TypeError</strong> – If invalid string is given.</p>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>EnforceError</strong> – If value given is not a string.</p></li>
+<li><p><strong>EnforceError</strong> – If no EnumBase type can be found for given string.</p></li>
+</ul>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>BitDepth instance of given type.</p>
+<dd class="field-odd"><p>Enum instance.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#cv_depot.core.enum.BitDepth" title="cv_depot.core.enum.BitDepth">BitDepth</a></p>
+<dd class="field-even"><p><a class="reference internal" href="#cv_depot.core.enum.EnumBase" title="cv_depot.core.enum.EnumBase">EnumBase</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1041,29 +1201,6 @@ Default: BitDepth.FLOAT32.</p>
 <li><p><strong>string</strong> (<em>str</em>) – String representation of codec.</p></li>
 <li><p><strong>ffmpeg_code</strong> (<em>str</em>) – FFMPEG code.</p></li>
 </ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cv_depot.core.enum.VideoCodec.from_string">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_depot/core/enum.html#VideoCodec.from_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_depot.core.enum.VideoCodec.from_string" title="Link to this definition"></a></dt>
-<dd><p>Constructs a VideoCodec instance from a given string.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>string</strong> (<em>int</em>) – VideoCodec string.</p>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>EnforceError</strong> – If value given is not a string.</p></li>
-<li><p><strong>EnforceError</strong> – If no VideoCodec type can be found for given string.</p></li>
-</ul>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>VideoCodec instance.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#cv_depot.core.enum.VideoCodec" title="cv_depot.core.enum.VideoCodec">VideoCodec</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1816,7 +1953,7 @@ Default: VideoFormat.MP4</p></li>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="modules.html" class="btn btn-neutral float-left" title="&lt;no title&gt;" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="cli.html" class="btn btn-neutral float-right" title="cli" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="ops.html" class="btn btn-neutral float-right" title="ops" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

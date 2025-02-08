@@ -1,9 +1,9 @@
 core
 ====
 
-channel
--------
-.. automodule:: cv_depot.core.channel
+channel_map
+-----------
+.. automodule:: cv_depot.core.channel_map
     :members:
     :private-members:
     :undoc-members:
@@ -12,6 +12,14 @@ channel
 color
 -----
 .. automodule:: cv_depot.core.color
+    :members:
+    :private-members:
+    :undoc-members:
+    :show-inheritance:
+
+enforce
+-------
+.. automodule:: cv_depot.core.enforce
     :members:
     :private-members:
     :undoc-members:

@@ -35,7 +35,7 @@
             cv-depot
           </a>
               <div class="version">
-                0.6.2
+                0.8.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -57,6 +57,7 @@
 <p class="caption" role="heading"><span class="caption-text">Python API</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../core.html">core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ops.html">ops</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Development CLI</span></p>
 <ul>
@@ -104,9 +105,53 @@
 <span class="sd">&#39;&#39;&#39;</span>
 
 
+<div class="viewcode-block" id="EnumBase">
+<a class="viewcode-back" href="../../../core.html#cv_depot.core.color.EnumBase">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">EnumBase</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; str</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        str: String representation of enum.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span>
+
+<div class="viewcode-block" id="EnumBase.from_string">
+<a class="viewcode-back" href="../../../core.html#cv_depot.core.color.EnumBase.from_string">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+        <span class="c1"># type: (str) -&gt; EnumBase</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Constructs an enum instance from a given string.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            string (int): Enum string.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            EnforceError: If value given is not a string.</span>
+<span class="sd">            EnforceError: If no EnumBase type can be found for given string.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            EnumBase: Enum instance.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Value given is not a string. </span><span class="si">{a}</span><span class="s1"> != </span><span class="si">{b}</span><span class="s1">.&#39;</span>
+        <span class="n">Enforce</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="s1">&#39;instance of&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="n">lut</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__members__</span><span class="o">.</span><span class="n">values</span><span class="p">()}</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
+
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{a}</span><span class="s1"> is not a &#39;</span> <span class="o">+</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s1">&#39; option. &#39;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;Options: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">lut</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s1">.&#39;</span>
+        <span class="n">Enforce</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="n">lut</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">lut</span><span class="p">[</span><span class="n">string</span><span class="p">]</span></div>
+</div>
+
+
+
+<span class="c1"># BITDEPTH----------------------------------------------------------------------</span>
 <div class="viewcode-block" id="BitDepth">
 <a class="viewcode-back" href="../../../core.html#cv_depot.core.color.BitDepth">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">BitDepth</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BitDepth</span><span class="p">(</span><span class="n">EnumBase</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Legal bit depths.</span>
 
@@ -150,39 +195,6 @@
 <span class="s1">  bits: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">bits</span><span class="si">}</span>
 <span class="s1">signed: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">signed</span><span class="si">}</span>
 <span class="s1">  type: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">type_</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">&#39;&#39;&#39;</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
-
-<div class="viewcode-block" id="BitDepth.from_string">
-<a class="viewcode-back" href="../../../core.html#cv_depot.core.color.BitDepth.from_string">[docs]</a>
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">from_string</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
-        <span class="c1"># type: (str) -&gt; BitDepth</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Construct a BitDepth instance from a given string.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            string (str): Dtype string. Options include:</span>
-<span class="sd">                [float16, float32, uint8, int8].</span>
-
-<span class="sd">        Raises:</span>
-<span class="sd">            TypeError: If invalid string is given.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            BitDepth: BitDepth instance of given type.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">str_</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-
-        <span class="k">if</span> <span class="n">str_</span> <span class="o">==</span> <span class="s1">&#39;float16&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">BitDepth</span><span class="o">.</span><span class="n">FLOAT16</span>
-        <span class="k">elif</span> <span class="n">str_</span> <span class="o">==</span> <span class="s1">&#39;float32&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">BitDepth</span><span class="o">.</span><span class="n">FLOAT32</span>
-        <span class="k">elif</span> <span class="n">str_</span> <span class="o">==</span> <span class="s1">&#39;uint8&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">BitDepth</span><span class="o">.</span><span class="n">UINT8</span>
-        <span class="k">elif</span> <span class="n">str_</span> <span class="o">==</span> <span class="s1">&#39;int8&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">BitDepth</span><span class="o">.</span><span class="n">INT8</span>
-
-        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">string</span><span class="si">}</span><span class="s1"> is not a supported bit depth.&#39;</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
-
 
 <div class="viewcode-block" id="BitDepth.from_dtype">
 <a class="viewcode-back" href="../../../core.html#cv_depot.core.color.BitDepth.from_dtype">[docs]</a>
@@ -432,7 +444,7 @@
 <span class="sd">            string (str): String representation of codec.</span>
 <span class="sd">            ffmpeg_code (str): FFMPEG code.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">string</span> <span class="o">=</span> <span class="n">string</span>  <span class="c1"># type: ignore</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">string</span> <span class="o">=</span> <span class="n">string</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ffmpeg_code</span> <span class="o">=</span> <span class="n">ffmpeg_code</span></div>
 
 
@@ -441,38 +453,58 @@
         <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;&#39;&#39;</span>
 <span class="s1">&lt;VideoCodec.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s1">&gt;</span>
 <span class="s1">  string: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">string</span><span class="si">}</span>
-<span class="s1">  ffmpeg_code: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ffmpeg_code</span><span class="si">}</span><span class="s1">&#39;&#39;&#39;</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+<span class="s1">  ffmpeg_code: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ffmpeg_code</span><span class="si">}</span><span class="s1">&#39;&#39;&#39;</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span></div>
 
-<div class="viewcode-block" id="VideoCodec.from_string">
-<a class="viewcode-back" href="../../../core.html#cv_depot.core.color.VideoCodec.from_string">[docs]</a>
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">from_string</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
-        <span class="c1"># type: (str) -&gt; VideoCodec</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Constructs a VideoCodec instance from a given string.</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            string (int): VideoCodec string.</span>
 
-<span class="sd">        Raises:</span>
-<span class="sd">            EnforceError: If value given is not a string.</span>
-<span class="sd">            EnforceError: If no VideoCodec type can be found for given string.</span>
+<span class="c1"># DIRECTION---------------------------------------------------------------------</span>
+<div class="viewcode-block" id="Direction">
+<a class="viewcode-back" href="../../../core.html#cv_depot.core.color.Direction">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Direction</span><span class="p">(</span><span class="n">EnumBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Legal directions.</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            VideoCodec: VideoCodec instance.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Value given is not a string. </span><span class="si">{a}</span><span class="s1"> != </span><span class="si">{b}</span><span class="s1">.&#39;</span>
-        <span class="n">Enforce</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="s1">&#39;instance of&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+<span class="sd">    Includes:</span>
 
-        <span class="n">lut</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="o">.</span><span class="n">string</span><span class="p">:</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">VideoCodec</span><span class="o">.</span><span class="n">__members__</span><span class="o">.</span><span class="n">values</span><span class="p">()}</span>
+<span class="sd">        * TOP</span>
+<span class="sd">        * BOTTOM</span>
+<span class="sd">        * LEFT</span>
+<span class="sd">        * RIGHT</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">TOP</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;top&#39;</span><span class="p">)</span>
+    <span class="n">BOTTOM</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;bottom&#39;</span><span class="p">)</span>
+    <span class="n">LEFT</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+    <span class="n">RIGHT</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;right&#39;</span><span class="p">)</span></div>
 
-        <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;&quot;</span><span class="si">{a}</span><span class="s1">&quot; has no legal VideoCodec type. &#39;</span>
-        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;Legal codec strings: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">lut</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s1">.&#39;</span>
-        <span class="n">Enforce</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="n">lut</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">lut</span><span class="p">[</span><span class="n">string</span><span class="p">]</span></div>
-</div>
+
+<div class="viewcode-block" id="Anchor">
+<a class="viewcode-back" href="../../../core.html#cv_depot.core.color.Anchor">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Anchor</span><span class="p">(</span><span class="n">EnumBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Legal anchors.</span>
+
+<span class="sd">    Includes:</span>
+
+<span class="sd">        * TOP_LEFT</span>
+<span class="sd">        * TOP_CENTER</span>
+<span class="sd">        * TOP_RIGHT</span>
+<span class="sd">        * CENTER_LEFT</span>
+<span class="sd">        * CENTER_CENTER</span>
+<span class="sd">        * CENTER_RIGHT</span>
+<span class="sd">        * BOTTOM_LEFT</span>
+<span class="sd">        * BOTTOM_CENTER</span>
+<span class="sd">        * BOTTOM_RIGHT</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">TOP_LEFT</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="s1">&#39;left&#39;</span><span class="p">)</span>
+    <span class="n">TOP_CENTER</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="s1">&#39;center&#39;</span><span class="p">)</span>
+    <span class="n">TOP_RIGHT</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">)</span>
+    <span class="n">CENTER_LEFT</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="s1">&#39;left&#39;</span><span class="p">)</span>
+    <span class="n">CENTER_CENTER</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="s1">&#39;center&#39;</span><span class="p">)</span>
+    <span class="n">CENTER_RIGHT</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">)</span>
+    <span class="n">BOTTOM_LEFT</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="s1">&#39;left&#39;</span><span class="p">)</span>
+    <span class="n">BOTTOM_CENTER</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="s1">&#39;center&#39;</span><span class="p">)</span>
+    <span class="n">BOTTOM_RIGHT</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">)</span></div>
 
 </pre></div>
 
