@@ -1,12 +1,16 @@
 from typing import Any, List, Tuple, Union  # noqa F401
 from cv_depot.core.types import AnyColor  # noqa F401
 
+from copy import deepcopy
+
 from lunchbox.enforce import Enforce
 import cv2
 import numpy as np
 
 from cv_depot.core.color import BasicColor, Color
 from cv_depot.core.image import BitDepth, Image
+import cv_depot.ops.channel as cvchan
+import cv_depot.ops.draw as cvdraw
 # ------------------------------------------------------------------------------
 
 
@@ -179,4 +183,58 @@ def checkerboard(tiles_wide, tiles_high, tile_shape=(10, 10)):
             rows.append(odd)
 
     output = Image.from_array(np.concatenate(rows, axis=0))
+    return output
+
+
+def highlight(
+    image, mask='a', opacity=0.5, color=BasicColor.CYAN2, inverse=False
+):
+    # type: (Image, str, float, Union[Color, BasicColor], bool) -> Image
+    '''
+    Highlight a masked portion of a given image according to a given channel.
+
+    Args:
+        image (Image): Image to be highlighted.
+        mask (str, optional): Channel to be used as mask. Default: alpha.
+        opacity (float, optional): Opacity of highlight overlayed on image.
+            Default: 0.5
+        color (Color, optional): Color of highlight. Default: BasicColor.CYAN2.
+        inverse (bool, optional): Whether to invert the highlight.
+            Default: False.
+
+    Raises:
+        EnforceError: If image is not an instance of Image.
+        EnforceError: If mask is not an instance of str.
+        EnforceError: If mask not found in image channels.
+        EnforceError: If opacity is < 0 or > 1.
+        EnforceError: If color is not instance of Color.
+        EnforceError: If inverse is not a boolean.
+
+    Returns:
+        Image: Highlighted image.
+    '''
+    if isinstance(color, BasicColor):
+        color = Color.from_basic_color(color)
+
+    Enforce(image, 'instance of', Image)
+    Enforce(mask, 'instance of', str)
+    msg = 'Mask channel: {a} not found in image channels: {b}.'
+    Enforce(mask, 'in', image.channels, message=msg)
+    Enforce(opacity, '>=', 0)
+    Enforce(opacity, '<=', 1)
+    Enforce(color, 'instance of', Color)
+    Enforce(inverse, 'instance of', bool)
+    # --------------------------------------------------------------------------
+
+    img = image.to_bit_depth(BitDepth.FLOAT32)
+    channels = deepcopy(image.channels)
+    matte = cvchan.remap_single_channel(img[:, :, mask], channels)
+    imatte = cvchan.invert(matte)
+    if inverse:
+        matte, imatte = imatte, matte
+
+    swatch = cvdraw.swatch(image.shape, color, fill_value=1.0)
+    data = (image.data * imatte.data) + (swatch.data * matte.data)
+    output = Image.from_array(data).to_bit_depth(image.bit_depth)
+    output = cvchan.mix(image, output, amount=1 - opacity)
     return output
