@@ -45,7 +45,7 @@ class ImageViewer:
         # viewer
         self.viewer = ipy.Image(value=self._get_png(), width='87%')
         self.info = ipy.HTML(value=self._get_info())
-        space = ipy.HTML(value='<div style="width: 100px;"></div>')
+        space = ipy.HTML(value='<div style="width: 115px;"></div>')
 
         # widgets
         self._widgets = [
