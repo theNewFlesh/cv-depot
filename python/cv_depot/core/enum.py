@@ -13,8 +13,45 @@ The enum module contains Enum classes for manging aspects of imagery such as bit
 depths and video codecs.
 '''
 
+class EnumBase(Enum):
+    def __repr__(self):
+        # type: () -> str
+        '''
+        str: String representation of enum.
+        '''
+        return f'{self.__class__.__name__}.{self.name.upper()}'
 
-class BitDepth(Enum):
+    @classmethod
+    def from_string(cls, string):
+        # type: (str) -> EnumBase
+        '''
+        Constructs an enum instance from a given string.
+
+        Args:
+            string (int): Enum string.
+
+        Raises:
+            EnforceError: If value given is not a string.
+            EnforceError: If no EnumBase type can be found for given string.
+
+        Returns:
+            EnumBase: Enum instance.
+        '''
+        msg = 'Value given is not a string. {a} != {b}.'
+        Enforce(string, 'instance of', str, message=msg)
+
+        lut = {x.name: x for x in cls.__members__.values()}
+        string = string.upper().replace('-', '_')
+
+        msg = '{a} is not a ' + cls.__name__ + ' option. '
+        msg += f'Options: {sorted(lut.keys())}.'
+        Enforce(string, 'in', lut.keys(), message=msg)
+
+        return lut[string]
+
+
+# BITDEPTH----------------------------------------------------------------------
+class BitDepth(EnumBase):
     '''
     Legal bit depths.
 
@@ -55,36 +92,6 @@ class BitDepth(Enum):
   bits: {self.bits}
 signed: {self.signed}
   type: {self.type_.__name__}'''[1:]
-
-    @staticmethod
-    def from_string(string):
-        # type: (str) -> BitDepth
-        '''
-        Construct a BitDepth instance from a given string.
-
-        Args:
-            string (str): Dtype string. Options include:
-                [float16, float32, uint8, int8].
-
-        Raises:
-            TypeError: If invalid string is given.
-
-        Returns:
-            BitDepth: BitDepth instance of given type.
-        '''
-        str_ = string.lower()
-
-        if str_ == 'float16':
-            return BitDepth.FLOAT16
-        elif str_ == 'float32':
-            return BitDepth.FLOAT32
-        elif str_ == 'uint8':
-            return BitDepth.UINT8
-        elif str_ == 'int8':
-            return BitDepth.INT8
-
-        msg = f'{string} is not a supported bit depth.'
-        raise TypeError(msg)
 
     @staticmethod
     def from_dtype(dtype):

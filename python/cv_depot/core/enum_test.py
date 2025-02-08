@@ -3,7 +3,35 @@ import unittest
 from lunchbox.enforce import EnforceError
 import numpy as np
 
-from cv_depot.core.enum import BitDepth, ImageFormat, VideoFormat, VideoCodec
+from cv_depot.core.enum import EnumBase, BitDepth, ImageFormat, VideoFormat, VideoCodec
+# ------------------------------------------------------------------------------
+
+
+class TestEnum(EnumBase):
+    FOO_BAR = 1
+    TACO = 2
+
+
+class EnumBaseTests(unittest.TestCase):
+    def test_repr(self):
+        self.assertEqual(repr(TestEnum.FOO_BAR), 'TestEnum.FOO_BAR')
+
+    def test_from_string(self):
+        for item in ['foo_bar', 'FOO_BAR', 'foo-bar', 'FOO-BAR', 'Foo-Bar']:
+            result = TestEnum.from_string(item)
+            self.assertEqual(result, TestEnum.FOO_BAR)
+
+        result = TestEnum.from_string('taco')
+        self.assertEqual(result, TestEnum.TACO)
+
+    def test_from_string_errors(self):
+        expected = 'Value given is not a string. 99 !=.*str'
+        with self.assertRaisesRegex(EnforceError, expected):
+            TestEnum.from_string(99)
+
+        expected = 'FOO is not a TestEnum option. Options:'
+        with self.assertRaisesRegex(EnforceError, expected):
+            TestEnum.from_string('foo')
 # ------------------------------------------------------------------------------
 
 
@@ -35,23 +63,6 @@ signed: True
         expected = 'float64 is not a supported bit depth.'
         with self.assertRaisesRegex(TypeError, expected):
             BitDepth.from_dtype(np.float64)
-
-    def test_from_string(self):
-        result = BitDepth.from_string('float16')
-        self.assertEqual(result, BitDepth.FLOAT16)
-
-        result = BitDepth.from_string('float32')
-        self.assertEqual(result, BitDepth.FLOAT32)
-
-        result = BitDepth.from_string('int8')
-        self.assertEqual(result, BitDepth.INT8)
-
-        result = BitDepth.from_string('uint8')
-        self.assertEqual(result, BitDepth.UINT8)
-
-        expected = 'foo is not a supported bit depth.'
-        with self.assertRaisesRegex(TypeError, expected):
-            BitDepth.from_string('foo')
 # ------------------------------------------------------------------------------
 
 
@@ -114,19 +125,6 @@ class VideoCodecTests(unittest.TestCase):
   string: h265
   ffmpeg_code: hevc'''[1:]
         self.assertEqual(result, expected)
-
-    def test_from_string(self):
-        self.assertEqual(VideoCodec.from_string('H264'), VideoCodec.H264)
-
-    def test_from_string_errors(self):
-        expected = 'Value given is not a string. 54 !=.*str'
-        with self.assertRaisesRegex(EnforceError, expected):
-            VideoCodec.from_string(54)
-
-        expected = '"foo" has no legal VideoCodec type. '
-        expected += 'Legal codec strings: .*'
-        with self.assertRaisesRegex(EnforceError, expected):
-            VideoCodec.from_string('foo')
 
 
 class VideoFormatTests(unittest.TestCase):
