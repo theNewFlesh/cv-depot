@@ -325,30 +325,47 @@ class VideoCodec(Enum):
   string: {self.string}
   ffmpeg_code: {self.ffmpeg_code}'''[1:]
 
-    @staticmethod
-    def from_string(string):
-        # type: (str) -> VideoCodec
-        '''
-        Constructs a VideoCodec instance from a given string.
 
-        Args:
-            string (int): VideoCodec string.
+# DIRECTION---------------------------------------------------------------------
+class Direction(EnumBase):
+    '''
+    Legal directions.
 
-        Raises:
-            EnforceError: If value given is not a string.
-            EnforceError: If no VideoCodec type can be found for given string.
+    Includes:
 
-        Returns:
-            VideoCodec: VideoCodec instance.
-        '''
-        msg = 'Value given is not a string. {a} != {b}.'
-        Enforce(string, 'instance of', str, message=msg)
+        * TOP
+        * BOTTOM
+        * LEFT
+        * RIGHT
+    '''
+    TOP = ('top')
+    BOTTOM = ('bottom')
+    LEFT = ('left')
+    RIGHT = ('right')
 
-        lut = {x.string: x for x in VideoCodec.__members__.values()}
 
-        string = string.lower()
-        msg = '"{a}" has no legal VideoCodec type. '
-        msg += f'Legal codec strings: {sorted(lut.keys())}.'
-        Enforce(string, 'in', lut.keys(), message=msg)
+class Anchor(EnumBase):
+    '''
+    Legal anchors.
 
-        return lut[string]
+    Includes:
+
+        * TOP_LEFT
+        * TOP_CENTER
+        * TOP_RIGHT
+        * CENTER_LEFT
+        * CENTER_CENTER
+        * CENTER_RIGHT
+        * BOTTOM_LEFT
+        * BOTTOM_CENTER
+        * BOTTOM_RIGHT
+    '''
+    TOP_LEFT = ('top-left')
+    TOP_CENTER = ('top-center')
+    TOP_RIGHT = ('top-right')
+    CENTER_LEFT = ('center-left')
+    CENTER_CENTER = ('center-center')
+    CENTER_RIGHT = ('center-right')
+    BOTTOM_LEFT = ('bottom-left')
+    BOTTOM_CENTER = ('bottom-center')
+    BOTTOM_RIGHT = ('bottom-right')
