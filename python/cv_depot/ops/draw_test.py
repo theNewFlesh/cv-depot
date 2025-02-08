@@ -13,19 +13,7 @@ import cv_depot.ops.edit as cvedit
 # ------------------------------------------------------------------------------
 
 
-class DrawTests(unittest.TestCase):
-    def get_uv_checker_image(self):
-        img = lbt.relative_path(__file__, '../../../resources/uv-checker.png')
-        image = Image.read(img)[:100, :100]
-        tw = int(image.width / 2)
-        th = int(image.height / 2)
-        alpha = cvdraw.checkerboard(2, 2, (tw, th))
-        cmap = ChannelMap(dict(r='0.r', g='0.g', b='0.b', a='1.r'))
-        image = cvchan.remap([image, alpha], cmap)
-        image = image.to_bit_depth(BitDepth.FLOAT32)
-        return image
-
-    # SWATCH----------------------------------------------------------------
+class SwatchTests(unittest.TestCase):
     def test_swatch_error(self):
         expected = 'Illegal shape: Each shape dimension must be greater than '
         expected += r'0. Given shape: \(1, 0, 1\).'
@@ -104,7 +92,8 @@ class DrawTests(unittest.TestCase):
 
         self.assertEqual(result, expected)
 
-    # CHECKERBOARD--------------------------------------------------------------
+
+class CheckerboardTests(unittest.TestCase):
     def test_checkerboard(self):
         black = BasicColor.BLACK.three_channel
         white = BasicColor.WHITE.three_channel
@@ -145,7 +134,8 @@ class DrawTests(unittest.TestCase):
         with self.assertRaisesRegex(EnforceError, expected):
             cvdraw.checkerboard(5, 10, (4, 0))
 
-    # GRID----------------------------------------------------------------------
+
+class GridTests(unittest.TestCase):
     def test_grid(self):
         img = cvdraw.swatch((128, 64, 3), BasicColor.BLACK)\
             .to_bit_depth(BitDepth.UINT8)
@@ -191,7 +181,19 @@ class DrawTests(unittest.TestCase):
         with self.assertRaisesRegex(EnforceError, expected):
             cvdraw.grid(img, (4, 7), BasicColor.RED, 0)
 
-    # HIGHLIGHT-----------------------------------------------------------------
+
+class HighlightTests(unittest.TestCase):
+    def get_uv_checker_image(self):
+        img = lbt.relative_path(__file__, '../../../resources/uv-checker.png')
+        image = Image.read(img)[:100, :100]
+        tw = int(image.width / 2)
+        th = int(image.height / 2)
+        alpha = cvdraw.checkerboard(2, 2, (tw, th))
+        cmap = ChannelMap(dict(r='0.r', g='0.g', b='0.b', a='1.r'))
+        image = cvchan.remap([image, alpha], cmap)
+        image = image.to_bit_depth(BitDepth.FLOAT32)
+        return image
+
     def get_highlight_image(self):
         red0 = cvdraw.swatch((50, 50, 4), BasicColor.RED, fill_value=0)
         red1 = cvdraw.swatch((50, 50, 4), BasicColor.RED, fill_value=1)
@@ -289,3 +291,78 @@ class DrawTests(unittest.TestCase):
 
         with self.assertRaises(EnforceError):
             cvdraw.highlight(image, 'x', opacity, color, inverse)
+
+
+class OutlineTests(unittest.TestCase):
+    def get_outline_image(self, width):
+        width += 1
+        shape = (50, 100, 4)
+        black = cvdraw.swatch(shape, BasicColor.BLACK, fill_value=0)
+        white = cvdraw.swatch(shape, BasicColor.WHITE, fill_value=1)
+        image = cvedit.staple(black, white)
+
+        green = cvdraw.swatch((width, 100, 4), BasicColor.GREEN, fill_value=1)
+        w0 = int(50 - (width / 2))
+        w1 = w0 + 1
+        shape0 = (w0, 100, 4)
+        shape1 = (w1, 100, 4)
+        black = cvdraw.swatch(shape0, BasicColor.BLACK, fill_value=0)
+        white = cvdraw.swatch(shape1, BasicColor.WHITE, fill_value=0)
+        expected = cvedit.staple(black, green)
+        expected = cvedit.staple(expected, white)
+        return image, expected
+
+    def test_outline(self):
+        rgb = list('rgb')
+        green = cvdraw.swatch((1, 100, 3), BasicColor.GREEN)
+        for width in [10, 20]:
+            image, expected = self.get_outline_image(width)
+            result = cvdraw.outline(
+                image, mask='a', width=width, color=BasicColor.GREEN
+            )
+
+            # shape
+            self.assertEqual(result.shape, expected.shape)
+            self.assertEqual(result.bit_depth, expected.bit_depth)
+
+            # rgb
+            r_rgb = result[:, :, rgb]
+            e_rgb = expected[:, :, rgb]
+            self.assertEqual(r_rgb, e_rgb)
+
+            # alpha
+            r_a = result[:, :, 'a']
+            e_a = expected[:, :, 'a']
+            self.assertEqual(r_a, e_a)
+
+            # all channels
+            self.assertEqual(result, expected)
+
+            # w0
+            w = (result.width / 2)
+            w0 = int(round(w - (width / 2), 0))
+            res = result[w0:w0 + 1, :, rgb]
+            self.assertEqual(res, green)
+
+            # w1
+            w1 = int(round(w + (width / 2), 0)) - 1
+            res = result[w1:w1 + 1, :, rgb]
+            self.assertEqual(res, green)
+
+    def test_outline_errors(self):
+        image, _ = self.get_outline_image(7)
+        color = BasicColor.GREEN
+
+        # image
+        with self.assertRaises(EnforceError):
+            cvdraw.outline('foo', mask='a', width=7, color=color)
+
+        # channels
+        expected = 'Mask channel: x not found in image channels: '
+        expected += r"\['r', 'g', 'b', 'a'\]."
+        with self.assertRaisesRegex(EnforceError, expected):
+            cvdraw.outline(image, mask='x', width=7, color=color)
+
+        # width
+        with self.assertRaises(EnforceError):
+            cvdraw.outline(image, mask='a', width=-1, color=color)

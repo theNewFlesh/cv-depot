@@ -7,10 +7,12 @@ from lunchbox.enforce import Enforce
 import cv2
 import numpy as np
 
+from cv_depot.core.channel_map import ChannelMap
 from cv_depot.core.color import BasicColor, Color
 from cv_depot.core.image import BitDepth, Image
 import cv_depot.ops.channel as cvchan
 import cv_depot.ops.draw as cvdraw
+import cv_depot.ops.filter as cvfilt
 # ------------------------------------------------------------------------------
 
 
@@ -240,4 +242,40 @@ def highlight(
     data = (image.data * imatte.data) + (swatch.data * matte.data)
     output = Image.from_array(data).to_bit_depth(image.bit_depth)
     output = cvchan.mix(image, output, amount=1 - opacity)
+    return output
+
+
+def outline(image, mask='a', width=10, color=BasicColor.CYAN2.name):
+    # type (Image, str, int, AnyColor) -> Image
+    '''
+    Use a given mask to outline a given image.
+
+    Args:
+        image (Image): Image with mask channel.
+        mask (str, optional): Mask channel. Default: alpha.
+        width (int, optional): Outline width. Default: 10.
+        color (Color or BasicColor, optional): Color of outline.
+            Default: BasicColor.CYAN2
+
+    Raises:
+        EnforceError: If image is not an instance of Image.
+        EnforceError: If channel not found in image channels.
+        EnforceError: If width is not >= 0.
+        EnforceError: If color is not an instance of Color or BasicColor.
+
+    Returns:
+        Image: Image with outline.
+    '''
+    Enforce(image, 'instance of', Image)
+    msg = 'Mask channel: {a} not found in image channels: {b}.'
+    Enforce(mask, 'in', image.channels, message=msg)
+    Enforce(width, '>=', 0)
+    # --------------------------------------------------------------------------
+
+    cmap = ChannelMap({c: f'0.{c}' for c in image.channels})
+    cmap[mask] = '1.l'
+    w = int(round(width / 2, 0))
+    edge = cvfilt.canny_edges(image[:, :, mask], size=w)
+    output = cvchan.remap([image, edge], cmap)
+    output = highlight(output, mask=mask, opacity=1.0, color=color)
     return output
