@@ -1,8 +1,11 @@
+from cv_depot.core.types import AnyColor  # noqa F401
+
 from lunchbox.enforce import Enforce
 import cv2
 import numpy as np
 
 from cv_depot.core.image import BitDepth, Image
+from cv_depot.core.color import BasicColor, Color
 # ------------------------------------------------------------------------------
 
 
@@ -129,4 +132,72 @@ def linear_smooth(image, blur=3, lower=0, upper=1):
     lut = linear_lookup(lower=lower, upper=upper)
     img = lut(img).astype(np.float32)
     output = Image.from_array(img).to_bit_depth(bit_depth)
+    return output
+
+
+def key_exact_color(image, color, channel='a', invert=False):
+    # type: (Image, AnyColor, str, bool) -> Image
+    '''
+    Keys given image according to the color of its pixels values.
+    Where that pixel color exactly matches the given color, the mask channel
+    will be 1, otherwise it will be 0.
+
+    Args:
+        image (Image): Image to be evaluated.
+        color (Color or BasicColor): Color to be used for masking.
+        channel (str, optional): Mask channel name. Default: a.
+        invert (bool, optional): Whether to invert the mask. Default: False.
+
+    Raises:
+        EnforceError: If image is not an Image instance.
+        EnforceError: If channel is not a string.
+        EnforceError: If invert is not a boolean.
+        EnforceError: If RGB is not found in image channels.
+
+    Returns:
+        Image: Image with mask channel.
+    '''
+    Enforce(image, 'instance of', Image)
+    Enforce(channel, 'instance of', str)
+    Enforce(invert, 'instance of', bool)
+    # --------------------------------------------------------------------------
+
+    # get color
+    if isinstance(color, str):
+        color = BasicColor.from_string(color)
+    if isinstance(color, BasicColor):
+        color = Color.from_basic_color(color)
+    clr = color.to_array()
+
+    # determine num channels
+    rgb = list('rgb')
+    img = image.to_bit_depth(BitDepth.FLOAT32)
+    if image.num_channels == 1:
+        x = img.data[..., np.newaxis]
+        x = np.concatenate([x, x, x], axis=2)
+        img = Image.from_array(x)
+    else:
+        diff = sorted(list(set(rgb).difference(image.channels)))
+        msg = f'{diff} not found in image channels. '
+        msg += f'Given channels: {image.channels}.'
+        Enforce(len(diff), '==', 0, message=msg)
+
+    # create mask
+    mask = np.equal(clr, img[:, :, rgb].data)
+    mask = np.apply_along_axis(all, 2, mask) \
+        .astype(np.float32)[..., np.newaxis]
+    if invert:
+        mask = -1 * mask + 1
+
+    # add mask to image
+    chans = image.channels
+    if image.num_channels == 1:
+        arr = img[:, :, 'r'].data[..., np.newaxis]
+    else:
+        chans = list(filter(lambda x: x != channel, img.channels))
+        arr = img[:, :, chans].data
+
+    arr = np.concatenate([arr, mask], axis=2)
+    output = Image.from_array(arr).to_bit_depth(image.bit_depth)
+    output = output.set_channels(chans + [channel])
     return output
