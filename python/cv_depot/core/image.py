@@ -514,6 +514,26 @@ NUM_CHANNELS: {self.num_channels}
             bool: True if images are equal.
         '''
         return self.compare(image, content=True, diff_only=True) == {}  # type: ignore
+
+    def __gt__(self, image):
+        # type: (object) -> bool
+        '''
+        Compare mean pixel values of this image with a given image.
+
+        Returns:
+            bool: True if mean value is greater than given image.
+        '''
+        return self.data.mean() > image.to_bit_depth(self.bit_depth).data.mean()  # type: ignore
+
+    def __lt__(self, image):
+        # type: (object) -> bool
+        '''
+        Compare mean pixel values of this image with a given image.
+
+        Returns:
+            bool: True if mean value is lesser than given image.
+        '''
+        return self.data.mean() < image.to_bit_depth(self.bit_depth).data.mean()  # type: ignore
     # --------------------------------------------------------------------------
 
     @property
