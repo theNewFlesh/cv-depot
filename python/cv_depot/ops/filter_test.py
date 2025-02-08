@@ -3,6 +3,7 @@ import unittest
 from lunchbox.enforce import EnforceError
 import cv2
 import numpy as np
+import pytest
 
 from cv_depot.core.color import BasicColor
 from cv_depot.core.enum import BitDepth
@@ -255,3 +256,22 @@ class FilterTests(unittest.TestCase):
         expected += r"Given channels: \['r', 'g'\]\."
         with self.assertRaisesRegex(EnforceError, expected):
             cvfilt.key_exact_color(img[:, :, list('rg')], BasicColor.RED)
+
+    def test_kmeans(self):
+        with self.assertRaises(EnforceError):
+            cvfilt.kmeans('foo')
+
+        image = np.zeros((10, 10, 3), np.uint8)
+        image = Image.from_array(image)
+
+        with pytest.raises(ValueError) as e:
+            cvfilt.kmeans(image, seeding='foo')
+        expected = 'foo is not a valid seeding option. Options include: '
+        expected += '[random, pp_centers].'
+        self.assertEqual(str(e.value), expected)
+
+        cvfilt.kmeans(image, seeding='pp_centers')
+        _, report = cvfilt.kmeans(
+            image, seeding='random', generate_report=True
+        )
+        cvfilt.kmeans(image, centroids=report['centroids'])

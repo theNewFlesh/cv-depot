@@ -1,11 +1,17 @@
+from typing import Any, Optional, Union  # noqa F401
 from cv_depot.core.types import AnyColor  # noqa F401
 
+import logging
+
 from lunchbox.enforce import Enforce
+from lunchbox.stopwatch import StopWatch
 import cv2
 import numpy as np
 
 from cv_depot.core.image import BitDepth, Image
 from cv_depot.core.color import BasicColor, Color
+
+LOGGER = logging.getLogger(__name__)
 # ------------------------------------------------------------------------------
 
 
@@ -200,4 +206,94 @@ def key_exact_color(image, color, channel='a', invert=False):
     arr = np.concatenate([arr, mask], axis=2)
     output = Image.from_array(arr).to_bit_depth(image.bit_depth)
     output = output.set_channels(chans + [channel])
+    return output
+
+
+def kmeans(
+    image,                 # type: Image
+    num_centroids=10,      # type: int
+    centroids=None,        # type: Optional[list[tuple[int, int, int]]]
+    max_iterations=100,    # type: int
+    accuracy=1.0,          # type: float
+    epochs=10,             # type: int
+    seeding='random',      # type: str
+    generate_report=False  # type: bool
+):                         # type: (...) -> Union[Image, tuple[Image, dict]]
+    '''
+    Applies k-means to the given image.
+
+    Args:
+        image (Image): Image instance.
+        num_centroids (int, optional): Number of centroids to use. Default: 10.
+        centroids (list, optional): List of triplets. Default: None.
+        max_iterations (int, optional): Maximum number of k-means updates
+            allowed per centroid. Default: 100.
+        accuracy (float, optional): Minimum accuracy required of clusters.
+        epochs (int, optional): Number of times algorithm is applied with
+            different initial labels. Default: 10.
+        seeding (str, optional): How intial centroids are generated. Default:
+            random. Options include: random, pp_centers.
+        generate_report (bool, optional): If true returns report in addition to
+            image. Default: False.
+
+    Raises:
+        EnforceError: If image is not an Image instance.
+        ValueError: If invalid seeding option is given.
+
+    Returns:
+        Image or tuple[Image, dict]: K-means image or K-means image and K-means
+            report.
+    '''
+    Enforce(image, 'instance of', Image)
+
+    stopwatch = StopWatch()
+    stopwatch.start()
+    # --------------------------------------------------------------------------
+
+    source_bit_depth = image.bit_depth
+    data = image.to_bit_depth(BitDepth.FLOAT32)\
+        .data.reshape((-1, image.num_channels))
+
+    seed = None
+    if seeding == 'random':
+        seed = cv2.KMEANS_RANDOM_CENTERS
+    elif seeding == 'pp_centers':
+        seed = cv2.KMEANS_PP_CENTERS
+    else:
+        msg = f'{seeding} is not a valid seeding option. Options include: '
+        msg += '[random, pp_centers].'
+        raise ValueError(msg)
+
+    # terminate centroid updates when max iteration or min accuracy is achieved
+    crit = cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER
+
+    if centroids is not None:
+        num_centroids = len(centroids)
+
+    compactness, labels, centroids = cv2.kmeans(
+        data=data,
+        K=num_centroids,
+        bestLabels=centroids,
+        criteria=(crit, max_iterations, accuracy),
+        attempts=epochs,
+        flags=seed,
+    )  # type: ignore
+
+    centroids_ = centroids  # type: Any
+    output = np.float32(centroids_)[labels.flatten()]  # type: ignore
+    output = output.reshape(image.data.shape)
+    output = Image.from_array(output).to_bit_depth(source_bit_depth)
+
+    if generate_report:
+        report = dict(
+            compactness=compactness,
+            labels=labels,
+            centroids=centroids
+        )
+        stopwatch.stop()
+        LOGGER.warning(f'KmeansRuntime: {stopwatch.human_readable_delta}.')
+        return output, report
+
+    stopwatch.stop()
+    LOGGER.warning(f'Kmeans Runtime: {stopwatch.human_readable_delta}.')
     return output
