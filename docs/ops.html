@@ -38,7 +38,7 @@
             cv-depot
           </a>
               <div class="version">
-                0.8.0
+                0.9.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -84,6 +84,15 @@
 <li class="toctree-l3"><a class="reference internal" href="#cv_depot.ops.edit.pad"><code class="docutils literal notranslate"><span class="pre">pad()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#cv_depot.ops.edit.reformat"><code class="docutils literal notranslate"><span class="pre">reformat()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#cv_depot.ops.edit.staple"><code class="docutils literal notranslate"><span class="pre">staple()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-cv_depot.ops.filter">filter</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cv_depot.ops.filter.canny_edges"><code class="docutils literal notranslate"><span class="pre">canny_edges()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cv_depot.ops.filter.key_exact_color"><code class="docutils literal notranslate"><span class="pre">key_exact_color()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cv_depot.ops.filter.kmeans"><code class="docutils literal notranslate"><span class="pre">kmeans()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cv_depot.ops.filter.linear_lookup"><code class="docutils literal notranslate"><span class="pre">linear_lookup()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cv_depot.ops.filter.linear_smooth"><code class="docutils literal notranslate"><span class="pre">linear_smooth()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cv_depot.ops.filter.tophat"><code class="docutils literal notranslate"><span class="pre">tophat()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -614,6 +623,192 @@ Default: 0.</p></li>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Stapled Image.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="core.html#cv_depot.core.image.Image" title="cv_depot.core.image.Image">Image</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-cv_depot.ops.filter">
+<span id="filter"></span><h2>filter<a class="headerlink" href="#module-cv_depot.ops.filter" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="cv_depot.ops.filter.canny_edges">
+<span class="sig-prename descclassname"><span class="pre">cv_depot.ops.filter.</span></span><span class="sig-name descname"><span class="pre">canny_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_depot/ops/filter.html#canny_edges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_depot.ops.filter.canny_edges" title="Link to this definition"></a></dt>
+<dd><p>Apply a canny edge detection to given image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="core.html#cv_depot.core.image.Image" title="cv_depot.core.image.Image"><em>Image</em></a>) – Image.</p></li>
+<li><p><strong>size</strong> (<em>int</em><em>, </em><em>optional</em>) – Amount of dilation applied to result. Default: 0.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>EnforceError</strong> – If image is not an instance of Image.</p></li>
+<li><p><strong>EnforceError</strong> – If size is not an integer &gt;= 0.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Edge detected image.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="core.html#cv_depot.core.image.Image" title="cv_depot.core.image.Image">Image</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cv_depot.ops.filter.key_exact_color">
+<span class="sig-prename descclassname"><span class="pre">cv_depot.ops.filter.</span></span><span class="sig-name descname"><span class="pre">key_exact_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'a'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">invert</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_depot/ops/filter.html#key_exact_color"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_depot.ops.filter.key_exact_color" title="Link to this definition"></a></dt>
+<dd><p>Keys given image according to the color of its pixels values.
+Where that pixel color exactly matches the given color, the mask channel
+will be 1, otherwise it will be 0.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="core.html#cv_depot.core.image.Image" title="cv_depot.core.image.Image"><em>Image</em></a>) – Image to be evaluated.</p></li>
+<li><p><strong>color</strong> (<a class="reference internal" href="core.html#cv_depot.core.color.Color" title="cv_depot.core.color.Color"><em>Color</em></a><em> or </em><a class="reference internal" href="core.html#cv_depot.core.color.BasicColor" title="cv_depot.core.color.BasicColor"><em>BasicColor</em></a>) – Color to be used for masking.</p></li>
+<li><p><strong>channel</strong> (<em>str</em><em>, </em><em>optional</em>) – Mask channel name. Default: a.</p></li>
+<li><p><strong>invert</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to invert the mask. Default: False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>EnforceError</strong> – If image is not an Image instance.</p></li>
+<li><p><strong>EnforceError</strong> – If channel is not a string.</p></li>
+<li><p><strong>EnforceError</strong> – If invert is not a boolean.</p></li>
+<li><p><strong>EnforceError</strong> – If RGB is not found in image channels.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Image with mask channel.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="core.html#cv_depot.core.image.Image" title="cv_depot.core.image.Image">Image</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cv_depot.ops.filter.kmeans">
+<span class="sig-prename descclassname"><span class="pre">cv_depot.ops.filter.</span></span><span class="sig-name descname"><span class="pre">kmeans</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_centroids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">centroids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accuracy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seeding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'random'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generate_report</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_depot/ops/filter.html#kmeans"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_depot.ops.filter.kmeans" title="Link to this definition"></a></dt>
+<dd><p>Applies k-means to the given image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="core.html#cv_depot.core.image.Image" title="cv_depot.core.image.Image"><em>Image</em></a>) – Image instance.</p></li>
+<li><p><strong>num_centroids</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of centroids to use. Default: 10.</p></li>
+<li><p><strong>centroids</strong> (<em>list</em><em>, </em><em>optional</em>) – List of triplets. Default: None.</p></li>
+<li><p><strong>max_iterations</strong> (<em>int</em><em>, </em><em>optional</em>) – Maximum number of k-means updates
+allowed per centroid. Default: 100.</p></li>
+<li><p><strong>accuracy</strong> (<em>float</em><em>, </em><em>optional</em>) – Minimum accuracy required of clusters.</p></li>
+<li><p><strong>epochs</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of times algorithm is applied with
+different initial labels. Default: 10.</p></li>
+<li><p><strong>seeding</strong> (<em>str</em><em>, </em><em>optional</em>) – How intial centroids are generated. Default:
+random. Options include: random, pp_centers.</p></li>
+<li><p><strong>generate_report</strong> (<em>bool</em><em>, </em><em>optional</em>) – If true returns report in addition to
+image. Default: False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>EnforceError</strong> – If image is not an Image instance.</p></li>
+<li><p><strong>ValueError</strong> – If invalid seeding option is given.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>K-means image or K-means image and K-means</dt><dd><p>report.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="core.html#cv_depot.core.image.Image" title="cv_depot.core.image.Image">Image</a> or tuple[<a class="reference internal" href="core.html#cv_depot.core.image.Image" title="cv_depot.core.image.Image">Image</a>, dict]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cv_depot.ops.filter.linear_lookup">
+<span class="sig-prename descclassname"><span class="pre">cv_depot.ops.filter.</span></span><span class="sig-name descname"><span class="pre">linear_lookup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lower</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_depot/ops/filter.html#linear_lookup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_depot.ops.filter.linear_lookup" title="Link to this definition"></a></dt>
+<dd><p>Generates a linear lookup table with an upper and lower shoulder.</p>
+<img alt="_images/linear_lut.png" src="_images/linear_lut.png" />
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lower</strong> (<em>float</em><em>, </em><em>optional</em>) – Lower shoulder value. Default: 0.</p></li>
+<li><p><strong>upper</strong> (<em>float</em><em>, </em><em>optional</em>) – Upper shoulder value. Default: 1.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Anonymous function that applies lut elementwise to a</dt><dd><p>given numpy array.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.vectorize</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cv_depot.ops.filter.linear_smooth">
+<span class="sig-prename descclassname"><span class="pre">cv_depot.ops.filter.</span></span><span class="sig-name descname"><span class="pre">linear_smooth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blur</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_depot/ops/filter.html#linear_smooth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_depot.ops.filter.linear_smooth" title="Link to this definition"></a></dt>
+<dd><p>Blur given image then apply linear thresholding it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="core.html#cv_depot.core.image.Image" title="cv_depot.core.image.Image"><em>Image</em></a>) – Image matte to be smoothed.</p></li>
+<li><p><strong>blur</strong> (<em>int</em><em>, </em><em>optional</em>) – Size of blur. Default: 3.</p></li>
+<li><p><strong>lower</strong> (<em>float</em><em>, </em><em>optional</em>) – Lower shoulder value. Default: 0.</p></li>
+<li><p><strong>upper</strong> (<em>float</em><em>, </em><em>optional</em>) – Upper shoulder value. Default: 1.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>EnforceError</strong> – If image is not an instance of Image.</p></li>
+<li><p><strong>EnforceError</strong> – If blur is less than 0.</p></li>
+<li><p><strong>EnforceError</strong> – If lower or upper is less than 0.</p></li>
+<li><p><strong>EnforceError</strong> – If lower or upper is greater than 1.</p></li>
+<li><p><strong>EnforceError</strong> – If lower is greater than upper.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Smoothed image.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="core.html#cv_depot.core.image.Image" title="cv_depot.core.image.Image">Image</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cv_depot.ops.filter.tophat">
+<span class="sig-prename descclassname"><span class="pre">cv_depot.ops.filter.</span></span><span class="sig-name descname"><span class="pre">tophat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amount</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'open'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_depot/ops/filter.html#tophat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_depot.ops.filter.tophat" title="Link to this definition"></a></dt>
+<dd><p>Apply tophat morphology operation to given image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="core.html#cv_depot.core.image.Image" title="cv_depot.core.image.Image"><em>Image</em></a>) – Image to be modified.</p></li>
+<li><p><strong>amount</strong> (<em>int</em>) – Amount of tophat operation.</p></li>
+<li><p><strong>kind</strong> (<em>str</em><em>, </em><em>optional</em>) – Kind of operation to be performed.
+Options include: open, close. Default: open.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>EnforceError</strong> – If image is not an instance of Image.</p></li>
+<li><p><strong>EnforceError</strong> – If amount is less than 0.</p></li>
+<li><p><strong>EnforceError</strong> – If kind is not one of: open, close.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Image with tophat operation applied.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="core.html#cv_depot.core.image.Image" title="cv_depot.core.image.Image">Image</a></p>

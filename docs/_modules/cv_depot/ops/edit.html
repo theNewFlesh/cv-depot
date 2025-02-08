@@ -35,7 +35,7 @@
             cv-depot
           </a>
               <div class="version">
-                0.8.0
+                0.9.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -536,18 +536,6 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">get_indices</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
         <span class="c1"># type: (Image, str) -&gt; list[int]</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Determines where cuts should be made along a given access, according to</span>
-<span class="sd">        a given threshold.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            image (Image): A one channel image.</span>
-<span class="sd">            axis (str): The axis to cut the image along. Options include:</span>
-<span class="sd">                vertical or horizontal.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            list[int]: Indices along a given axis that demarcate object bounds.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
         <span class="c1"># find indices of bbox edges across a single axis</span>
         <span class="n">bboxes</span> <span class="o">=</span> <span class="n">get_bounding_boxes</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
         <span class="n">indices</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>  <span class="c1"># type: Any</span>

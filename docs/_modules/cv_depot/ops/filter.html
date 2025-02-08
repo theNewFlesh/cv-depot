@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cv_depot.ops.filter &mdash; cv-depot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/style.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            cv-depot
+          </a>
+              <div class="version">
+                0.9.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#installation-for-developers">Installation for Developers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#installation-for-production">Installation for Production</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#quickstart-guide">Quickstart Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#development-cli">Development CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html#production-cli">Production CLI</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../core.html">core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ops.html">ops</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development CLI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">cli</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">cv-depot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">cv_depot.ops.filter</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for cv_depot.ops.filter</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>  <span class="c1"># noqa F401</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cv_depot.core.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">AnyColor</span>  <span class="c1"># noqa F401</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">lunchbox.enforce</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enforce</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lunchbox.stopwatch</span><span class="w"> </span><span class="kn">import</span> <span class="n">StopWatch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">cv2</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">cv_depot.core.image</span><span class="w"> </span><span class="kn">import</span> <span class="n">BitDepth</span><span class="p">,</span> <span class="n">Image</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cv_depot.core.color</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasicColor</span><span class="p">,</span> <span class="n">Color</span>
+
+<span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="canny_edges">
+<a class="viewcode-back" href="../../../ops.html#cv_depot.ops.filter.canny_edges">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">canny_edges</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="c1"># type: (Image, int) -&gt; Image</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Apply a canny edge detection to given image.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        image (Image): Image.</span>
+<span class="sd">        size (int, optional): Amount of dilation applied to result. Default: 0.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        EnforceError: If image is not an instance of Image.</span>
+<span class="sd">        EnforceError: If size is not an integer &gt;= 0.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Image: Edge detected image.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;instance of&#39;</span><span class="p">,</span> <span class="n">Image</span><span class="p">)</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="s1">&#39;instance of&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="s1">&#39;&gt;=&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+    <span class="n">img</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">to_bit_depth</span><span class="p">(</span><span class="n">BitDepth</span><span class="o">.</span><span class="n">UINT8</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">Canny</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">kernel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">dilate</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">img</span><span class="p">)</span><span class="o">.</span><span class="n">to_bit_depth</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">bit_depth</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">output</span></div>
+
+
+
+<div class="viewcode-block" id="tophat">
+<a class="viewcode-back" href="../../../ops.html#cv_depot.ops.filter.tophat">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">tophat</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">amount</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;open&#39;</span><span class="p">):</span>
+    <span class="c1"># type: (Image, int, str) -&gt; Image</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Apply tophat morphology operation to given image.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        image (Image): Image to be modified.</span>
+<span class="sd">        amount (int): Amount of tophat operation.</span>
+<span class="sd">        kind (str, optional): Kind of operation to be performed.</span>
+<span class="sd">            Options include: open, close. Default: open.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        EnforceError: If image is not an instance of Image.</span>
+<span class="sd">        EnforceError: If amount is less than 0.</span>
+<span class="sd">        EnforceError: If kind is not one of: open, close.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Image: Image with tophat operation applied.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;instance of&#39;</span><span class="p">,</span> <span class="n">Image</span><span class="p">)</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">amount</span><span class="p">,</span> <span class="s1">&#39;&gt;=&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Illegal tophat kind: </span><span class="si">{a}</span><span class="s1">. Legal tophat kinds: </span><span class="si">{b}</span><span class="s1">.&#39;</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">kind</span><span class="p">,</span> <span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;open&#39;</span><span class="p">,</span> <span class="s1">&#39;close&#39;</span><span class="p">],</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+    <span class="n">lut</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">open</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_CLOSE</span><span class="p">,</span> <span class="n">close</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_OPEN</span><span class="p">)</span>
+    <span class="n">opt</span> <span class="o">=</span> <span class="n">lut</span><span class="p">[</span><span class="n">kind</span><span class="p">]</span>
+    <span class="n">bit_depth</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">bit_depth</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">to_bit_depth</span><span class="p">(</span><span class="n">BitDepth</span><span class="o">.</span><span class="n">FLOAT32</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">kernel</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getStructuringElement</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_RECT</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">arr</span> <span class="o">=</span> <span class="n">cv2</span> \
+        <span class="o">.</span><span class="n">morphologyEx</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">opt</span><span class="p">,</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="n">amount</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span><span class="o">.</span><span class="n">to_bit_depth</span><span class="p">(</span><span class="n">bit_depth</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">output</span></div>
+
+
+
+<div class="viewcode-block" id="linear_lookup">
+<a class="viewcode-back" href="../../../ops.html#cv_depot.ops.filter.linear_lookup">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">linear_lookup</span><span class="p">(</span><span class="n">lower</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">upper</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="c1"># type: (float, float) -&gt; np.vectorize</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Generates a linear lookup table with an upper and lower shoulder.</span>
+
+<span class="sd">    .. image:: images/linear_lut.png</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        lower (float, optional): Lower shoulder value. Default: 0.</span>
+<span class="sd">        upper (float, optional): Upper shoulder value. Default: 1.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        numpy.vectorize: Anonymous function that applies lut elementwise to a</span>
+<span class="sd">            given numpy array.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">lut</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="n">lower</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">upper</span> <span class="o">-</span> <span class="n">lower</span><span class="p">)),</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">lut</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="linear_smooth">
+<a class="viewcode-back" href="../../../ops.html#cv_depot.ops.filter.linear_smooth">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">linear_smooth</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">blur</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">upper</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="c1"># type: (Image, int, float, float) -&gt; Image</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Blur given image then apply linear thresholding it.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        image (Image): Image matte to be smoothed.</span>
+<span class="sd">        blur (int, optional): Size of blur. Default: 3.</span>
+<span class="sd">        lower (float, optional): Lower shoulder value. Default: 0.</span>
+<span class="sd">        upper (float, optional): Upper shoulder value. Default: 1.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        EnforceError: If image is not an instance of Image.</span>
+<span class="sd">        EnforceError: If blur is less than 0.</span>
+<span class="sd">        EnforceError: If lower or upper is less than 0.</span>
+<span class="sd">        EnforceError: If lower or upper is greater than 1.</span>
+<span class="sd">        EnforceError: If lower is greater than upper.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Image: Smoothed image.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;instance of&#39;</span><span class="p">,</span> <span class="n">Image</span><span class="p">)</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">blur</span><span class="p">,</span> <span class="s1">&#39;&gt;=&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">lower</span><span class="p">,</span> <span class="s1">&#39;&gt;=&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">lower</span><span class="p">,</span> <span class="s1">&#39;&lt;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">upper</span><span class="p">,</span> <span class="s1">&#39;&gt;=&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">upper</span><span class="p">,</span> <span class="s1">&#39;&lt;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">lower</span><span class="p">,</span> <span class="s1">&#39;&gt;=&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Lower bound cannot be greater than upper bound. </span><span class="si">{a}</span><span class="s1"> &gt; </span><span class="si">{b}</span><span class="s1">&#39;</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">lower</span><span class="p">,</span> <span class="s1">&#39;&lt;=&#39;</span><span class="p">,</span> <span class="n">upper</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+    <span class="n">bit_depth</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">bit_depth</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">to_bit_depth</span><span class="p">(</span><span class="n">BitDepth</span><span class="o">.</span><span class="n">FLOAT32</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">blur</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="n">blur</span><span class="p">,</span> <span class="n">blur</span><span class="p">))</span>
+    <span class="n">lut</span> <span class="o">=</span> <span class="n">linear_lookup</span><span class="p">(</span><span class="n">lower</span><span class="o">=</span><span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="o">=</span><span class="n">upper</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">lut</span><span class="p">(</span><span class="n">img</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">img</span><span class="p">)</span><span class="o">.</span><span class="n">to_bit_depth</span><span class="p">(</span><span class="n">bit_depth</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">output</span></div>
+
+
+
+<div class="viewcode-block" id="key_exact_color">
+<a class="viewcode-back" href="../../../ops.html#cv_depot.ops.filter.key_exact_color">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">key_exact_color</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">channel</span><span class="o">=</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">invert</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="c1"># type: (Image, AnyColor, str, bool) -&gt; Image</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Keys given image according to the color of its pixels values.</span>
+<span class="sd">    Where that pixel color exactly matches the given color, the mask channel</span>
+<span class="sd">    will be 1, otherwise it will be 0.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        image (Image): Image to be evaluated.</span>
+<span class="sd">        color (Color or BasicColor): Color to be used for masking.</span>
+<span class="sd">        channel (str, optional): Mask channel name. Default: a.</span>
+<span class="sd">        invert (bool, optional): Whether to invert the mask. Default: False.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        EnforceError: If image is not an Image instance.</span>
+<span class="sd">        EnforceError: If channel is not a string.</span>
+<span class="sd">        EnforceError: If invert is not a boolean.</span>
+<span class="sd">        EnforceError: If RGB is not found in image channels.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Image: Image with mask channel.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;instance of&#39;</span><span class="p">,</span> <span class="n">Image</span><span class="p">)</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="s1">&#39;instance of&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">invert</span><span class="p">,</span> <span class="s1">&#39;instance of&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+    <span class="c1"># get color</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">BasicColor</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">BasicColor</span><span class="p">):</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">Color</span><span class="o">.</span><span class="n">from_basic_color</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+    <span class="n">clr</span> <span class="o">=</span> <span class="n">color</span><span class="o">.</span><span class="n">to_array</span><span class="p">()</span>
+
+    <span class="c1"># determine num channels</span>
+    <span class="n">rgb</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="s1">&#39;rgb&#39;</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">to_bit_depth</span><span class="p">(</span><span class="n">BitDepth</span><span class="o">.</span><span class="n">FLOAT32</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">num_channels</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">diff</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">rgb</span><span class="p">)</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">channels</span><span class="p">)))</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">diff</span><span class="si">}</span><span class="s1"> not found in image channels. &#39;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;Given channels: </span><span class="si">{</span><span class="n">image</span><span class="o">.</span><span class="n">channels</span><span class="si">}</span><span class="s1">.&#39;</span>
+        <span class="n">Enforce</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">diff</span><span class="p">),</span> <span class="s1">&#39;==&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="c1"># create mask</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">clr</span><span class="p">,</span> <span class="n">img</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">rgb</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">apply_along_axis</span><span class="p">(</span><span class="nb">all</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">invert</span><span class="p">:</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">mask</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="c1"># add mask to image</span>
+    <span class="n">chans</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">channels</span>
+    <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">num_channels</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">arr</span> <span class="o">=</span> <span class="n">img</span><span class="p">[:,</span> <span class="p">:,</span> <span class="s1">&#39;r&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">chans</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">!=</span> <span class="n">channel</span><span class="p">,</span> <span class="n">img</span><span class="o">.</span><span class="n">channels</span><span class="p">))</span>
+        <span class="n">arr</span> <span class="o">=</span> <span class="n">img</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">chans</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+
+    <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">arr</span><span class="p">,</span> <span class="n">mask</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span><span class="o">.</span><span class="n">to_bit_depth</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">bit_depth</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">set_channels</span><span class="p">(</span><span class="n">chans</span> <span class="o">+</span> <span class="p">[</span><span class="n">channel</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">output</span></div>
+
+
+
+<div class="viewcode-block" id="kmeans">
+<a class="viewcode-back" href="../../../ops.html#cv_depot.ops.filter.kmeans">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">kmeans</span><span class="p">(</span>
+    <span class="n">image</span><span class="p">,</span>                 <span class="c1"># type: Image</span>
+    <span class="n">num_centroids</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>      <span class="c1"># type: int</span>
+    <span class="n">centroids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>        <span class="c1"># type: Optional[list[tuple[int, int, int]]]</span>
+    <span class="n">max_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>    <span class="c1"># type: int</span>
+    <span class="n">accuracy</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>          <span class="c1"># type: float</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>             <span class="c1"># type: int</span>
+    <span class="n">seeding</span><span class="o">=</span><span class="s1">&#39;random&#39;</span><span class="p">,</span>      <span class="c1"># type: str</span>
+    <span class="n">generate_report</span><span class="o">=</span><span class="kc">False</span>  <span class="c1"># type: bool</span>
+<span class="p">):</span>                         <span class="c1"># type: (...) -&gt; Union[Image, tuple[Image, dict]]</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Applies k-means to the given image.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        image (Image): Image instance.</span>
+<span class="sd">        num_centroids (int, optional): Number of centroids to use. Default: 10.</span>
+<span class="sd">        centroids (list, optional): List of triplets. Default: None.</span>
+<span class="sd">        max_iterations (int, optional): Maximum number of k-means updates</span>
+<span class="sd">            allowed per centroid. Default: 100.</span>
+<span class="sd">        accuracy (float, optional): Minimum accuracy required of clusters.</span>
+<span class="sd">        epochs (int, optional): Number of times algorithm is applied with</span>
+<span class="sd">            different initial labels. Default: 10.</span>
+<span class="sd">        seeding (str, optional): How intial centroids are generated. Default:</span>
+<span class="sd">            random. Options include: random, pp_centers.</span>
+<span class="sd">        generate_report (bool, optional): If true returns report in addition to</span>
+<span class="sd">            image. Default: False.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        EnforceError: If image is not an Image instance.</span>
+<span class="sd">        ValueError: If invalid seeding option is given.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Image or tuple[Image, dict]: K-means image or K-means image and K-means</span>
+<span class="sd">            report.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;instance of&#39;</span><span class="p">,</span> <span class="n">Image</span><span class="p">)</span>
+
+    <span class="n">stopwatch</span> <span class="o">=</span> <span class="n">StopWatch</span><span class="p">()</span>
+    <span class="n">stopwatch</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+    <span class="n">source_bit_depth</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">bit_depth</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">to_bit_depth</span><span class="p">(</span><span class="n">BitDepth</span><span class="o">.</span><span class="n">FLOAT32</span><span class="p">)</span>\
+        <span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">num_channels</span><span class="p">))</span>
+
+    <span class="n">seed</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">seeding</span> <span class="o">==</span> <span class="s1">&#39;random&#39;</span><span class="p">:</span>
+        <span class="n">seed</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">KMEANS_RANDOM_CENTERS</span>
+    <span class="k">elif</span> <span class="n">seeding</span> <span class="o">==</span> <span class="s1">&#39;pp_centers&#39;</span><span class="p">:</span>
+        <span class="n">seed</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">KMEANS_PP_CENTERS</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">seeding</span><span class="si">}</span><span class="s1"> is not a valid seeding option. Options include: &#39;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="s1">&#39;[random, pp_centers].&#39;</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="c1"># terminate centroid updates when max iteration or min accuracy is achieved</span>
+    <span class="n">crit</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">TERM_CRITERIA_EPS</span> <span class="o">+</span> <span class="n">cv2</span><span class="o">.</span><span class="n">TERM_CRITERIA_MAX_ITER</span>
+
+    <span class="k">if</span> <span class="n">centroids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">num_centroids</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">centroids</span><span class="p">)</span>
+
+    <span class="n">compactness</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">centroids</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">kmeans</span><span class="p">(</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+        <span class="n">K</span><span class="o">=</span><span class="n">num_centroids</span><span class="p">,</span>
+        <span class="n">bestLabels</span><span class="o">=</span><span class="n">centroids</span><span class="p">,</span>
+        <span class="n">criteria</span><span class="o">=</span><span class="p">(</span><span class="n">crit</span><span class="p">,</span> <span class="n">max_iterations</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">),</span>
+        <span class="n">attempts</span><span class="o">=</span><span class="n">epochs</span><span class="p">,</span>
+        <span class="n">flags</span><span class="o">=</span><span class="n">seed</span><span class="p">,</span>
+    <span class="p">)</span>  <span class="c1"># type: ignore</span>
+
+    <span class="n">centroids_</span> <span class="o">=</span> <span class="n">centroids</span>  <span class="c1"># type: Any</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">(</span><span class="n">centroids_</span><span class="p">)[</span><span class="n">labels</span><span class="o">.</span><span class="n">flatten</span><span class="p">()]</span>  <span class="c1"># type: ignore</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">output</span><span class="p">)</span><span class="o">.</span><span class="n">to_bit_depth</span><span class="p">(</span><span class="n">source_bit_depth</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">generate_report</span><span class="p">:</span>
+        <span class="n">report</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">compactness</span><span class="o">=</span><span class="n">compactness</span><span class="p">,</span>
+            <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span>
+            <span class="n">centroids</span><span class="o">=</span><span class="n">centroids</span>
+        <span class="p">)</span>
+        <span class="n">stopwatch</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;KmeansRuntime: </span><span class="si">{</span><span class="n">stopwatch</span><span class="o">.</span><span class="n">human_readable_delta</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">output</span><span class="p">,</span> <span class="n">report</span>
+
+    <span class="n">stopwatch</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+    <span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Kmeans Runtime: </span><span class="si">{</span><span class="n">stopwatch</span><span class="o">.</span><span class="n">human_readable_delta</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">output</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Alex Braun &lt;alexander.g.braun@gmail.com&gt;.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
