@@ -5,6 +5,7 @@ import cv2
 import numpy as np
 
 from cv_depot.core.color import BasicColor
+from cv_depot.core.enum import BitDepth
 from cv_depot.core.image import Image
 import cv_depot.ops.draw as cvdraw
 import cv_depot.ops.filter as cvfilt
@@ -106,3 +107,48 @@ class FilterTests(unittest.TestCase):
         img = np.ones((10, 10), dtype=np.float32) * 0.2
         result = lut(img)
         self.assertEqual(result.mean(), 0)
+
+    def test_linear_smooth(self):
+        img = np.zeros((256, 256))
+        img = cv2 \
+            .rectangle(img, (50, 50), (200, 200), (255, 255, 255), -1) \
+            .astype(np.uint8)
+
+        bit_depth = BitDepth.FLOAT16
+        img1 = Image.from_array(img).to_bit_depth(bit_depth)
+
+        img2 = cvfilt.linear_smooth(img1, blur=40, lower=0.45, upper=0.55)
+        self.assertEqual(img2.bit_depth, bit_depth)
+
+        img1 = img1.data
+        img2 = img2.data
+        result = np.minimum(img1, img2).sum()
+        self.assertLess(result, img1.sum())
+
+    def test_linear_smooth_error(self):
+        # image
+        with self.assertRaises(EnforceError):
+            cvfilt.linear_smooth(np.zeros((10, 10, 3)))
+
+        # blur
+        swatch = cvdraw.swatch((10, 10, 3), BasicColor.CYAN)
+        with self.assertRaises(EnforceError):
+            cvfilt.linear_smooth(swatch, blur=-2)
+
+        # lower
+        with self.assertRaises(EnforceError):
+            cvfilt.linear_smooth(swatch, lower=-1)
+
+        with self.assertRaises(EnforceError):
+            cvfilt.linear_smooth(swatch, lower=2)
+
+        expected = 'Lower bound cannot be greater than upper bound. 0.9 > 0.1'
+        with self.assertRaisesRegexp(EnforceError, expected):
+            cvfilt.linear_smooth(swatch, lower=0.9, upper=0.1)
+
+        # upper
+        with self.assertRaises(EnforceError):
+            cvfilt.linear_smooth(swatch, upper=3)
+
+        with self.assertRaises(EnforceError):
+            cvfilt.linear_smooth(swatch, upper=-1)

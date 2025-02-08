@@ -89,3 +89,44 @@ def linear_lookup(lower=0, upper=1):
     '''
     lut = lambda x: min(max((x - lower), 0) * (1 / (upper - lower)), 1)
     return np.vectorize(lut)
+
+
+def linear_smooth(image, blur=3, lower=0, upper=1):
+    # type: (Image, int, float, float) -> Image
+    '''
+    Blur given image then apply linear thresholding it.
+
+    Args:
+        image (Image): Image matte to be smoothed.
+        blur (int, optional): Size of blur. Default: 3.
+        lower (float, optional): Lower shoulder value. Default: 0.
+        upper (float, optional): Upper shoulder value. Default: 1.
+
+    Raises:
+        EnforceError: If image is not an instance of Image.
+        EnforceError: If blur is less than 0.
+        EnforceError: If lower or upper is less than 0.
+        EnforceError: If lower or upper is greater than 1.
+        EnforceError: If lower is greater than upper.
+
+    Returns:
+        Image: Smoothed image.
+    '''
+    Enforce(image, 'instance of', Image)
+    Enforce(blur, '>=', 0)
+    Enforce(lower, '>=', 0)
+    Enforce(lower, '<=', 1)
+    Enforce(upper, '>=', 0)
+    Enforce(upper, '<=', 1)
+    Enforce(lower, '>=', 0)
+    msg = 'Lower bound cannot be greater than upper bound. {a} > {b}'
+    Enforce(lower, '<=', upper, message=msg)
+    # --------------------------------------------------------------------------
+
+    bit_depth = image.bit_depth
+    img = image.to_bit_depth(BitDepth.FLOAT32).data
+    img = cv2.blur(img, (blur, blur))
+    lut = linear_lookup(lower=lower, upper=upper)
+    img = lut(img).astype(np.float32)
+    output = Image.from_array(img).to_bit_depth(bit_depth)
+    return output
