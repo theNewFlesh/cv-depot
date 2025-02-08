@@ -187,9 +187,9 @@ def checkerboard(tiles_wide, tiles_high, tile_shape=(10, 10)):
 
 
 def highlight(
-    image, mask='a', opacity=0.5, color=BasicColor.CYAN2, inverse=False
+    image, mask='a', opacity=0.5, color=BasicColor.CYAN2.name, inverse=False
 ):
-    # type: (Image, str, float, Union[Color, BasicColor], bool) -> Image
+    # type: (Image, str, float, AnyColor, bool) -> Image
     '''
     Highlight a masked portion of a given image according to a given channel.
 
@@ -198,7 +198,8 @@ def highlight(
         mask (str, optional): Channel to be used as mask. Default: alpha.
         opacity (float, optional): Opacity of highlight overlayed on image.
             Default: 0.5
-        color (Color, optional): Color of highlight. Default: BasicColor.CYAN2.
+        color (Color or BasicColor, optional): Color of highlight.
+            Default: BasicColor.CYAN2.
         inverse (bool, optional): Whether to invert the highlight.
             Default: False.
 
@@ -213,6 +214,8 @@ def highlight(
     Returns:
         Image: Highlighted image.
     '''
+    if isinstance(color, str):
+        color = BasicColor.from_string(color)
     if isinstance(color, BasicColor):
         color = Color.from_basic_color(color)
 
