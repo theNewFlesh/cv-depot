@@ -41,4 +41,5 @@ ops = __argparse.Namespace(
     channel=__create_namespace(__ops.channel),
     draw=__create_namespace(__ops.draw),
     edit=__create_namespace(__ops.edit),
+    filter=__create_namespace(__ops.filter),
 )
