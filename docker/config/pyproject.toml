@@ -1,6 +1,6 @@
 [project]
 name = "cv-depot"
-version = "0.6.2"
+version = "0.7.0"
 description = "Computer Vision Tools"
 authors = [
     { name = "Alex Braun", email = "alexander.g.braun@gmail.com" },
@@ -33,6 +33,7 @@ dependencies = [
     "ipywidgets",
     "lunchbox>=0.3.3",
     "numpy>=2.2.2",
+    "opencv-python",
     "openexr-tools>=0.4.0",
     "pillow>=11.1.0",
 ]
