@@ -428,18 +428,6 @@ def chop(image, channel='a', mode='vertical-horizontal'):
 
     def get_indices(image, axis):
         # type: (Image, str) -> list[int]
-        '''
-        Determines where cuts should be made along a given access, according to
-        a given threshold.
-
-        Args:
-            image (Image): A one channel image.
-            axis (str): The axis to cut the image along. Options include:
-                vertical or horizontal.
-
-        Returns:
-            list[int]: Indices along a given axis that demarcate object bounds.
-        '''
         # find indices of bbox edges across a single axis
         bboxes = get_bounding_boxes(image)
         indices = set()  # type: Any
