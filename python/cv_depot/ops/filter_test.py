@@ -87,3 +87,22 @@ class FilterTests(unittest.TestCase):
         expected += r"\['open', 'close'\]\."
         with self.assertRaisesRegexp(EnforceError, expected):
             cvfilt.tophat(swatch, 10, kind='foo')
+
+    def test_linear_lookup(self):
+        lut = cvfilt.linear_lookup(0.25, 0.75)
+
+        img = np.ones((10, 10), dtype=np.float32) * 0.8
+        result = lut(img)
+        self.assertEqual(result.mean(), 1)
+
+        img = np.ones((10, 10), dtype=np.float32) * 0.5
+        result = lut(img)
+        self.assertEqual(result.mean(), 0.5)
+
+        img = np.ones((10, 10), dtype=np.float32) * 0.4
+        result = lut(img)
+        self.assertEqual(round(result.mean(), 2), 0.3)
+
+        img = np.ones((10, 10), dtype=np.float32) * 0.2
+        result = lut(img)
+        self.assertEqual(result.mean(), 0)

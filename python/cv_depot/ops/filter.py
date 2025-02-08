@@ -70,3 +70,22 @@ def tophat(image, amount, kind='open'):
         .astype(np.float32)
     output = Image.from_array(arr).to_bit_depth(bit_depth)
     return output
+
+
+def linear_lookup(lower=0, upper=1):
+    # type: (float, float) -> np.vectorize
+    r'''
+    Generates a linear lookup table with an upper and lower shoulder.
+
+    .. image:: linear_lut.png
+
+    Args:
+        lower (float, optional): Lower shoulder value. Default: 0.
+        upper (float, optional): Upper shoulder value. Default: 1.
+
+    Returns:
+        numpy.vectorize: Anonymous function that applies lut elementwise to a
+            given numpy array.
+    '''
+    lut = lambda x: min(max((x - lower), 0) * (1 / (upper - lower)), 1)
+    return np.vectorize(lut)
