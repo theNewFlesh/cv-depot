@@ -87,12 +87,7 @@ class BitDepth(EnumBase):
 
     def __repr__(self):
         # type: () -> str
-        return f'''
-<BitDepth.{self.name.upper()}>
- dtype: {self.dtype.__name__}
-  bits: {self.bits}
-signed: {self.signed}
-  type: {self.type_.__name__}'''[1:]
+        return f'BitDepth.{self.name.upper()}'
 
     @staticmethod
     def from_dtype(dtype):

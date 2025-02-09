@@ -39,12 +39,7 @@ class BitDepthTests(unittest.TestCase):
     def test_repr(self):
         b = BitDepth.FLOAT32
         result = repr(b)
-        expected = '''
-<BitDepth.FLOAT32>
- dtype: float32
-  bits: 32
-signed: True
-  type: float'''[1:]
+        expected = 'BitDepth.FLOAT32'
         self.assertEqual(result, expected)
 
     def test_from_dtype(self):
