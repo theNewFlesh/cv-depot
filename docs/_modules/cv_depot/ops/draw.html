@@ -35,7 +35,7 @@
             cv-depot
           </a>
               <div class="version">
-                0.10.0
+                0.10.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -107,6 +107,8 @@
 <span class="c1"># ------------------------------------------------------------------------------</span>
 
 
+<div class="viewcode-block" id="swatch">
+<a class="viewcode-back" href="../../../ops.html#cv_depot.ops.draw.swatch">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">swatch</span><span class="p">(</span>
     <span class="n">shape</span><span class="p">,</span>                      <span class="c1"># type: Union[Tuple[int, int, int], List[int]]</span>
     <span class="n">color</span><span class="p">,</span>                      <span class="c1"># type: AnyColor</span>
@@ -155,7 +157,8 @@
 
     <span class="n">output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">c</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">*</span> <span class="n">color</span><span class="o">.</span><span class="n">to_array</span><span class="p">()</span>
     <span class="n">output</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">output</span><span class="p">)</span><span class="o">.</span><span class="n">to_bit_depth</span><span class="p">(</span><span class="n">bit_depth</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">output</span>
+    <span class="k">return</span> <span class="n">output</span></div>
+
 
 
 <div class="viewcode-block" id="grid">

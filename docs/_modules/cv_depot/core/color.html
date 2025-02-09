@@ -35,7 +35,7 @@
             cv-depot
           </a>
               <div class="version">
-                0.10.0
+                0.10.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -436,6 +436,8 @@
         <span class="k">return</span> <span class="n">Color</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="Color.from_list">
+<a class="viewcode-back" href="../../../core.html#cv_depot.core.color.Color.from_list">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_list</span><span class="p">(</span>
         <span class="n">data</span><span class="p">,</span> <span class="n">num_channels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">bit_depth</span><span class="o">=</span><span class="n">BitDepth</span><span class="o">.</span><span class="n">FLOAT32</span>
@@ -460,7 +462,8 @@
         <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">bit_depth</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Color</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span>
             <span class="n">data</span><span class="p">,</span> <span class="n">num_channels</span><span class="o">=</span><span class="n">num_channels</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="n">fill_value</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="Color.from_basic_color">
 <a class="viewcode-back" href="../../../core.html#cv_depot.core.color.Color.from_basic_color">[docs]</a>
@@ -540,6 +543,8 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
 
+<div class="viewcode-block" id="Color.to_array">
+<a class="viewcode-back" href="../../../core.html#cv_depot.core.color.Color.to_array">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">to_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bit_depth</span><span class="o">=</span><span class="n">BitDepth</span><span class="o">.</span><span class="n">FLOAT32</span><span class="p">):</span>
         <span class="c1"># type: (BitDepth) -&gt; NDArray</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
@@ -558,6 +563,7 @@
         <span class="k">elif</span> <span class="n">bit_depth</span> <span class="ow">is</span> <span class="n">BitDepth</span><span class="o">.</span><span class="n">UINT8</span><span class="p">:</span>
             <span class="n">output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">output</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">output</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">bit_depth</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span></div>
+</div>
 
 </pre></div>
 
