@@ -366,3 +366,69 @@ class OutlineTests(unittest.TestCase):
         # width
         with self.assertRaises(EnforceError):
             cvdraw.outline(image, mask='a', width=-1, color=color)
+
+
+class AnnotateTests(unittest.TestCase):
+    def get_outline_image(self, width):
+        width += 1
+        shape = (50, 100, 4)
+        black = cvdraw.swatch(shape, BasicColor.BLACK, fill_value=0)
+        white = cvdraw.swatch(shape, BasicColor.WHITE, fill_value=1)
+        image = cvedit.staple(black, white)
+
+        green = cvdraw.swatch((width, 100, 4), BasicColor.GREEN, fill_value=1)
+        w0 = int(50 - (width / 2))
+        w1 = w0 + 1
+        shape0 = (w0, 100, 4)
+        shape1 = (w1, 100, 4)
+        black = cvdraw.swatch(shape0, BasicColor.BLACK, fill_value=0)
+        white = cvdraw.swatch(shape1, BasicColor.WHITE, fill_value=0)
+        expected = cvedit.staple(black, green)
+        expected = cvedit.staple(expected, white)
+        return image, expected
+
+    def test_annotate(self):
+        image, _ = self.get_outline_image(10)
+        params = dict(
+            mask='a', opacity=0.4, color=BasicColor.GREEN1, inverse=False
+        )
+        params1 = dict(mask='a', width=10, color=BasicColor.GREEN1)
+        expected = cvdraw.highlight(image, **params)
+        expected = cvdraw.outline(expected, **params1)
+        rgb = list('rgb')
+        expected = expected[:, :, rgb]
+
+        params.update(params1)
+        result = cvdraw.annotate(image, **params)
+        self.assertEqual(result.channels, expected.channels)
+        self.assertEqual(result, expected)
+
+    def test_annotate_keep_mask(self):
+        image, _ = self.get_outline_image(10)
+        params = dict(
+            mask='a', opacity=0.4, color=BasicColor.GREEN1, inverse=False
+        )
+        params1 = dict(mask='a', width=10, color=BasicColor.GREEN1)
+        expected = cvdraw.highlight(image, **params)
+        expected = cvdraw.outline(expected, **params1)
+
+        params.update(params1)
+        result = cvdraw.annotate(image, keep_mask=True, **params)
+        self.assertEqual(result.channels, expected.channels)
+        self.assertEqual(result, expected)
+
+    def test_annotate_inverse(self):
+        image, _ = self.get_outline_image(10)
+        params = dict(
+            mask='a', opacity=0.4, color=BasicColor.GREEN1, inverse=True
+        )
+        params1 = dict(mask='a', width=10, color=BasicColor.GREEN1)
+        expected = cvdraw.highlight(image, **params)
+        expected = cvdraw.outline(expected, **params1)
+        rgb = list('rgb')
+        expected = expected[:, :, rgb]
+
+        params.update(params1)
+        result = cvdraw.annotate(image, **params)
+        self.assertEqual(result.channels, expected.channels)
+        self.assertEqual(result, expected)

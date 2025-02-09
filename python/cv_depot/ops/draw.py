@@ -241,7 +241,9 @@ def highlight(
     swatch = cvdraw.swatch(image.shape, color, fill_value=1.0)
     data = (image.data * imatte.data) + (swatch.data * matte.data)
     output = Image.from_array(data).to_bit_depth(image.bit_depth)
-    output = cvchan.mix(image, output, amount=1 - opacity)
+    output = cvchan \
+        .mix(image, output, amount=1 - opacity) \
+        .set_channels(image.channels)
     return output
 
 
@@ -278,4 +280,43 @@ def outline(image, mask='a', width=10, color=BasicColor.CYAN2.name):
     edge = cvfilt.canny_edges(image[:, :, mask], size=w)
     output = cvchan.remap([image, edge], cmap)
     output = highlight(output, mask=mask, opacity=1.0, color=color)
+    return output
+
+
+def annotate(
+    image,                        # type: Image
+    mask='a',                     # type: str
+    opacity=0.5,                  # type: float
+    width=10,                     # type: int
+    color=BasicColor.CYAN2.name,  # type: AnyColor
+    inverse=False,                # type: bool
+    keep_mask=False,              # type: bool
+):
+    # type (...) -> Image
+    '''
+    Annotate a given image according to a given mask channel.
+
+    Args:
+        image (Image): Image with mask channel.
+        mask (str, optional): Mask channel. Default: alpha.
+        opacity (float, optional): Opacity of annotation. Default: 0.5
+        width (int, optional): Outline width. Default: 10.
+        color (Color or BasicColor, optional): Color of outline.
+            Default: BasicColor.CYAN2
+        inverse (bool, optional): Whether to invert the annotation.
+            Default: False.
+        keep_mask (bool, optional): Whether to keep the mask channel.
+            Default: False.
+
+    Returns:
+        Image: Image with outline.
+    '''
+    output = highlight(
+        image, mask=mask, opacity=opacity, color=color, inverse=inverse
+    )
+    output = outline(output, mask=mask, width=width, color=color)
+    if not keep_mask:
+        channels = deepcopy(image.channels)
+        channels.remove(mask)
+        output = output[:, :, channels]
     return output
