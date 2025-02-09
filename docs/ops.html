@@ -38,7 +38,7 @@
             cv-depot
           </a>
               <div class="version">
-                0.9.0
+                0.10.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -73,8 +73,11 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-cv_depot.ops.draw">draw</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cv_depot.ops.draw.annotate"><code class="docutils literal notranslate"><span class="pre">annotate()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#cv_depot.ops.draw.checkerboard"><code class="docutils literal notranslate"><span class="pre">checkerboard()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#cv_depot.ops.draw.grid"><code class="docutils literal notranslate"><span class="pre">grid()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cv_depot.ops.draw.highlight"><code class="docutils literal notranslate"><span class="pre">highlight()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cv_depot.ops.draw.outline"><code class="docutils literal notranslate"><span class="pre">outline()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-cv_depot.ops.edit">edit</a><ul>
@@ -322,6 +325,34 @@ channels.</p>
 <section id="module-cv_depot.ops.draw">
 <span id="draw"></span><h2>draw<a class="headerlink" href="#module-cv_depot.ops.draw" title="Link to this heading"></a></h2>
 <dl class="py function">
+<dt class="sig sig-object py" id="cv_depot.ops.draw.annotate">
+<span class="sig-prename descclassname"><span class="pre">cv_depot.ops.draw.</span></span><span class="sig-name descname"><span class="pre">annotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'a'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'CYAN2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inverse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_depot/ops/draw.html#annotate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_depot.ops.draw.annotate" title="Link to this definition"></a></dt>
+<dd><p>Annotate a given image according to a given mask channel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="core.html#cv_depot.core.image.Image" title="cv_depot.core.image.Image"><em>Image</em></a>) – Image with mask channel.</p></li>
+<li><p><strong>mask</strong> (<em>str</em><em>, </em><em>optional</em>) – Mask channel. Default: alpha.</p></li>
+<li><p><strong>opacity</strong> (<em>float</em><em>, </em><em>optional</em>) – Opacity of annotation. Default: 0.5</p></li>
+<li><p><strong>width</strong> (<em>int</em><em>, </em><em>optional</em>) – Outline width. Default: 10.</p></li>
+<li><p><strong>color</strong> (<a class="reference internal" href="core.html#cv_depot.core.color.Color" title="cv_depot.core.color.Color"><em>Color</em></a><em> or </em><a class="reference internal" href="core.html#cv_depot.core.color.BasicColor" title="cv_depot.core.color.BasicColor"><em>BasicColor</em></a><em>, </em><em>optional</em>) – Color of outline.
+Default: BasicColor.CYAN2</p></li>
+<li><p><strong>inverse</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to invert the annotation.
+Default: False.</p></li>
+<li><p><strong>keep_mask</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to keep the mask channel.
+Default: False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Image with outline.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="core.html#cv_depot.core.image.Image" title="cv_depot.core.image.Image">Image</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="cv_depot.ops.draw.checkerboard">
 <span class="sig-prename descclassname"><span class="pre">cv_depot.ops.draw.</span></span><span class="sig-name descname"><span class="pre">checkerboard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tiles_wide</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tiles_high</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tile_shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(10,</span> <span class="pre">10)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_depot/ops/draw.html#checkerboard"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_depot.ops.draw.checkerboard" title="Link to this definition"></a></dt>
 <dd><p>Draws a checkerboard of given width, height and tile shape.</p>
@@ -376,6 +407,73 @@ Default: 1.</p></li>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Image with grid.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="core.html#cv_depot.core.image.Image" title="cv_depot.core.image.Image">Image</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cv_depot.ops.draw.highlight">
+<span class="sig-prename descclassname"><span class="pre">cv_depot.ops.draw.</span></span><span class="sig-name descname"><span class="pre">highlight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'a'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'CYAN2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inverse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_depot/ops/draw.html#highlight"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_depot.ops.draw.highlight" title="Link to this definition"></a></dt>
+<dd><p>Highlight a masked portion of a given image according to a given channel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="core.html#cv_depot.core.image.Image" title="cv_depot.core.image.Image"><em>Image</em></a>) – Image to be highlighted.</p></li>
+<li><p><strong>mask</strong> (<em>str</em><em>, </em><em>optional</em>) – Channel to be used as mask. Default: alpha.</p></li>
+<li><p><strong>opacity</strong> (<em>float</em><em>, </em><em>optional</em>) – Opacity of highlight overlayed on image.
+Default: 0.5</p></li>
+<li><p><strong>color</strong> (<a class="reference internal" href="core.html#cv_depot.core.color.Color" title="cv_depot.core.color.Color"><em>Color</em></a><em> or </em><a class="reference internal" href="core.html#cv_depot.core.color.BasicColor" title="cv_depot.core.color.BasicColor"><em>BasicColor</em></a><em>, </em><em>optional</em>) – Color of highlight.
+Default: BasicColor.CYAN2.</p></li>
+<li><p><strong>inverse</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to invert the highlight.
+Default: False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>EnforceError</strong> – If image is not an instance of Image.</p></li>
+<li><p><strong>EnforceError</strong> – If mask is not an instance of str.</p></li>
+<li><p><strong>EnforceError</strong> – If mask not found in image channels.</p></li>
+<li><p><strong>EnforceError</strong> – If opacity is &lt; 0 or &gt; 1.</p></li>
+<li><p><strong>EnforceError</strong> – If color is not instance of Color.</p></li>
+<li><p><strong>EnforceError</strong> – If inverse is not a boolean.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Highlighted image.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="core.html#cv_depot.core.image.Image" title="cv_depot.core.image.Image">Image</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cv_depot.ops.draw.outline">
+<span class="sig-prename descclassname"><span class="pre">cv_depot.ops.draw.</span></span><span class="sig-name descname"><span class="pre">outline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'a'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'CYAN2'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_depot/ops/draw.html#outline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_depot.ops.draw.outline" title="Link to this definition"></a></dt>
+<dd><p>Use a given mask to outline a given image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="core.html#cv_depot.core.image.Image" title="cv_depot.core.image.Image"><em>Image</em></a>) – Image with mask channel.</p></li>
+<li><p><strong>mask</strong> (<em>str</em><em>, </em><em>optional</em>) – Mask channel. Default: alpha.</p></li>
+<li><p><strong>width</strong> (<em>int</em><em>, </em><em>optional</em>) – Outline width. Default: 10.</p></li>
+<li><p><strong>color</strong> (<a class="reference internal" href="core.html#cv_depot.core.color.Color" title="cv_depot.core.color.Color"><em>Color</em></a><em> or </em><a class="reference internal" href="core.html#cv_depot.core.color.BasicColor" title="cv_depot.core.color.BasicColor"><em>BasicColor</em></a><em>, </em><em>optional</em>) – Color of outline.
+Default: BasicColor.CYAN2</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>EnforceError</strong> – If image is not an instance of Image.</p></li>
+<li><p><strong>EnforceError</strong> – If channel not found in image channels.</p></li>
+<li><p><strong>EnforceError</strong> – If width is not &gt;= 0.</p></li>
+<li><p><strong>EnforceError</strong> – If color is not an instance of Color or BasicColor.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Image with outline.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="core.html#cv_depot.core.image.Image" title="cv_depot.core.image.Image">Image</a></p>
