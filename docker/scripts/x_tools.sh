@@ -358,8 +358,6 @@ x_docs () {
     rm -f $REPO_DIR/sphinx/readme.md;
     cp -f sphinx/style.css $DOCS_DIR/_static/style.css;
     touch $DOCS_DIR/.nojekyll;
-    mkdir -p $DOCS_DIR/resources;
-    cp -r resources/png $DOCS_DIR/resources/;
     exit_code=`_x_resolve_exit_code $exit_code $?`;
     return $exit_code;
 }
