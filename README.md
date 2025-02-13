@@ -5,7 +5,7 @@
 [![](https://img.shields.io/pypi/v/cv-depot?style=for-the-badge&label=PyPI&color=5F95DE&logo=pypi&logoColor=5F95DE)](https://pypi.org/project/cv-depot/)
 [![](https://img.shields.io/pypi/dm/cv-depot?style=for-the-badge&label=Downloads&color=5F95DE)](https://pepy.tech/project/cv-depot)
 
-<p><img src="resources/logo.png"width="666px" height="360px"></p>
+<p><img src="images/logo.png"width="666px" height="360px"></p>
 
 # Introduction
 
