@@ -32,7 +32,7 @@ dependencies = [
     "IPython",
     "ipywidgets",
     "lunchbox>=0.3.3",
-    "numpy>=2.2.2",
+    "numpy>=2.0.2",
     "opencv-python",
     "openexr-tools>=0.4.0",
     "pillow>=11.1.0",
