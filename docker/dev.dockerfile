@@ -37,6 +37,7 @@ RUN echo "\n${CYAN}INSTALL GENERIC DEPENDENCIES${CLEAR}"; \
         bat \
         btop \
         ca-certificates \
+        cargo \
         curl \
         exa \
         git \
