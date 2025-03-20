@@ -15,6 +15,29 @@ import cv_depot.ops.filter as cvfilt
 
 
 class FilterTests(unittest.TestCase):
+    def test_gamma(self):
+        img = cvdraw.swatch((100, 100, 3), BasicColor.WHITE)
+        result = cvfilt.gamma(img, 0.5)
+        self.assertEqual(result.data[50, 50][0], 1**(1 / 0.5))
+
+        img = cvdraw.swatch((100, 100, 3), BasicColor.GREY)
+        result = cvfilt.gamma(img, 0.5)
+        self.assertEqual(result.data[50, 50][0], 0.5**(1 / 0.5))
+
+        img = cvdraw.swatch((100, 100, 3), BasicColor.BLACK)
+        result = cvfilt.gamma(img, 0.5)
+        self.assertEqual(result.data[50, 50][0], 0)
+
+    def test_gamma_errors(self):
+        # image
+        with self.assertRaises(EnforceError):
+            cvfilt.gamma('foo')
+
+        # size < 0
+        img = cvdraw.checkerboard(2, 1, (50, 100))
+        with self.assertRaises(EnforceError):
+            cvfilt.gamma(img, -1)
+
     def test_canny_edges(self):
         img = cvdraw.checkerboard(2, 1, (50, 100))
         result = cvfilt.canny_edges(img)

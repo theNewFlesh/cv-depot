@@ -15,6 +15,33 @@ LOGGER = logging.getLogger(__name__)
 # ------------------------------------------------------------------------------
 
 
+def gamma(image, value=1.0):
+    # type: (Image, float) -> Image
+    '''
+    Apply gamma correction to given image.
+
+    Args:
+        image (Image): Image to be modified.
+        value (int): Gamma value. Default: 1.0.
+
+    Raises:
+        EnforceError: If image is not an instance of Image.
+        EnforceError: If value is less than 0.
+
+    Returns:
+        Image: Gamma adjusted image.
+    '''
+    Enforce(image, 'instance of', Image)
+    Enforce(value, '>=', 0)
+    # --------------------------------------------------------------------------
+
+    bit_depth = image.bit_depth
+    array = image.to_bit_depth(BitDepth.FLOAT32).data
+    array = array**(1 / value)
+    output = Image.from_array(array).to_bit_depth(bit_depth)
+    return output
+
+
 def canny_edges(image, size=0):
     # type: (Image, int) -> Image
     '''
