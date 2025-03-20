@@ -19,10 +19,12 @@ class ImageViewerTests(unittest.TestCase):
 
     def test_init(self):
         image = self.get_image()
-        result = ImageViewer(image)
+        result = ImageViewer(image, 50, 0.5)
         self.assertIs(result._image, image)
         self.assertEqual(result.layer, 'diffuse')
         self.assertEqual(result.channel, 'all')
+        self.assertEqual(result.size, 50)
+        self.assertEqual(result.gamma, 0.5)
         self.assertTrue(hasattr(result, 'layer_selector'))
         self.assertTrue(hasattr(result, 'channel_selector'))
         self.assertTrue(hasattr(result, 'viewer'))
@@ -65,3 +67,18 @@ class ImageViewerTests(unittest.TestCase):
         viewer._handle_channel_event(event)
 
         self.assertEqual(viewer.channel_selector.value, 'diffuse.x')
+
+    def test_handle_resize_event(self):
+        viewer = ImageViewer(self.get_image())
+        event = dict(type='change', new=42)
+        viewer._handle_resize_event(event)
+
+        self.assertEqual(viewer.size_slider.value, 42)
+        self.assertEqual(viewer.viewer.width, '42%')
+
+    def test_handle_gamma_event(self):
+        viewer = ImageViewer(self.get_image())
+        event = dict(type='change', new=1.2)
+        viewer._handle_gamma_event(event)
+
+        self.assertEqual(viewer.gamma_slider.value, 1.2)
