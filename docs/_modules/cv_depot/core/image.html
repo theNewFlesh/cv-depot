@@ -35,7 +35,7 @@
             cv-depot
           </a>
               <div class="version">
-                0.10.3
+                0.11.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -176,6 +176,23 @@
         <span class="c1"># enforce bit depth compliance</span>
         <span class="n">BitDepth</span><span class="o">.</span><span class="n">from_dtype</span><span class="p">(</span><span class="n">array</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Image</span><span class="p">(</span><span class="n">array</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="p">{},</span> <span class="kc">None</span><span class="p">,</span> <span class="n">allow</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Image.from_pil">
+<a class="viewcode-back" href="../../../core.html#cv_depot.core.image.Image.from_pil">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_pil</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+        <span class="c1"># type: (pil.Image) -&gt; Image</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Construct an Image instance from a given PIL Image.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            image (pil.Image): PIL Image.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Image: Image instance of a given PIL Image.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">Image</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">image</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="Image.read">
@@ -565,6 +582,19 @@
         <span class="k">return</span> <span class="n">Image</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span> <span class="n">format_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="p">,</span> <span class="n">allow</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="Image.to_array">
+<a class="viewcode-back" href="../../../core.html#cv_depot.core.image.Image.to_array">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_array</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># type: () -&gt; NDArray</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Returns numpy array.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            numpy.NDArray: Image as numpy array.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span></div>
+
+
 <div class="viewcode-block" id="Image.to_pil">
 <a class="viewcode-back" href="../../../core.html#cv_depot.core.image.Image.to_pil">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">to_pil</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -655,7 +685,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># type: () -&gt; NDArray</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Numpy.NDArray: Image data.</span>
+<span class="sd">        numpy.NDArray: Image data.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_channels</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>

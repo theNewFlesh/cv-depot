@@ -38,7 +38,7 @@
             cv-depot
           </a>
               <div class="version">
-                0.10.3
+                0.11.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -205,6 +205,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.image.Image.data"><code class="docutils literal notranslate"><span class="pre">Image.data</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.image.Image.extension"><code class="docutils literal notranslate"><span class="pre">Image.extension</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.image.Image.from_array"><code class="docutils literal notranslate"><span class="pre">Image.from_array()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.image.Image.from_pil"><code class="docutils literal notranslate"><span class="pre">Image.from_pil()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.image.Image.height"><code class="docutils literal notranslate"><span class="pre">Image.height</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.image.Image.info"><code class="docutils literal notranslate"><span class="pre">Image.info</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.image.Image.max_channels"><code class="docutils literal notranslate"><span class="pre">Image.max_channels</span></code></a></li>
@@ -212,6 +213,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.image.Image.read"><code class="docutils literal notranslate"><span class="pre">Image.read()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.image.Image.set_channels"><code class="docutils literal notranslate"><span class="pre">Image.set_channels()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.image.Image.shape"><code class="docutils literal notranslate"><span class="pre">Image.shape</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.image.Image.to_array"><code class="docutils literal notranslate"><span class="pre">Image.to_array()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.image.Image.to_bit_depth"><code class="docutils literal notranslate"><span class="pre">Image.to_bit_depth()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.image.Image.to_pil"><code class="docutils literal notranslate"><span class="pre">Image.to_pil()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#cv_depot.core.image.Image.to_unit_space"><code class="docutils literal notranslate"><span class="pre">Image.to_unit_space()</span></code></a></li>
@@ -1399,7 +1401,7 @@ differing values. Default: False.</p></li>
 <dd><p>Image data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Numpy.NDArray</p>
+<dd class="field-odd"><p>numpy.NDArray</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1425,6 +1427,23 @@ differing values. Default: False.</p></li>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Image instance of given numpy array.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#cv_depot.core.image.Image" title="cv_depot.core.image.Image">Image</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cv_depot.core.image.Image.from_pil">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_pil</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_depot/core/image.html#Image.from_pil"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_depot.core.image.Image.from_pil" title="Link to this definition"></a></dt>
+<dd><p>Construct an Image instance from a given PIL Image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>image</strong> (<em>pil.Image</em>) – PIL Image.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Image instance of a given PIL Image.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#cv_depot.core.image.Image" title="cv_depot.core.image.Image">Image</a></p>
@@ -1530,6 +1549,20 @@ differing values. Default: False.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>tuple[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cv_depot.core.image.Image.to_array">
+<span class="sig-name descname"><span class="pre">to_array</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_depot/core/image.html#Image.to_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_depot.core.image.Image.to_array" title="Link to this definition"></a></dt>
+<dd><p>Returns numpy array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Image as numpy array.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>numpy.NDArray</p>
 </dd>
 </dl>
 </dd></dl>
