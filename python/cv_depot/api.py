@@ -14,6 +14,7 @@ from cv_depot.core.color import BasicColor, Color  # noqa F401
 from cv_depot.core.enum import BitDepth, ImageFormat, VideoCodec, VideoFormat  # noqa F401
 from cv_depot.core.enum import Anchor, Direction  # noqa F401
 from cv_depot.core.image import Image  # noqa F401
+from cv_depot.core.viewer import ImageViewer  # noqa F401
 # ------------------------------------------------------------------------------
 
 
