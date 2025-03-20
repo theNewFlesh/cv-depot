@@ -70,6 +70,15 @@ class ImageTests(unittest.TestCase):
             expected.ravel().tobytes(),
         )
 
+    def test_from_pil(self):
+        expected = np.zeros((10, 10), dtype=np.uint8)
+        img = pil.fromarray(expected)
+        result = Image.from_pil(img)
+        self.assertEqual(
+            result.data.ravel().tobytes(),
+            expected.ravel().tobytes(),
+        )
+
     def test_read_exr(self):
         with TemporaryDirectory() as root:
             filepath = Path(root, 'test.exr')
@@ -670,6 +679,14 @@ NUM_CHANNELS: 3
         result = Image.from_array(temp)
         result._data = result.data.astype(np.float16)
         self.assertEqual(result.bit_depth, BitDepth.FLOAT16)
+
+    def test_to_array(self):
+        temp = np.zeros((10, 5), dtype=np.uint8)
+        img = Image.from_array(temp)
+        result = img.to_array()
+        self.assertEqual(result.shape, img.data.shape)
+        self.assertEqual(result.dtype, img.data.dtype)
+        self.assertEqual(result.mean(), img.data.mean())
 
     def test_to_pil(self):
         # 1 channel

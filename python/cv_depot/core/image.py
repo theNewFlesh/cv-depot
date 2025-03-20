@@ -77,6 +77,20 @@ class Image():
         return Image(array.copy(), {}, None, allow=True)
 
     @staticmethod
+    def from_pil(image):
+        # type: (pil.Image) -> Image
+        '''
+        Construct an Image instance from a given PIL Image.
+
+        Args:
+            image (pil.Image): PIL Image.
+
+        Returns:
+            Image: Image instance of a given PIL Image.
+        '''
+        return Image.from_array(np.array(image))
+
+    @staticmethod
     def read(filepath):
         # type: (Filepath) -> Image
         '''
@@ -436,6 +450,16 @@ NUM_CHANNELS: {self.num_channels}
         metadata = deepcopy(self.metadata)
         return Image(data, metadata=metadata, format_=self.format, allow=True)
 
+    def to_array(self):
+        # type: () -> NDArray
+        '''
+        Returns numpy array.
+
+        Returns:
+            numpy.NDArray: Image as numpy array.
+        '''
+        return self.data
+
     def to_pil(self):
         # type: () -> pil.Image
         '''
@@ -520,7 +544,7 @@ NUM_CHANNELS: {self.num_channels}
     def data(self):
         # type: () -> NDArray
         '''
-        Numpy.NDArray: Image data.
+        numpy.NDArray: Image data.
         '''
         if self.num_channels == 1:
             return np.squeeze(self._data, axis=2)
