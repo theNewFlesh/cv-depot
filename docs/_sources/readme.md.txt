@@ -5,7 +5,7 @@
 [![](https://img.shields.io/pypi/v/cv-depot?style=for-the-badge&label=PyPI&color=5F95DE&logo=pypi&logoColor=5F95DE)](https://pypi.org/project/cv-depot/)
 [![](https://img.shields.io/pypi/dm/cv-depot?style=for-the-badge&label=Downloads&color=5F95DE)](https://pepy.tech/project/cv-depot)
 
-<p><img src="resources/logo.png"width="666px" height="360px"></p>
+<p><img src="_images/logo.png"width="666px" height="360px"></p>
 
 # Introduction
 
@@ -49,6 +49,28 @@ Run `bin/cv-depot --help` for more help on the command line tool.
 
 ### Python
 `pip install cv-depot`
+
+If you are on Debian-based Linux and you run into C library issues such as with
+OpenEXR, the following may help:
+```
+apt update && \
+apt install --fix-missing -y python3.10-dev && \
+apt install -y \
+    build-essential \
+    g++ \
+    gcc \
+    zlib1g-dev
+```
+
+For OpenEXR you will also need this:
+```
+apt install -y \
+    libopenexr-dev \
+    openexr
+```
+
+Please see the prod.dockerfile for an official example of how to build a docker
+image with cv-depot.
 
 ### Docker
 1. Install [docker-desktop](https://docs.docker.com/desktop/)
@@ -177,6 +199,7 @@ The following is a complete list of all available development commands:
 | test-coverage              | Generate test coverage report                                       |
 | test-dev                   | Run all tests                                                       |
 | test-fast                  | Test all code excepts tests marked with SKIP_SLOWS_TESTS decorator  |
+| test-format                | Format all python files                                             |
 | test-lint                  | Run linting and type checking                                       |
 | test-prod                  | Run tests across all support python versions                        |
 | version                    | Full resolution of repo: dependencies, linting, tests, docs, etc    |
