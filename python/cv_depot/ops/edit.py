@@ -1,5 +1,5 @@
 from typing import Any  # noqa F401
-from cv_depot.core.types import AnyAnchor, AnyColor  # noqa F401
+from cv_depot.core.types import AnyAnchor, AnyColor, OptArray  # noqa F401
 
 import math
 
@@ -485,3 +485,84 @@ def chop(image, channel='a', mode='vertical-horizontal'):
             else:
                 output[(y, xl - x)] = image
     return output
+
+
+def warp(
+    image,
+    angle=0,
+    translate_x=0,
+    translate_y=0,
+    scale=1,
+    inverse=False,
+    matrix=None
+):
+    # type: (Image, float, float, float, float, bool, OptArray) -> Image
+    '''
+    Warp image by given parameters or warp matrix.
+    If matrix is given, parameters are ignored.
+
+    Args:
+        image (Image): Image.
+        angle (float, optional): Rotation in degrees. Default: 0.
+        translate_x (float, optional): X translation. Default: 0.
+        translate_y (float, optional): Y translation. Default: 0.
+        scale (float, optional): Scale factor. Default: 1.
+        inverse (bool, optional): Inverse transformation. Default: False.
+        matrix (numpy.ndarray, optional): Warp matrix. Default: None.
+
+    Raises:
+        EnforceError: If image is not an instance of Image.
+        EnforceError: If matrix is not None or an instance of np.ndarray.
+        EnforceError: If matrix is not a 3 x 3 matrix.
+
+    Returns:
+        Image: Warped image.
+    '''
+    Enforce(image, 'instance of', Image)
+
+    if matrix is None:
+        matrix = get_warp_matrix(angle, translate_x, translate_y, scale)
+    Enforce(matrix, 'instance of', np.ndarray)
+    Enforce(matrix.shape, '==', (3, 3))
+    # --------------------------------------------------------------------------
+
+    # convert to float
+    bit_depth = image.bit_depth
+    channels = image.channels
+    array = image.to_bit_depth(BitDepth.FLOAT32).data
+    flag = cv2.WARP_INVERSE_MAP if inverse else 0
+    array = cv2.warpPerspective(
+        array, matrix, dsize=image.width_and_height, flags=flag
+    )
+
+    # convert to original bit depth
+    output = Image.from_array(array).to_bit_depth(bit_depth)
+
+    # set original channel names
+    output = output.set_channels(channels)
+    return output
+
+
+def get_warp_matrix(angle=0, translate_x=0, translate_y=0, scale=1):
+    # type: (float, float, float, float) -> np.ndarray
+    '''
+    Create 3 x 3 warp matrix.
+
+    Args:
+        angle (float, optional): Rotation in degrees. Default: 0.
+        translate_x (float, optional): X translation. Default: 0.
+        translate_y (float, optional): Y translation. Default: 0.
+        scale (float, optional): Scale factor. Default: 1.
+
+    Returns:
+        ndarray: 3 x 3 warp matrix.
+    '''
+    t = np.radians(angle)
+    x = translate_x
+    y = translate_y
+    s = scale
+    return np.array([
+        [math.cos(t) * s, -math.sin(t) * s, x],
+        [math.sin(t) * s, math.cos(t) * s, y],
+        [0, 0, 1]
+    ])

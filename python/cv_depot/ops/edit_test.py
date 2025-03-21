@@ -576,3 +576,38 @@ class ChopTests(unittest.TestCase):
         self.assertEqual(result[(0, 0)], e00)
         self.assertEqual(result[(1, 0)], e10)
         self.assertEqual(result[(0, 1)], e01)
+
+    def test_warp(self):
+        expected = cvdraw.checkerboard(2, 2, (64, 64))
+        result = cvedit.warp(expected, angle=90, translate_x=127)
+        result = abs(expected.data - result.data).mean()
+        self.assertEqual(result, 1)
+
+    def test_warp_matrix(self):
+        expected = cvdraw.checkerboard(2, 2, (64, 64))
+        warp = cvedit.get_warp_matrix(angle=90, translate_x=127)
+        result = cvedit.warp(expected, matrix=warp)
+        result = abs(expected.data - result.data).mean()
+        self.assertEqual(result, 1)
+
+    def test_warp_errors(self):
+        image = cvdraw.checkerboard(2, 2, (64, 64))
+
+        # image
+        with self.assertRaises(EnforceError):
+            cvedit.warp(np.zeros((64, 64)))
+
+        # matrix
+        with self.assertRaises(EnforceError):
+            cvedit.warp(image, matrix='foobar')
+
+        with self.assertRaises(EnforceError):
+            cvedit.warp(image, matrix=np.zeros((2, 3)))
+
+    def test_get_warp_matrix(self):
+        result = cvedit.get_warp_matrix(translate_x=10, translate_y=20)
+        self.assertIsInstance(result, np.ndarray)
+        self.assertEqual(result.shape, (3, 3))
+        self.assertEqual(result[0, 2], 10)
+        self.assertEqual(result[1, 2], 20)
+        self.assertEqual(result[2].tolist(), [0, 0, 1])
