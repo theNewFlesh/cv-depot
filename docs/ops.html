@@ -38,7 +38,7 @@
             cv-depot
           </a>
               <div class="version">
-                0.11.0
+                0.11.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -85,9 +85,11 @@
 <li class="toctree-l3"><a class="reference internal" href="#cv_depot.ops.edit.chop"><code class="docutils literal notranslate"><span class="pre">chop()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#cv_depot.ops.edit.crop"><code class="docutils literal notranslate"><span class="pre">crop()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#cv_depot.ops.edit.cut"><code class="docutils literal notranslate"><span class="pre">cut()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cv_depot.ops.edit.get_warp_matrix"><code class="docutils literal notranslate"><span class="pre">get_warp_matrix()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#cv_depot.ops.edit.pad"><code class="docutils literal notranslate"><span class="pre">pad()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#cv_depot.ops.edit.reformat"><code class="docutils literal notranslate"><span class="pre">reformat()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#cv_depot.ops.edit.staple"><code class="docutils literal notranslate"><span class="pre">staple()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cv_depot.ops.edit.warp"><code class="docutils literal notranslate"><span class="pre">warp()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-cv_depot.ops.filter">filter</a><ul>
@@ -630,6 +632,28 @@ Options include: vertical, horizontal. Default: vertical.</p></li>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="cv_depot.ops.edit.get_warp_matrix">
+<span class="sig-prename descclassname"><span class="pre">cv_depot.ops.edit.</span></span><span class="sig-name descname"><span class="pre">get_warp_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">angle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translate_x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translate_y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_depot/ops/edit.html#get_warp_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_depot.ops.edit.get_warp_matrix" title="Link to this definition"></a></dt>
+<dd><p>Create 3 x 3 warp matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>angle</strong> (<em>float</em><em>, </em><em>optional</em>) – Rotation in degrees. Default: 0.</p></li>
+<li><p><strong>translate_x</strong> (<em>float</em><em>, </em><em>optional</em>) – X translation. Default: 0.</p></li>
+<li><p><strong>translate_y</strong> (<em>float</em><em>, </em><em>optional</em>) – Y translation. Default: 0.</p></li>
+<li><p><strong>scale</strong> (<em>float</em><em>, </em><em>optional</em>) – Scale factor. Default: 1.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>3 x 3 warp matrix.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="cv_depot.ops.edit.pad">
 <span class="sig-prename descclassname"><span class="pre">cv_depot.ops.edit.</span></span><span class="sig-name descname"><span class="pre">pad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">anchor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">Anchor.TOP_LEFT</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'BLACK'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_depot/ops/edit.html#pad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_depot.ops.edit.pad" title="Link to this definition"></a></dt>
 <dd><p>Pads a given image into a new image of a given shape.</p>
@@ -715,6 +739,39 @@ Default: 0.</p></li>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Stapled Image.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="core.html#cv_depot.core.image.Image" title="cv_depot.core.image.Image">Image</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cv_depot.ops.edit.warp">
+<span class="sig-prename descclassname"><span class="pre">cv_depot.ops.edit.</span></span><span class="sig-name descname"><span class="pre">warp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translate_x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translate_y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inverse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cv_depot/ops/edit.html#warp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cv_depot.ops.edit.warp" title="Link to this definition"></a></dt>
+<dd><p>Warp image by given parameters or warp matrix.
+If matrix is given, parameters are ignored.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="core.html#cv_depot.core.image.Image" title="cv_depot.core.image.Image"><em>Image</em></a>) – Image.</p></li>
+<li><p><strong>angle</strong> (<em>float</em><em>, </em><em>optional</em>) – Rotation in degrees. Default: 0.</p></li>
+<li><p><strong>translate_x</strong> (<em>float</em><em>, </em><em>optional</em>) – X translation. Default: 0.</p></li>
+<li><p><strong>translate_y</strong> (<em>float</em><em>, </em><em>optional</em>) – Y translation. Default: 0.</p></li>
+<li><p><strong>scale</strong> (<em>float</em><em>, </em><em>optional</em>) – Scale factor. Default: 1.</p></li>
+<li><p><strong>inverse</strong> (<em>bool</em><em>, </em><em>optional</em>) – Inverse transformation. Default: False.</p></li>
+<li><p><strong>matrix</strong> (<em>numpy.ndarray</em><em>, </em><em>optional</em>) – Warp matrix. Default: None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>EnforceError</strong> – If image is not an instance of Image.</p></li>
+<li><p><strong>EnforceError</strong> – If matrix is not None or an instance of np.ndarray.</p></li>
+<li><p><strong>EnforceError</strong> – If matrix is not a 3 x 3 matrix.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Warped image.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="core.html#cv_depot.core.image.Image" title="cv_depot.core.image.Image">Image</a></p>

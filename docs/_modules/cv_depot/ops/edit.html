@@ -35,7 +35,7 @@
             cv-depot
           </a>
               <div class="version">
-                0.11.0
+                0.11.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -90,7 +90,7 @@
              
   <h1>Source code for cv_depot.ops.edit</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>  <span class="c1"># noqa F401</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">cv_depot.core.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">AnyAnchor</span><span class="p">,</span> <span class="n">AnyColor</span>  <span class="c1"># noqa F401</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cv_depot.core.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">AnyAnchor</span><span class="p">,</span> <span class="n">AnyColor</span><span class="p">,</span> <span class="n">OptArray</span>  <span class="c1"># noqa F401</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
 
@@ -593,6 +593,93 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">output</span><span class="p">[(</span><span class="n">y</span><span class="p">,</span> <span class="n">xl</span> <span class="o">-</span> <span class="n">x</span><span class="p">)]</span> <span class="o">=</span> <span class="n">image</span>
     <span class="k">return</span> <span class="n">output</span></div>
+
+
+
+<div class="viewcode-block" id="warp">
+<a class="viewcode-back" href="../../../ops.html#cv_depot.ops.edit.warp">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">warp</span><span class="p">(</span>
+    <span class="n">image</span><span class="p">,</span>
+    <span class="n">angle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">translate_x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">translate_y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">matrix</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">):</span>
+    <span class="c1"># type: (Image, float, float, float, float, bool, OptArray) -&gt; Image</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Warp image by given parameters or warp matrix.</span>
+<span class="sd">    If matrix is given, parameters are ignored.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        image (Image): Image.</span>
+<span class="sd">        angle (float, optional): Rotation in degrees. Default: 0.</span>
+<span class="sd">        translate_x (float, optional): X translation. Default: 0.</span>
+<span class="sd">        translate_y (float, optional): Y translation. Default: 0.</span>
+<span class="sd">        scale (float, optional): Scale factor. Default: 1.</span>
+<span class="sd">        inverse (bool, optional): Inverse transformation. Default: False.</span>
+<span class="sd">        matrix (numpy.ndarray, optional): Warp matrix. Default: None.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        EnforceError: If image is not an instance of Image.</span>
+<span class="sd">        EnforceError: If matrix is not None or an instance of np.ndarray.</span>
+<span class="sd">        EnforceError: If matrix is not a 3 x 3 matrix.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Image: Warped image.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s1">&#39;instance of&#39;</span><span class="p">,</span> <span class="n">Image</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">matrix</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">matrix</span> <span class="o">=</span> <span class="n">get_warp_matrix</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">translate_x</span><span class="p">,</span> <span class="n">translate_y</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="s1">&#39;instance of&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span>
+    <span class="n">Enforce</span><span class="p">(</span><span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="s1">&#39;==&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+    <span class="c1"># convert to float</span>
+    <span class="n">bit_depth</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">bit_depth</span>
+    <span class="n">channels</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">channels</span>
+    <span class="n">array</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">to_bit_depth</span><span class="p">(</span><span class="n">BitDepth</span><span class="o">.</span><span class="n">FLOAT32</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">flag</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">WARP_INVERSE_MAP</span> <span class="k">if</span> <span class="n">inverse</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="n">array</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">warpPerspective</span><span class="p">(</span>
+        <span class="n">array</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">dsize</span><span class="o">=</span><span class="n">image</span><span class="o">.</span><span class="n">width_and_height</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">flag</span>
+    <span class="p">)</span>
+
+    <span class="c1"># convert to original bit depth</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">array</span><span class="p">)</span><span class="o">.</span><span class="n">to_bit_depth</span><span class="p">(</span><span class="n">bit_depth</span><span class="p">)</span>
+
+    <span class="c1"># set original channel names</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">set_channels</span><span class="p">(</span><span class="n">channels</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">output</span></div>
+
+
+
+<div class="viewcode-block" id="get_warp_matrix">
+<a class="viewcode-back" href="../../../ops.html#cv_depot.ops.edit.get_warp_matrix">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_warp_matrix</span><span class="p">(</span><span class="n">angle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">translate_x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">translate_y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="c1"># type: (float, float, float, float) -&gt; np.ndarray</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Create 3 x 3 warp matrix.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        angle (float, optional): Rotation in degrees. Default: 0.</span>
+<span class="sd">        translate_x (float, optional): X translation. Default: 0.</span>
+<span class="sd">        translate_y (float, optional): Y translation. Default: 0.</span>
+<span class="sd">        scale (float, optional): Scale factor. Default: 1.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        ndarray: 3 x 3 warp matrix.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">translate_x</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">translate_y</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">scale</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+        <span class="p">[</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">x</span><span class="p">],</span>
+        <span class="p">[</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">y</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="p">])</span></div>
 
 </pre></div>
 
