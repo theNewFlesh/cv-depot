@@ -11,7 +11,8 @@ import types as __types
 import cv_depot.ops as __ops  # noqa F401
 from cv_depot.core.channel_map import ChannelMap  # noqa F401
 from cv_depot.core.color import BasicColor, Color  # noqa F401
-from cv_depot.core.enum import BitDepth, ImageFormat, VideoCodec, VideoFormat  # noqa F401
+from cv_depot.core.enum import BitDepth, ImageCodec, ImageFormat  # noqa F401
+from cv_depot.core.enum import VideoCodec, VideoFormat  # noqa F401
 from cv_depot.core.enum import Anchor, Direction  # noqa F401
 from cv_depot.core.image import Image  # noqa F401
 from cv_depot.core.viewer import ImageViewer  # noqa F401
