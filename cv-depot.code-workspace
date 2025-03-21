@@ -57,7 +57,7 @@
             "*/*/**/node_modules": true
         },
         "workbench.colorCustomizations": {
-            "statusBar.background" : "#EDBC8D",
+            "statusBar.background" : "#EB9E58",
             "statusBar.foreground": "#000000"
         }
     },
