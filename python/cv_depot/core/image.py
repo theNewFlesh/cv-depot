@@ -35,7 +35,7 @@ def _has_super_darks(image):
         bool: Presence of super darks.
     '''
     Enforce(image, 'instance of', Image)
-    return image.data.min() < 0.0
+    return bool(image.data.min() < 0.0)
 
 
 def _has_super_brights(image):
@@ -53,7 +53,7 @@ def _has_super_brights(image):
         bool: Presence of super brights.
     '''
     Enforce(image, 'instance of', Image)
-    return image.data.max() > 1.0
+    return bool(image.data.max() > 1.0)
 
 
 class Image():
