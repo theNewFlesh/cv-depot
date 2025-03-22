@@ -14,7 +14,10 @@ Tools for Computer Vision Pipelines
 See [documentation](https://thenewflesh.github.io/cv-depot/) for details.
 
 See [image notebook](https://github.com/theNewFlesh/cv-depot/blob/master/notebooks/demo-image.ipynb)
-for demo of the Image class.
+for a demo of the Image class.
+
+See [channel notebook](https://github.com/theNewFlesh/cv-depot/blob/master/notebooks/demo-channel.ipynb)
+for a demo of channel operators.
 
 # Installation for Developers
 
