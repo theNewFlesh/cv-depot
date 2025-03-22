@@ -1,7 +1,7 @@
 from typing import Any, List, Tuple, Union  # noqa F401
 from cv_depot.core.types import AnyColor  # noqa F401
 
-from copy import deepcopy
+import copy
 
 from lunchbox.enforce import Enforce
 import cv2
@@ -232,7 +232,7 @@ def highlight(
     # --------------------------------------------------------------------------
 
     img = image.to_bit_depth(BitDepth.FLOAT32)
-    channels = deepcopy(image.channels)
+    channels = copy.deepcopy(image.channels)
     matte = cvchan.remap_single_channel(img[:, :, mask], channels)
     imatte = cvchan.invert(matte)
     if inverse:
@@ -316,7 +316,7 @@ def annotate(
     )
     output = outline(output, mask=mask, width=width, color=color)
     if not keep_mask:
-        channels = deepcopy(image.channels)
+        channels = copy.deepcopy(image.channels)
         channels.remove(mask)
         output = output[:, :, channels]
     return output
