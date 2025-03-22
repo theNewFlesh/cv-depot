@@ -12,8 +12,8 @@ import cv_depot.api as cvd
 
 
 class ImageViewer:
-    def __init__(self, image, size=87, gamma=1):
-        # type: (Image, int, float) -> None
+    def __init__(self, image, size=87, gamma=1, premultiply=False):
+        # type: (Image, int, float, bool) -> None
         '''
         Constructs an ImageViewer widget, used for displaying Image instances.
 
@@ -21,6 +21,8 @@ class ImageViewer:
             image (Image): Image instance.
             size (int, optional): Image size in percentage. Default: 87.
             gamma (float, optional): Initial gamma value. Default: 1.
+            premultiply (bool, optional): Premultiply image by last channel.
+                Default: False.
 
         Raises:
             EnforceError: If image is not an Image instance.
@@ -29,6 +31,7 @@ class ImageViewer:
         self._image = image
         self.size = size
         self.gamma = gamma
+        self.premult = premultiply
 
         # layer
         self.layer = self._get_layer_options()[0]
@@ -60,6 +63,11 @@ class ImageViewer:
         )
         self.gamma_slider.observe(self._handle_gamma_event, names='value')
 
+        self.premult_checkbox = ipy.Checkbox(
+            value=False, description='premultiply',
+        )
+        self.premult_checkbox.observe(self._handle_premult_event, names='value')
+
         # viewer
         self.viewer = ipy.Image(value=self._get_png(), width=f'{self.size}%')
         self.info = ipy.HTML(value=self._get_info())
@@ -74,6 +82,7 @@ class ImageViewer:
                     self.channel_selector,
                     self.size_slider,
                     self.gamma_slider,
+                    self.premult_checkbox,
                 ],
                 layout=ipy.Layout(flex_flow='row')
             ),
@@ -138,7 +147,10 @@ class ImageViewer:
         chan = self.channel
         if chan == 'all':
             chan = self.layer
-        return cvd.ops.filter.gamma(self._image[:, :, chan], self.gamma)._repr_png()
+        chans = self._image[:, :, chan].channels
+        if not self.premult and len(chans) > 3:
+            chans = chans[:3]
+        return cvd.ops.filter.gamma(self._image[:, :, chans], self.gamma)._repr_png()
 
     def _handle_layer_event(self, event):
         # type: (dict) -> None
@@ -201,4 +213,17 @@ class ImageViewer:
         if event['type'] == 'change':
             self.gamma = event['new']
             self.gamma_slider.value = self.gamma
+            self.viewer.value = self._get_png()
+
+    def _handle_premult_event(self, event):
+        # type: (dict) -> None
+        '''
+        Handles premultiply events.
+
+        Args:
+            event (dict): Event.
+        '''
+        if event['type'] == 'change':
+            self.premult = event['new']
+            self.premult_checkbox.value = self.premult
             self.viewer.value = self._get_png()

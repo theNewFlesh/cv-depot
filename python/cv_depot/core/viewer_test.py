@@ -25,6 +25,7 @@ class ImageViewerTests(unittest.TestCase):
         self.assertEqual(result.channel, 'all')
         self.assertEqual(result.size, 50)
         self.assertEqual(result.gamma, 0.5)
+        self.assertEqual(result.premult, False)
         self.assertTrue(hasattr(result, 'layer_selector'))
         self.assertTrue(hasattr(result, 'channel_selector'))
         self.assertTrue(hasattr(result, 'viewer'))
@@ -82,3 +83,10 @@ class ImageViewerTests(unittest.TestCase):
         viewer._handle_gamma_event(event)
 
         self.assertEqual(viewer.gamma_slider.value, 1.2)
+
+    def test_handle_premult_event(self):
+        viewer = ImageViewer(self.get_image())
+        event = dict(type='change', new=True)
+        viewer._handle_premult_event(event)
+
+        self.assertTrue(viewer.premult_checkbox.value)
