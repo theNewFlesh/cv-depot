@@ -22,6 +22,9 @@ for a demo of channel operators.
 See [draw notebook](https://github.com/theNewFlesh/cv-depot/blob/master/notebooks/demo-draw.ipynb)
 for a demo of draw operators.
 
+See [filter notebook](https://github.com/theNewFlesh/cv-depot/blob/master/notebooks/demo-filter.ipynb)
+for a demo of filter operators.
+
 # Installation for Developers
 
 ### Docker
