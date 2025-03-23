@@ -12,14 +12,14 @@ import cv_depot.api as cvd
 
 
 class ImageViewer:
-    def __init__(self, image, size=87, gamma=1, premultiply=False):
+    def __init__(self, image, size=81, gamma=1, premultiply=False):
         # type: (Image, int, float, bool) -> None
         '''
         Constructs an ImageViewer widget, used for displaying Image instances.
 
         Args:
             image (Image): Image instance.
-            size (int, optional): Image size in percentage. Default: 87.
+            size (int, optional): Image size in percentage. Default: 81.
             gamma (float, optional): Initial gamma value. Default: 1.
             premultiply (bool, optional): Premultiply image by last channel.
                 Default: False.
@@ -53,13 +53,13 @@ class ImageViewer:
 
         # size slider
         self.size_slider = ipy.IntSlider(
-            value=self.size, min=0, max=100, step=1, names='value', description='size'
+            value=self.size, min=0, max=100, step=1, description='size'
         )
         self.size_slider.observe(self._handle_resize_event, names='value')
 
         # gamma slider
         self.gamma_slider = ipy.FloatSlider(
-            value=self.gamma, min=0, max=10, step=0.01, names='value', description='gamma'
+            value=self.gamma, min=0, max=10, step=0.01, description='gamma'
         )
         self.gamma_slider.observe(self._handle_gamma_event, names='value')
 
@@ -71,23 +71,22 @@ class ImageViewer:
         # viewer
         self.viewer = ipy.Image(value=self._get_png(), width=f'{self.size}%')
         self.info = ipy.HTML(value=self._get_info())
-        space = ipy.HTML(value='<div style="width: 115px;"></div>')
 
         # widgets
+        sidebar = ipy.VBox(
+            [
+                self.info,
+                self.layer_selector,
+                self.channel_selector,
+                self.size_slider,
+                self.gamma_slider,
+                self.premult_checkbox,
+            ],
+            layout=ipy.Layout(flex_flow='column', min_width='310px')
+        )
         self._widgets = [
             ipy.HBox(
-                [
-                    space,
-                    self.layer_selector,
-                    self.channel_selector,
-                    self.size_slider,
-                    self.gamma_slider,
-                    self.premult_checkbox,
-                ],
-                layout=ipy.Layout(flex_flow='row')
-            ),
-            ipy.HBox(
-                [self.info, self.viewer],
+                [sidebar, self.viewer],
                 layout=ipy.Layout(flex_flow='row')
             )
         ]
@@ -128,13 +127,16 @@ class ImageViewer:
         Returns:
             str: HTML.
         '''
-        desc = self._image._repr()
-        desc = re.sub('<', '&lt;', desc)
-        desc = re.sub('>', '&gt;', desc)
-        desc = re.sub('\n', '<br>', desc)
-        desc = re.sub(' ', '&nbsp;', desc)
-        desc = f'<p style="font-family: monospace; font-size: 13px;">{desc}</p>'
-        return desc
+        info = self._image.info
+        desc = ''
+        for key in ['width', 'height', 'num_channels', 'bit_depth']:
+            val = info[key]
+            key = re.sub(' ', '&nbsp;', f'{key:>14}')
+            desc += f'<span style="color: #7EC4CF;">{key}: </span>'
+            desc += f'<span>{val}</span><br>'
+        elem = '<p style="font-family: monospace; font-size: 13px; '
+        elem += f'background: #242424;">{desc}</p>'
+        return elem
 
     def _get_png(self):
         # type: () -> Optional[bytes]
