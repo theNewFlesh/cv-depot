@@ -105,13 +105,8 @@ docstring-code-format = true
 skip-magic-trailing-comma = true
 
 [tool.ruff.lint]
-select = [
-    "E",
-    "F",
-]
-ignore = [
-    "E731",
-]
+select = ["E", "F"]
+ignore = ["E731"]
 
 [tool.ruff.lint.flake8-quotes]
 docstring-quotes = "single"
