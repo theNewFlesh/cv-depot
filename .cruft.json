@@ -19,7 +19,6 @@
     "cookiecutter": {
       "repo": "cv-depot",
       "repo_type": "library",
-      "include_black": "no",
       "include_gcc": "yes",
       "include_helm": "no",
       "include_mkdocs": "no",
@@ -27,9 +26,7 @@
       "include_openexr": "yes",
       "include_prod_cli": "yes",
       "include_prod_envs": "yes",
-      "include_rsync": "no",
       "include_secret_env": "no",
-      "include_tensorflow": "no",
       "include_vscode_server": "no",
       "port_prefix": "42",
       "git_user": "theNewFlesh",
