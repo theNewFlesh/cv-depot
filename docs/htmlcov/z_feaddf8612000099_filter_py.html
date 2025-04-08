@@ -64,8 +64,8 @@
             <a id="indexLink" class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a id="nextFileLink" class="nav" href="index.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.7.1">coverage.py v7.7.1</a>,
-            created at 2025-03-23 19:44 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.8.0">coverage.py v7.8.0</a>,
+            created at 2025-04-08 20:26 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -293,8 +293,8 @@
     <p class="run"><span class="n"><a id="t211" href="#t211">211</a></span><span class="t">        <span class="nam">img</span> <span class="op">=</span> <span class="nam">Image</span><span class="op">.</span><span class="nam">from_array</span><span class="op">(</span><span class="nam">x</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t212" href="#t212">212</a></span><span class="t">    <span class="key">else</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t213" href="#t213">213</a></span><span class="t">        <span class="nam">diff</span> <span class="op">=</span> <span class="nam">sorted</span><span class="op">(</span><span class="nam">list</span><span class="op">(</span><span class="nam">set</span><span class="op">(</span><span class="nam">rgb</span><span class="op">)</span><span class="op">.</span><span class="nam">difference</span><span class="op">(</span><span class="nam">image</span><span class="op">.</span><span class="nam">channels</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t214" href="#t214">214</a></span><span class="t">        <span class="nam">msg</span> <span class="op">=</span> <span class="str">f'{diff} not found in image channels. '</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t215" href="#t215">215</a></span><span class="t">        <span class="nam">msg</span> <span class="op">+=</span> <span class="str">f'Given channels: {image.channels}.'</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t214" href="#t214">214</a></span><span class="t">        <span class="nam">msg</span> <span class="op">=</span> <span class="fst">f'</span><span class="op">{</span><span class="nam">diff</span><span class="op">}</span><span class="fst"> not found in image channels. </span><span class="fst">'</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t215" href="#t215">215</a></span><span class="t">        <span class="nam">msg</span> <span class="op">+=</span> <span class="fst">f'</span><span class="fst">Given channels: </span><span class="op">{</span><span class="nam">image</span><span class="op">.</span><span class="nam">channels</span><span class="op">}</span><span class="fst">.</span><span class="fst">'</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t216" href="#t216">216</a></span><span class="t">        <span class="nam">Enforce</span><span class="op">(</span><span class="nam">len</span><span class="op">(</span><span class="nam">diff</span><span class="op">)</span><span class="op">,</span> <span class="str">'=='</span><span class="op">,</span> <span class="num">0</span><span class="op">,</span> <span class="nam">message</span><span class="op">=</span><span class="nam">msg</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t217" href="#t217">217</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t218" href="#t218">218</a></span><span class="t">    <span class="com"># create mask</span>&nbsp;</span><span class="r"></span></p>
@@ -369,7 +369,7 @@
     <p class="run"><span class="n"><a id="t287" href="#t287">287</a></span><span class="t">    <span class="key">elif</span> <span class="nam">seeding</span> <span class="op">==</span> <span class="str">'pp_centers'</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t288" href="#t288">288</a></span><span class="t">        <span class="nam">seed</span> <span class="op">=</span> <span class="nam">cv2</span><span class="op">.</span><span class="nam">KMEANS_PP_CENTERS</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t289" href="#t289">289</a></span><span class="t">    <span class="key">else</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t290" href="#t290">290</a></span><span class="t">        <span class="nam">msg</span> <span class="op">=</span> <span class="str">f'{seeding} is not a valid seeding option. Options include: '</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t290" href="#t290">290</a></span><span class="t">        <span class="nam">msg</span> <span class="op">=</span> <span class="fst">f'</span><span class="op">{</span><span class="nam">seeding</span><span class="op">}</span><span class="fst"> is not a valid seeding option. Options include: </span><span class="fst">'</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t291" href="#t291">291</a></span><span class="t">        <span class="nam">msg</span> <span class="op">+=</span> <span class="str">'[random, pp_centers].'</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t292" href="#t292">292</a></span><span class="t">        <span class="key">raise</span> <span class="nam">ValueError</span><span class="op">(</span><span class="nam">msg</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t293" href="#t293">293</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
@@ -400,11 +400,11 @@
     <p class="pln"><span class="n"><a id="t318" href="#t318">318</a></span><span class="t">            <span class="nam">centroids</span><span class="op">=</span><span class="nam">centroids</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t319" href="#t319">319</a></span><span class="t">        <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t320" href="#t320">320</a></span><span class="t">        <span class="nam">stopwatch</span><span class="op">.</span><span class="nam">stop</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t321" href="#t321">321</a></span><span class="t">        <span class="nam">LOGGER</span><span class="op">.</span><span class="nam">warning</span><span class="op">(</span><span class="str">f'KmeansRuntime: {stopwatch.human_readable_delta}.'</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t321" href="#t321">321</a></span><span class="t">        <span class="nam">LOGGER</span><span class="op">.</span><span class="nam">warning</span><span class="op">(</span><span class="fst">f'</span><span class="fst">KmeansRuntime: </span><span class="op">{</span><span class="nam">stopwatch</span><span class="op">.</span><span class="nam">human_readable_delta</span><span class="op">}</span><span class="fst">.</span><span class="fst">'</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t322" href="#t322">322</a></span><span class="t">        <span class="key">return</span> <span class="nam">output</span><span class="op">,</span> <span class="nam">report</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t323" href="#t323">323</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t324" href="#t324">324</a></span><span class="t">    <span class="nam">stopwatch</span><span class="op">.</span><span class="nam">stop</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t325" href="#t325">325</a></span><span class="t">    <span class="nam">LOGGER</span><span class="op">.</span><span class="nam">warning</span><span class="op">(</span><span class="str">f'Kmeans Runtime: {stopwatch.human_readable_delta}.'</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t325" href="#t325">325</a></span><span class="t">    <span class="nam">LOGGER</span><span class="op">.</span><span class="nam">warning</span><span class="op">(</span><span class="fst">f'</span><span class="fst">Kmeans Runtime: </span><span class="op">{</span><span class="nam">stopwatch</span><span class="op">.</span><span class="nam">human_readable_delta</span><span class="op">}</span><span class="fst">.</span><span class="fst">'</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t326" href="#t326">326</a></span><span class="t">    <span class="key">return</span> <span class="nam">output</span>&nbsp;</span><span class="r"></span></p>
 </main>
 <footer>
@@ -414,8 +414,8 @@
             <a class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a class="nav" href="index.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.7.1">coverage.py v7.7.1</a>,
-            created at 2025-03-23 19:44 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.8.0">coverage.py v7.8.0</a>,
+            created at 2025-04-08 20:26 +0000
         </p>
     </div>
 </footer>

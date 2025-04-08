@@ -64,8 +64,8 @@
             <a id="indexLink" class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a id="nextFileLink" class="nav" href="z_feaddf8612000099_draw_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.7.1">coverage.py v7.7.1</a>,
-            created at 2025-03-23 19:44 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.8.0">coverage.py v7.8.0</a>,
+            created at 2025-04-08 20:26 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -149,7 +149,7 @@
     <p class="run"><span class="n"><a id="t67" href="#t67">67</a></span><span class="t">    <span class="nam">channels</span> <span class="op">=</span> <span class="nam">set</span><span class="op">(</span><span class="nam">image</span><span class="op">.</span><span class="nam">channels</span><span class="op">)</span><span class="op">.</span><span class="nam">intersection</span><span class="op">(</span><span class="nam">rgb</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t68" href="#t68">68</a></span><span class="t">    <span class="key">if</span> <span class="nam">channels</span> <span class="op">!=</span> <span class="nam">set</span><span class="op">(</span><span class="nam">rgb</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t69" href="#t69">69</a></span><span class="t">        <span class="nam">msg</span> <span class="op">=</span> <span class="str">'Image does not contain RGB channels. '</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t70" href="#t70">70</a></span><span class="t">        <span class="nam">msg</span> <span class="op">+=</span> <span class="str">f'Channels found: {image.channels}.'</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t70" href="#t70">70</a></span><span class="t">        <span class="nam">msg</span> <span class="op">+=</span> <span class="fst">f'</span><span class="fst">Channels found: </span><span class="op">{</span><span class="nam">image</span><span class="op">.</span><span class="nam">channels</span><span class="op">}</span><span class="fst">.</span><span class="fst">'</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t71" href="#t71">71</a></span><span class="t">        <span class="key">raise</span> <span class="nam">AttributeError</span><span class="op">(</span><span class="nam">msg</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t72" href="#t72">72</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t73" href="#t73">73</a></span><span class="t">    <span class="nam">img_</span> <span class="op">=</span> <span class="nam">image</span><span class="op">.</span><span class="nam">to_bit_depth</span><span class="op">(</span><span class="nam">BitDepth</span><span class="op">.</span><span class="nam">FLOAT32</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
@@ -181,7 +181,7 @@
     <p class="run"><span class="n"><a id="t99" href="#t99">99</a></span><span class="t">    <span class="nam">channels</span> <span class="op">=</span> <span class="nam">set</span><span class="op">(</span><span class="nam">image</span><span class="op">.</span><span class="nam">channels</span><span class="op">)</span><span class="op">.</span><span class="nam">intersection</span><span class="op">(</span><span class="nam">hsv</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t100" href="#t100">100</a></span><span class="t">    <span class="key">if</span> <span class="nam">channels</span> <span class="op">!=</span> <span class="nam">set</span><span class="op">(</span><span class="nam">hsv</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t101" href="#t101">101</a></span><span class="t">        <span class="nam">msg</span> <span class="op">=</span> <span class="str">'Image does not contain HSV channels. '</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t102" href="#t102">102</a></span><span class="t">        <span class="nam">msg</span> <span class="op">+=</span> <span class="str">f'Channels found: {image.channels}.'</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t102" href="#t102">102</a></span><span class="t">        <span class="nam">msg</span> <span class="op">+=</span> <span class="fst">f'</span><span class="fst">Channels found: </span><span class="op">{</span><span class="nam">image</span><span class="op">.</span><span class="nam">channels</span><span class="op">}</span><span class="fst">.</span><span class="fst">'</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t103" href="#t103">103</a></span><span class="t">        <span class="key">raise</span> <span class="nam">AttributeError</span><span class="op">(</span><span class="nam">msg</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t104" href="#t104">104</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t105" href="#t105">105</a></span><span class="t">    <span class="nam">img_</span> <span class="op">=</span> <span class="nam">image</span><span class="op">.</span><span class="nam">to_bit_depth</span><span class="op">(</span><span class="nam">BitDepth</span><span class="op">.</span><span class="nam">FLOAT32</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
@@ -307,7 +307,7 @@
     <p class="run"><span class="n"><a id="t225" href="#t225">225</a></span><span class="t">        <span class="nam">images</span> <span class="op">=</span> <span class="op">[</span><span class="nam">images</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t226" href="#t226">226</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t227" href="#t227">227</a></span><span class="t">    <span class="nam">msg</span> <span class="op">=</span> <span class="str">'Images must be an Image or list of Images of uniform width and height.'</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t228" href="#t228">228</a></span><span class="t">    <span class="nam">msg</span> <span class="op">+=</span> <span class="str">f' Given type: {images.__class__.__name__}'</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t228" href="#t228">228</a></span><span class="t">    <span class="nam">msg</span> <span class="op">+=</span> <span class="fst">f'</span><span class="fst"> Given type: </span><span class="op">{</span><span class="nam">images</span><span class="op">.</span><span class="nam">__class__</span><span class="op">.</span><span class="nam">__name__</span><span class="op">}</span><span class="fst">'</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t229" href="#t229">229</a></span><span class="t">    <span class="op">[</span><span class="nam">Enforce</span><span class="op">(</span><span class="nam">x</span><span class="op">,</span> <span class="str">'instance of'</span><span class="op">,</span> <span class="nam">Image</span><span class="op">)</span> <span class="key">for</span> <span class="nam">x</span> <span class="key">in</span> <span class="nam">images</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t230" href="#t230">230</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t231" href="#t231">231</a></span><span class="t">    <span class="nam">shapes</span> <span class="op">=</span> <span class="op">{</span><span class="nam">x</span><span class="op">.</span><span class="nam">width_and_height</span> <span class="key">for</span> <span class="nam">x</span> <span class="key">in</span> <span class="nam">images</span><span class="op">}</span>&nbsp;</span><span class="r"></span></p>
@@ -351,8 +351,8 @@
             <a class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a class="nav" href="z_feaddf8612000099_draw_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.7.1">coverage.py v7.7.1</a>,
-            created at 2025-03-23 19:44 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.8.0">coverage.py v7.8.0</a>,
+            created at 2025-04-08 20:26 +0000
         </p>
     </div>
 </footer>

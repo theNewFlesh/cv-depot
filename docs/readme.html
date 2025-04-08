@@ -38,7 +38,7 @@
             cv-depot
           </a>
               <div class="version">
-                0.11.3
+                0.12.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -114,7 +114,33 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <!-- <img id="logo" src="resources/logo.png" style="max-width: 717px"> -->
+  <p>
+    <a href="https://www.linkedin.com/in/alexandergbraun" rel="nofollow noreferrer">
+        <img src="https://www.gomezaparicio.com/wp-content/uploads/2012/03/linkedin-logo-1-150x150.png"
+             alt="linkedin" width="30px" height="30px"
+        >
+    </a>
+    <a href="https://github.com/theNewFlesh" rel="nofollow noreferrer">
+        <img src="https://tadeuzagallo.com/GithubPulse/assets/img/app-icon-github.png"
+             alt="github" width="30px" height="30px"
+        >
+    </a>
+    <a href="https://pypi.org/user/the-new-flesh" rel="nofollow noreferrer">
+        <img src="https://cdn.iconscout.com/icon/free/png-256/python-2-226051.png"
+             alt="pypi" width="30px" height="30px"
+        >
+    </a>
+    <a href="http://vimeo.com/user3965452" rel="nofollow noreferrer">
+        <img src="https://cdn1.iconfinder.com/data/icons/somacro___dpi_social_media_icons_by_vervex-dfjq/500/vimeo.png"
+             alt="vimeo" width="30px" height="30px"
+        >
+    </a>
+    <a href="https://alexgbraun.com" rel="nofollow noreferrer">
+        <img src="https://i.ibb.co/fvyMkpM/logo.png"
+             alt="alexgbraun" width="30px" height="30px"
+        >
+    </a>
+</p>
 <p><a class="reference external" href="https://github.com/thenewflesh/cv-depot/blob/master/LICENSE"><img alt="" src="https://img.shields.io/badge/License-MIT-F77E70?style=for-the-badge" /></a>
 <a class="reference external" href="https://github.com/thenewflesh/cv-depot/blob/master/docker/config/pyproject.toml"><img alt="" src="https://img.shields.io/pypi/pyversions/cv-depot?style=for-the-badge&amp;label=Python&amp;color=A0D17B&amp;logo=python&amp;logoColor=A0D17B" /></a>
 <a class="reference external" href="https://pypi.org/project/cv-depot/"><img alt="" src="https://img.shields.io/pypi/v/cv-depot?style=for-the-badge&amp;label=PyPI&amp;color=5F95DE&amp;logo=pypi&amp;logoColor=5F95DE" /></a>
@@ -191,7 +217,7 @@ tab to cycle through</p></li>
 <p>If you are on Debian-based Linux and you run into C library issues such as with
 OpenEXR, the following may help:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span> <span class="n">update</span> <span class="o">&amp;&amp;</span> \
-<span class="n">apt</span> <span class="n">install</span> <span class="o">--</span><span class="n">fix</span><span class="o">-</span><span class="n">missing</span> <span class="o">-</span><span class="n">y</span> <span class="n">python3</span><span class="mf">.10</span><span class="o">-</span><span class="n">dev</span> <span class="o">&amp;&amp;</span> \
+<span class="n">apt</span> <span class="n">install</span> <span class="o">--</span><span class="n">fix</span><span class="o">-</span><span class="n">missing</span> <span class="o">-</span><span class="n">y</span> <span class="n">python3</span><span class="mf">.13</span><span class="o">-</span><span class="n">dev</span> <span class="o">&amp;&amp;</span> \
 <span class="n">apt</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> \
     <span class="n">build</span><span class="o">-</span><span class="n">essential</span> \
     <span class="n">g</span><span class="o">++</span> \
@@ -203,6 +229,10 @@ OpenEXR, the following may help:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> \
     <span class="n">libopenexr</span><span class="o">-</span><span class="n">dev</span> \
     <span class="n">openexr</span>
+</pre></div>
+</div>
+<p>For FFMPEG you will also need this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">ffmpeg</span>
 </pre></div>
 </div>
 <p>Please see the prod.dockerfile for an official example of how to build a docker
