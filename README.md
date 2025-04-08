@@ -95,7 +95,7 @@ If you are on Debian-based Linux and you run into C library issues such as with
 OpenEXR, the following may help:
 ```
 apt update && \
-apt install --fix-missing -y python3.10-dev && \
+apt install --fix-missing -y python3.13-dev && \
 apt install -y \
     build-essential \
     g++ \
@@ -108,6 +108,11 @@ For OpenEXR you will also need this:
 apt install -y \
     libopenexr-dev \
     openexr
+```
+
+For FFMPEG you will also need this:
+```
+apt install -y ffmpeg
 ```
 
 Please see the prod.dockerfile for an official example of how to build a docker
@@ -283,4 +288,3 @@ Usage: `cv-depot bash-completion`
 Prints ZSH completion code to be written to a _cv-depot completion file
 
 Usage: `cv-depot zsh-completion`
-
