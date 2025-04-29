@@ -20,6 +20,7 @@ flask_monitoringdashboard*
 **/jupyter/serverconfig
 **/jupyter/workspaces
 */ipython/*
+**/.virtual_documents
 
 # mypy
 .mypy_cache
@@ -29,6 +30,7 @@ flask_monitoringdashboard*
 .Trash*
 
 # packaging
+docker/dist/*
 .eggs
 .installed.cfg
 .Python

@@ -1,11 +1,14 @@
 import subprocess
 
 import click
+import lunchbox.theme as lbc
 # ------------------------------------------------------------------------------
 
 '''
 Command line interface to cv-depot library
 '''
+
+click.Context.formatter_class = lbc.ThemeFormatter
 
 
 @click.group()
@@ -16,9 +19,10 @@ def main():
 @main.command()
 def bash_completion():
     '''
-    BASH completion code to be written to a _cv-depot completion file.
+    {white}BASH completion code to be written to a _cv-depot completion
+    file.{clear}
     '''
-    cmd = '_cv_depot_COMPLETE=bash_source cv-depot'
+    cmd = '_CV_DEPOT_COMPLETE=bash_source cv-depot'
     result = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
     result.wait()
     click.echo(result.stdout.read())
@@ -27,9 +31,10 @@ def bash_completion():
 @main.command()
 def zsh_completion():
     '''
-    ZSH completion code to be written to a _cv-depot completion file.
+    {white}ZSH completion code to be written to a _cv-depot completion
+    file.{clear}
     '''
-    cmd = '_cv_depot_COMPLETE=zsh_source cv-depot'
+    cmd = '_CV_DEPOT_COMPLETE=zsh_source cv-depot'
     result = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
     result.wait()
     click.echo(result.stdout.read())
