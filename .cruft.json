@@ -26,12 +26,14 @@
       "include_openexr": "yes",
       "include_prod_cli": "yes",
       "include_prod_envs": "yes",
+      "include_pypi_badges": "yes",
       "include_secret_env": "no",
       "include_vscode_server": "no",
       "port_prefix": "42",
       "git_user": "theNewFlesh",
       "git_host": "github",
       "git_organization": "thenewflesh",
+      "package_registry": "pypi",
       "docker_registry": "docker.io",
       "organization_url": "github.com",
       "description": "Computer Vision Tools",
@@ -44,6 +46,7 @@
       "python_min_version": "10",
       "python_max_version": "13",
       "initial_repo_version": "0.11.3",
+      "status_bar_color": "#EB9E58",
       "_template": "https://github.com/thenewflesh/cookiecutter-datalus",
       "_commit": "f3de5f8d0fe8dcb0acd12e52231afae80a1208d1"
     }
