@@ -401,7 +401,7 @@ class Color:
 
         try:
             items = self.to_array().tolist()
-            name = BasicColor.from_list(items).string  # type: ignore
+            name = BasicColor.from_list(items).string
             output.append(f'        name: {name}')
         except Exception:
             pass
