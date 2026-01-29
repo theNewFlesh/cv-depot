@@ -2,7 +2,7 @@ services:
   cv-depot:
     container_name: cv-depot
     image: cv-depot:dev
-    platform: linux/amd64
+    platform: linux/arm64
     build:
       context: .
       dockerfile: dev.dockerfile

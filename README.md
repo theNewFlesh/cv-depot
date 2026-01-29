@@ -63,7 +63,8 @@ for a demo of filter operators.
 4. `cd cv-depot`
 5. `chmod +x bin/cv-depot`
 6. `bin/cv-depot docker-start`
-   - If building on a M1 Mac run `export DOCKER_DEFAULT_PLATFORM=linux/amd64` first.
+   - If building on a silicon Mac change the value of the `PLATFORM` variable in
+     the cli.py module to `linux/arm64`.
 
 The service should take a few minutes to start up.
 
@@ -75,8 +76,8 @@ Run `bin/cv-depot --help` for more help on the command line tool.
     in your ~/.zshrc file:
     - `alias cv-depot="cd [parent dir]/cv-depot; bin/cv-depot"`
     - Replace `[parent dir]` with the parent directory of this repository
-3. Consider adding the following line to your ~/.zshrc if you are using a M1 Mac:
-    - `export DOCKER_DEFAULT_PLATFORM=linux/amd64`
+3. Consider adding the following line to your ~/.zshrc if you are using a silicon Mac:
+    - `export DOCKER_DEFAULT_PLATFORM=linux/arm64`
 4. Running the `zsh-complete` command will enable tab completions of the cli
    commands, in the next shell session.
 
