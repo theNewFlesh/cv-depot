@@ -1,5 +1,5 @@
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union  # noqa F401
-from vision.image.color import Color  # noqa F401
+from cv_depot.core.color import Color  # noqa F401
 
 from pathlib import Path
 import math
@@ -8,15 +8,17 @@ import re
 
 from hidebound.core.specification_base import SpecificationBase
 from lunchbox.enforce import Enforce, EnforceError
+from openexr_tools.enum import ImageCodec
 from pandas import DataFrame
 import hidebound.core.tools as hbt
 import pandas as pd
 
-from vision.image.color import BasicColor
-from vision.image.image import Image, BitDepth, ImageCodec
+from cv_depot.core.color import BasicColor
+from cv_depot.core.enum import BitDepth
+from cv_depot.core.image import Image
 from vision.pipeline.specifications import Tset001
+import cv_depot.ops as ops
 import vision.enforce.enforce_tools as eft
-import vision.image.image_tools as imt
 import vision.pipeline.pipeline_tools as plt
 import vision.utils as utils
 # ------------------------------------------------------------------------------
@@ -305,7 +307,7 @@ shape_in_tiles: {self.shape_in_tiles}
         return data[data.depth == depth]
 
     def get_frame(self, depth, grid=False):
-        # type: (int, bool) -> Image
+        # type: (int, bool) -> Image | None
         '''
         Stitch tiles of a given depth into a single image.
         Loads tile content for frame if not loaded.
@@ -333,15 +335,15 @@ shape_in_tiles: {self.shape_in_tiles}
         for x in range(x0, x1 + 1):
             col = self.get_tile((x, y0, depth))
             for y in range(y0 + 1, y1 + 1):
-                col = imt.staple(col, self.get_tile((x, y, depth)), 'above')
+                col = ops.edit.staple(col, self.get_tile((x, y, depth)), 'above')
             if image is None:
                 image = col
             else:
-                image = imt.staple(image, col, direction='right')
+                image = ops.edit.staple(image, col, direction='right')
 
         # overlay grid
-        if grid:
-            image = imt.draw_grid(
+        if grid and image is not None:
+            image = ops.draw.grid(
                 image,
                 (self.width_in_tiles, self.height_in_tiles),
                 self.line_color,
@@ -521,12 +523,12 @@ shape_in_tiles: {self.shape_in_tiles}
         w, h, c = image.shape
         w = math.ceil(w / tw) * tw
         h = math.ceil(h / th) * th
-        image = imt.pad(image, (w, h, c), anchor=anchor, color=color)
+        image = ops.edit.pad(image, (w, h, c), anchor=anchor, color=color)
 
         w, h, c = image.shape
         cols = []
         for x in range(tw, w, tw):
-            col, image = imt.cut(image, tw, axis='vertical')
+            col, image = ops.edit.cut(image, tw, axis='vertical')
             cols.append(col)
         cols.append(image)
 
@@ -534,7 +536,7 @@ shape_in_tiles: {self.shape_in_tiles}
         max_y = len(list(range(0, h, th))) - 1
         for x, col in enumerate(cols):
             for y, _ in enumerate(range(th, h, th)):
-                tile, col = imt.cut(col, th, axis='horizontal')
+                tile, col = ops.edit.cut(col, th, axis='horizontal')
                 data_.append([x, max_y - y, tile])
             data_.append([x, 0, col])
         data = DataFrame(data_, columns=['width', 'height', 'content'])
@@ -601,7 +603,7 @@ shape_in_tiles: {self.shape_in_tiles}
         return Tileset(data)
 
     def to_images(self):
-        # type: () -> List[Image]
+        # type: () -> List[Image | None]
         '''
         Combines tiles into list of images.
 
