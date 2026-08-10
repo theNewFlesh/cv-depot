@@ -14,7 +14,6 @@ import pandas as pd
 
 from vision.image.color import BasicColor
 from vision.image.image import Image, BitDepth, ImageCodec
-from vision.image.sequence import ImageSequence
 from vision.pipeline.specifications import Tset001
 import vision.enforce.enforce_tools as eft
 import vision.image.image_tools as imt
@@ -601,58 +600,6 @@ shape_in_tiles: {self.shape_in_tiles}
         data = pd.concat(data)
         return Tileset(data)
 
-    @staticmethod
-    def from_image_sequence(
-        sequence,               # type: ImageSequence
-        shape,                  # type: Tuple[int, int]
-        anchor='bottom-left',   # type: str
-        color=BasicColor.BLACK  # type: Union[Color, BasicColor]
-    ):                          # type: (...) -> Tileset
-        '''
-        Splits each image in a given image sequence into tiles of a given shape.
-
-        Anchor options include:
-
-            * top-left
-            * top-center
-            * top-right
-            * center-left
-            * center-center
-            * center-right
-            * bottom-left
-            * bottom-center
-            * bottom-right
-
-        Args:
-            sequence (ImageSequence): ImageSequence to be tiled.
-            shape (tuple[int]): Tile width and height.
-            anchor (str, optional): How the given image will first be padded.
-                Default: bottom-left.
-            color (Color or BasicColor, optional): Color of image padding.
-
-        Raises:
-            EnforceError: If sequence is not an instance of ImageSequence.
-            EnforceError: If shape is not a tuple of 2 or more integers greater
-                than 0.
-
-        Returns:
-            Tileset: Tileset instance.
-        '''
-        # enforcements
-        Enforce(sequence, 'instance of', ImageSequence)
-        eft.enforce_2d_shape(shape)
-        # ----------------------------------------------------------------------
-
-        data = []
-        for i, img in enumerate(sequence):
-            datum = Tileset.from_image(
-                img, shape, anchor=anchor, color=color
-            )._data
-            datum['depth'] = i
-            data.append(datum)
-        data = pd.concat(data)
-        return Tileset(data)
-
     def to_images(self):
         # type: () -> List[Image]
         '''
@@ -662,16 +609,6 @@ shape_in_tiles: {self.shape_in_tiles}
             list[Image]: List of stitched tile images, one per frame.
         '''
         return [self.get_frame(f) for f in self.frames]
-
-    def to_image_sequence(self):
-        # type: () -> ImageSequence
-        '''
-        Combines tiles into ImageSequence.
-
-        Returns:
-            ImageSequence: ImageSequence of stitched tiles, one per frame.
-        '''
-        return ImageSequence.from_images(self.to_images())
 
     @staticmethod
     def from_dict(data):
